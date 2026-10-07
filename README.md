@@ -2,9 +2,9 @@
 
 An open-source project for auditable seasonality analysis of CSV and Excel time series, starting with a small monthly aggregation core.
 
-**Current milestone: monthly aggregation core only (0.0.1).** This is an experimental source checkpoint, not the complete v0.1 application or a published PyPI package. CSV/XLSX import, multi-year seasonal profiles, charts, reports and UI are still planned.
+**Current milestone: CSV import, quality reporting and monthly aggregation (experimental 0.0.1 source checkpoint).** This is not the complete v0.1 application or a published PyPI package. XLSX import, multi-year seasonal profiles, charts, report export and UI are still planned.
 
-The current function accepts a prepared pandas DataFrame, computes monthly means and observation counts, and returns a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
+The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 
 ## Quick start
 
@@ -40,6 +40,7 @@ Then install and run the synthetic example:
 ```bash
 python -m pip install -e .
 python examples/monthly_demo.py
+python examples/csv_demo.py examples/data/synthetic_prices.csv --instrument SYNTHETIC_A --skip-missing
 python -m unittest discover -s tests -v
 ```
 
@@ -49,7 +50,33 @@ All example values are invented, not real market prices. There is no API key or 
 
 For each year and calendar month, calculate the arithmetic mean of that month's observations. There is no filling, interpolation or replacement of missing observations with zero. Zero and negative numeric values are valid. Input data are not modified.
 
-The first core accepts timezone-naive pandas datetime columns at midnight and finite real numeric values, with floating-point precision up to 64 bits. It rejects ambiguous or unprepared dates, missing values and duplicate dates. If a calculation overflows or produces a nonfinite group mean, it raises an explicit error rather than returning an invalid result. A later import/quality layer will explain how to prepare real files.
+The core accepts timezone-naive pandas datetime columns at midnight and finite real numeric values, with floating-point precision up to 64 bits. It rejects ambiguous or unprepared dates, missing values and duplicate dates. If a calculation overflows or produces a nonfinite group mean, it raises an explicit error rather than returning an invalid result.
+
+## Local CSV import
+
+Use explicit column names, date format, delimiter and decimal separator. For a long-format master, choose one instrument; dates shared by different instruments must not be combined into a single series.
+
+A file with the standard `instrument_id` header requires an explicit instrument selection. For files using another identifier header, supply its name and selection yourself; without a filter, you are declaring that the input is one series. The supported CSV dialect follows Python's `csv.reader` in strict mode with doubled quote escaping, rather than a full RFC-conformance validator.
+
+```python
+from seasonlens import aggregate_monthly, import_csv
+
+result = import_csv(
+    "examples/data/synthetic_prices.csv",
+    date_column="date", value_column="value", date_format="%Y-%m-%d",
+    delimiter=",", decimal=".",
+    instrument_column="instrument_id", instrument="SYNTHETIC_A",
+    missing_values="skip",  # Explicit permission to omit blank value cells.
+)
+print(result.skipped_missing_rows)
+monthly = aggregate_monthly(result.frame)
+```
+
+Blank values reject import by default. `missing_values="skip"` permits only empty/whitespace value cells, retaining their original physical line numbers in `skipped_missing_rows`. Invalid dates, numeric text, nonfinite numbers and duplicate dates always reject import, including a duplicate with a blank value. Zero and negative numeric values are valid. There is no filling, interpolation or duplicate repair.
+
+`CSVImportError.report` explains rejected input with issue codes and source rows. On success, `result.report` describes selected input **before** authorized blank omissions, so `report.has_errors` can still be true when only accepted missing-value issues remain. `result.frame` is the clean chronological series; `source_rows` matches its order. Other-instrument and cutoff omissions are recorded separately. `inspect_series(frame)` is also available for prepared DataFrames and never changes them.
+
+Date formats must specify `%Y`, `%d` and `%m`, `%b` or `%B`; the reader does not supply a missing year. Timezone directives `%z` and `%Z` are unsupported. `skip_rows` explicitly skips physical preamble lines before the CSV header. `max_date=datetime.date(...)` explicitly excludes later observations **after validation**, so a malformed later observation or duplicate still rejects input. No date cutoff is inferred from today's date. Thousands separators and direct XLSX input are not supported yet. Units, quote conventions, price types and data-source permissions remain external metadata; importing does not change them.
 
 Monthly averages describe historical levels. They do not establish predictive seasonality, remove inflation, or correct futures rolling effects.
 

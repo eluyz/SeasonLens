@@ -19,3 +19,12 @@
 - Select direct ECB daily reference rates for future public FX examples, with attribution and clearly marked calculations.
 - Treat direct Euronext Delayed Trade Data as a separate conditional candidate for new sessions. Its terms do not clear an existing vendor-sourced MATIF history or establish a free long historical archive.
 - Record requirements in DATA_POLICY.md and ignore local data/output directories. No market-data file or feed is added by this documentation change.
+
+## 2026-10-07 — Quality reporting and CSV import
+
+- Keep quality inspection read-only and parsing separate from mathematical aggregation.
+- Use explicit date/decimal formats and exact column/instrument mappings; require a complete date format rather than implicitly choosing a year.
+- Reject blank numeric cells by default. Permit only explicitly approved blank omissions, retaining their source line numbers; do not treat invalid numeric text as missing.
+- Validate selected rows and duplicates before missing-value or date-cutoff omissions. Record filters and omissions separately; do not hide malformed later rows behind a cutoff.
+- Keep original physical CSV line starts through multiline records and chronological sorting. Report input issues before approved omissions, distinct from the prepared output frame.
+- Use synthetic public examples and tests. Private files can exercise the reader locally without being committed or publishing their calculated prices.
