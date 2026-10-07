@@ -104,3 +104,12 @@ Limits: Python 3.12/pandas 2.2.3 only; no Windows/macOS/other-Python execution, 
 - Full-browser/mobile layout QA remains unverified. No data collector, hosted runner or automatic update was enabled.
 
 - Independent review accepted matrix direction, exact cutoff/year window, missing/partial markers and separately converted PLN means/reference. The actual private-document JavaScript passed initial display, FX/grain Original/PLN switching and restoration; range/line controls preserve the matrix and seven-column CSV export retains all cutoff rows. This was a bounded DOM harness, not full-browser layout validation.
+
+## Whole-unit prices and dash placeholders — 2026-10-07
+
+- Explorer v6 labels the matrix Monthly average prices and displays its monthly values with zero decimal places. Other tables retain their existing precision. Numeric calculations, comparison colors and exports are unchanged.
+- Unavailable numeric table values now display —; matrix/return future-month cells have neutral backgrounds and after-cutoff tooltips, while historical gaps remain gray and explicitly explained. Annual table hover text and seasonal report calendar statuses preserve the future/history distinction. Actual zero prices and zero contributor counts stay zero.
+- `PYTHONPATH=src python3 -m unittest discover -s tests -q`: **117 tests passed** after updating existing presentation expectations. No new arithmetic behavior or tests were added. Actual generated JavaScript passed node syntax validation and git diff --check passed.
+- All nine private unit views were parsed: matrix data cells are whole numbers (with optional partial-month star) or —, and no table uses a Missing value cell. Daily observations/indicators and chart axes match v5 exactly; the private SQLite snapshot is byte-identical. The seven-file private ZIP passed CRC validation. Regenerated public examples use synthetic observations only. Full browser/mobile validation remains unverified.
+- Independent review found pandas date-table rendering could leave NaT in normalization-base rows despite na_rep. A copied display frame now formats base dates as ISO dates or — before HTML generation; analytical frames are unchanged.
+- Final independent presentation review accepted whole-unit display with raw-value colors, no NaT/Missing cells in all 81 private tables, future-month styling and actual generated-JavaScript instrument/unit refresh. CSV values remained exact across the complete selected cutoff series. This remains bounded DOM validation, not a full browser test.

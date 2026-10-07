@@ -25,8 +25,8 @@ class DashboardTests(unittest.TestCase):
         self.assertIn('<th scope="col">2017</th>',matrix)
         self.assertIn('<th scope="col">2026</th>',matrix)
         self.assertNotIn('<th scope="col">2016</th>',matrix)
-        self.assertIn('class="price-lower" title="Monthly mean lower than reference; 2 observations">110</td>',matrix)
-        self.assertIn('class="price-higher" title="Monthly mean higher than reference; 1 observations">200</td>',matrix)
+        self.assertIn('class="price-lower" title="Monthly average lower than reference; 2 observations">110</td>',matrix)
+        self.assertIn('class="price-higher" title="Monthly average higher than reference; 1 observations">200</td>',matrix)
         self.assertIn('class="price-equal"',matrix)
         self.assertIn('>155 *</td>',matrix)
         self.assertIn('<strong>155</strong>',matrix)
@@ -67,7 +67,7 @@ class DashboardTests(unittest.TestCase):
         self.assertIn('2022–2026',v['fiveyear'])
         self.assertIn('<td>155</td>',v['fiveyear'])
         self.assertNotIn('<td>999</td>',v['fiveyear'])
-        self.assertIn('black dashed period mean',html)
+        self.assertIn('black dashed period average',html)
         self.assertIn('already SMA20',html)
 
     def test_calendar_twelve_months_and_indicator_warmup(self):
@@ -122,7 +122,7 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(v['future_excluded'],1)
         self.assertNotIn(999,[r['value'] for r in v['daily']])
         self.assertNotIn('20%',v['heatmap'])
-        self.assertIn('Missing',v['heatmap'])
+        self.assertIn('—',v['heatmap'])
 
     def test_local_import_roundtrip_and_bad_origin(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -133,7 +133,7 @@ class DashboardTests(unittest.TestCase):
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             base=f'http://127.0.0.1:{server.server_port}'
             try:
-                self.assertIn(b'Explorer v5',urlopen(base,timeout=5).read())
+                self.assertIn(b'Explorer v6',urlopen(base,timeout=5).read())
                 body=dict(series_id='S',title='Synthetic',unit='Units',source='Invented',semantics='Daily synthetic',
                           csv='date,value\n2026-01-02,130\n',date_column='date',value_column='value',
                           date_format='%Y-%m-%d',delimiter=',',decimal='.',instrument_column='',instrument_filter='',skip_missing=False,skip_rows='0')

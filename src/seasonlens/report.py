@@ -11,7 +11,7 @@ from .seasonal import SeasonalResult
 
 
 def _number(value):
-    return "Missing" if math.isnan(float(value)) else format(float(value), ".12g")
+    return "—" if math.isnan(float(value)) else format(float(value), ".12g")
 
 
 def _runs(points):
@@ -166,8 +166,8 @@ def render_seasonal_report(
         for month in range(1, 13):
             p, c = result.profile.loc[month], result.current.loc[month]
             rows.append('<tr>' + f'<th scope="row">{month_abbr[month]}</th>' + ''.join(f'<td>{_number(v)}</td>' for v in (p["mean"], p["minimum"], p["maximum"])) + f'<td>{int(p.year_count)}/{result.window_years}</td><td>{int(p.observation_count)}</td>' + f'<td>{_number(c["mean"])}</td><td>{int(c.observation_count)}</td><td>{_number(c.difference)}</td><td>{statuses[c.calendar_status]}</td></tr>')
-        header = ['Month', 'Baseline mean', 'Historical min', 'Historical max', 'Years used', 'Baseline observations', f'{result.as_of.year} mean', f'{result.as_of.year} observations', 'Difference', 'Calendar status']
-        sections.append(f'<section><h2>{result.window_years}-year profile: {result.start_year}–{result.end_year}</h2><p>Blue: equal-year baseline. Orange: {result.as_of.year} through {result.as_of.isoformat()}. Pale blue: historical range of yearly monthly means.</p>' + _chart(result, unit, axis) + '<div class="table-wrap"><table><caption>Monthly values and observed coverage; displayed to 12 significant digits</caption><thead><tr>' + ''.join(f'<th scope="col">{h}</th>' for h in header) + '</tr></thead><tbody>' + ''.join(rows) + '</tbody></table></div></section>')
+        header = ['Month', 'Baseline average', 'Historical min', 'Historical max', 'Years used', 'Baseline observations', f'{result.as_of.year} average', f'{result.as_of.year} observations', 'Difference', 'Calendar status']
+        sections.append(f'<section><h2>{result.window_years}-year profile: {result.start_year}–{result.end_year}</h2><p>Blue: equal-year baseline. Orange: {result.as_of.year} through {result.as_of.isoformat()}. Pale blue: historical range of yearly monthly means.</p>' + _chart(result, unit, axis) + '<div class="table-wrap"><table><caption>Monthly values and observed coverage; displayed to 12 significant digits; — means unavailable, with future months marked After cutoff</caption><thead><tr>' + ''.join(f'<th scope="col">{h}</th>' for h in header) + '</tr></thead><tbody>' + ''.join(rows) + '</tbody></table></div></section>')
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title>
 <style>

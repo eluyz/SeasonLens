@@ -34,37 +34,40 @@ def _monthly_price_matrix(frame, *, as_of, unit):
         for year in years:
             value = float(means.loc[year, month])
             if math.isnan(value):
-                cells.append('<td class="missing" title="No observations through the cutoff">Missing</td>')
+                future = year == as_of.year and month > as_of.month
+                reason = 'Month after analysis cutoff' if future else 'No historical observations through the cutoff'
+                cells.append(f'<td class="{"future-month" if future else "missing"}" title="{reason}">—</td>')
                 continue
             relation = 'lower' if value < reference else 'higher' if value > reference else 'equal'
             partial = (year == as_of.year and month == as_of.month
                        and as_of.day != __import__('calendar').monthrange(year, month)[1])
-            title = f'Monthly mean {relation} than reference; {int(counts.loc[year, month])} observations'
+            title = f'Monthly average {relation} than reference; {int(counts.loc[year, month])} observations'
             if partial:
                 title += '; current calendar month is partial'
-            cells.append(f'<td class="price-{relation}" title="{title}">{_fmt(value)}'+(' *' if partial else '')+'</td>')
+            cells.append(f'<td class="price-{relation}" title="{title}">{value:.0f}'+(' *' if partial else '')+'</td>')
         rows.append('<tr><th scope="row">'+name+'</th>'+''.join(cells)+'</tr>')
     header = '<tr><th scope="col">Month / Year</th>'+''.join(f'<th scope="col">{year}</th>' for year in years)+'</tr>'
     legend = ('<div class="matrix-key" aria-label="Comparison legend">'
-              '<span class="price-higher">Higher monthly mean</span>'
+              '<span class="price-higher">Higher monthly average</span>'
               '<span class="price-equal">Equal to reference</span>'
-              '<span class="price-lower">Lower monthly mean</span>'
-              '<span class="missing">Missing</span></div>')
+              '<span class="price-lower">Lower monthly average</span>'
+              '<span class="missing">— No data / after cutoff</span></div>')
     return ('<div class="price-matrix-layout"><div class="table-wrap"><table class="price-matrix">'
-            f'<caption>Monthly mean prices · {years[0]}–{years[-1]} · {escape(unit)}</caption>'
+            f'<caption>Monthly average prices · {years[0]}–{years[-1]} · {escape(unit)}</caption>'
             '<thead>'+header+'</thead><tbody>'+''.join(rows)+'</tbody></table></div>'
             '<aside class="matrix-reference"><span>Reference daily price</span>'
             f'<strong>{_fmt(reference)}</strong><span>{escape(unit)}</span>'
             f'<span>Observation date: {reference_date}</span>'+legend+'</aside></div>'
             '<p class="muted">Colors compare unrounded monthly means with the last available daily observation through the cutoff, '
-            'in the selected display units. * Current calendar month is partial. Missing values stay empty of estimates; '
+            'in the selected display units. Prices in this matrix are displayed rounded to whole units; calculations and colors retain full precision. '
+            '* Current calendar month is partial. — No data or month after cutoff (hover for the reason); '
             'counts appear on hover. Colors describe historical price levels, not buy/sell signals.</p>')
 
 
 def _recent_year_chart(result, unit):
     colors = ('#93c5fd','#2563eb','#7c3aed','#0f766e','#c45d11','#111827')
     lines = [(str(year),result.monthly_means.loc[year],colors[i]) for i,year in enumerate(result.years)]
-    lines.append(('Period mean',result.mean_series,colors[-1]))
+    lines.append(('Period average',result.mean_series,colors[-1]))
     values = [float(v) for _,row,_ in lines for v in row if not math.isnan(float(v))]
     if not values:
         return '<p>No observations in these five calendar years.</p>'
@@ -95,8 +98,8 @@ def _recent_year_chart(result, unit):
     controls='<div class="checks">'+''.join(f'<label><input type="checkbox" data-year-toggle="{i}" checked> <span style="color:{color}">{escape(name)}</span></label>' for i,(name,_,color) in enumerate(lines))+'</div>'
     table=[]
     for month,name in enumerate(('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),1):
-        table.append('<tr><th>'+name+'</th>'+''.join(f'<td>{_fmt(result.monthly_means.loc[year,month])}</td>' for year in result.years)+f'<td>{_fmt(result.mean_series.loc[month])}</td><td>{int(result.year_count.loc[month])}/5</td><td>{int(result.observation_count.loc[month])}</td></tr>')
-    header='<tr><th>Month</th>'+''.join(f'<th>{year}</th>' for year in result.years)+'<th>Period mean</th><th>Years used</th><th>Observations</th></tr>'
+        table.append('<tr><th>'+name+'</th>'+''.join(f'<td title="{"Month after analysis cutoff" if year == result.as_of.year and month > result.as_of.month else "Monthly average; — means no observations"}">{_fmt(result.monthly_means.loc[year,month])}</td>' for year in result.years)+f'<td>{_fmt(result.mean_series.loc[month])}</td><td>{int(result.year_count.loc[month])}/5</td><td>{int(result.observation_count.loc[month])}</td></tr>')
+    header='<tr><th>Month</th>'+''.join(f'<th>{year}</th>' for year in result.years)+'<th>Period average</th><th>Years used</th><th>Observations</th></tr>'
     return f'<h3>{result.years[0]}–{result.years[-1]} · {escape(unit)}</h3>'+controls+''.join(svg)+'<details><summary>Monthly values and coverage</summary><div class="table-wrap"><table><thead>'+header+'</thead><tbody>'+''.join(table)+'</tbody></table></div></details>'
 
 
@@ -114,10 +117,10 @@ def _records(frame):
 
 
 def _fmt(value):
-    return 'Missing' if value is None or math.isnan(float(value)) else format(float(value), '.6g')
+    return '—' if value is None or math.isnan(float(value)) else format(float(value), '.6g')
 
 
-def _heatmap(frame):
+def _heatmap(frame, *, as_of):
     frame = frame.copy()
     frame['year'] = frame.index.year
     frame['month'] = frame.index.month
@@ -127,7 +130,9 @@ def _heatmap(frame):
         for month in range(1, 13):
             item = group[group['month'] == month]
             if item.empty:
-                cells.append('<td class="missing">Missing</td>')
+                future = year == as_of.year and month > as_of.month
+                reason = 'Month after analysis cutoff' if future else 'No observations for this month'
+                cells.append(f'<td class="{"future-month" if future else "missing"}" title="{reason}">—</td>')
                 continue
             r = item.iloc[0]
             value = float(r['return_pct'])
@@ -157,14 +162,16 @@ def _view(frame, *, as_of, unit):
         try:
             indexed = normalized_seasonality(frame, as_of=as_of, window_years=n)
             normalized.append(indexed.seasonal)
-            bases.append(f'<details><summary>{n}-year normalization bases</summary><div class="table-wrap">'+indexed.bases.to_html(escape=True,na_rep='Missing',border=0)+'</div></details>')
+            display_bases = indexed.bases.copy()
+            display_bases['base_date'] = display_bases['base_date'].map(lambda value: '—' if pd.isna(value) else value.isoformat()[:10])
+            bases.append(f'<details><summary>{n}-year normalization bases</summary><div class="table-wrap">'+display_bases.to_html(escape=True,na_rep='—',border=0)+'</div></details>')
         except ValueError as exc:
             normalization_error = str(exc)
             break
     else:
         normalization_error = None
     try:
-        returns = _heatmap(monthly_returns(frame, as_of=as_of).frame)
+        returns = _heatmap(monthly_returns(frame, as_of=as_of).frame,as_of=as_of)
     except ValueError as exc:
         returns = '<p>Monthly returns unavailable: '+escape(str(exc))+'</p>'
     partial_rows = []

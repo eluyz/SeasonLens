@@ -53,7 +53,7 @@ class ReportTests(unittest.TestCase):
         parsed.feed(html)
         self.assertEqual(parsed.rows[1], ['Jan', '155', '110', '200', '2/5', '3', '155', '1', '0', 'Partial calendar month'])
         self.assertEqual(parsed.rows[14][4], '2/10')
-        self.assertEqual(parsed.rows[2][1], 'Missing')
+        self.assertEqual(parsed.rows[2][1], '—')
         self.assertIn('2021–2025', html)
         self.assertIn('2016–2025', html)
         self.assertIn('full historical calendar months', html)
@@ -175,7 +175,7 @@ class ReportTests(unittest.TestCase):
             success = subprocess.run(command + [str(output)], env=env, capture_output=True, text=True)
             self.assertEqual(success.returncode, 0, success.stderr)
             original_output = output.read_bytes()
-            self.assertIn(b'Baseline mean', original_output)
+            self.assertIn(b'Baseline average', original_output)
             for path in (output, source):
                 rejected = subprocess.run(command + [str(path)], env=env, capture_output=True, text=True)
                 self.assertNotEqual(rejected.returncode, 0)

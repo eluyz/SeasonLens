@@ -27,3 +27,4 @@
 - Explicit errors for aggregation overflow and unsupported wider floating-point types.
 - Initial import into the public repository with English documentation; no release tag yet. See STATUS.md for completed validation.
 - Added a ten-year month-row price matrix comparing monthly means with a dated, cutoff-visible daily reference, with explicit color meanings, missing cells and partial-month markers.
+- Renamed the price matrix Monthly average prices, displayed its monthly prices without decimal places and replaced unavailable numeric table values with —, distinguishing future months from historical gaps.
