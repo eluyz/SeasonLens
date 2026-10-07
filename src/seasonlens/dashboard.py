@@ -27,6 +27,7 @@ def _monthly_price_matrix(frame, *, as_of, unit):
     counts = monthly.counts.reindex(index=years, columns=range(1, 13)).fillna(0)
     reference = float(selected.value.iloc[-1])
     reference_date = selected.date.iloc[-1].date().isoformat()
+    decimals = 3 if re.fullmatch(r'[A-Z]{3} per [A-Z]{3}', unit) else 0
     rows = []
     for month, name in enumerate(('January','February','March','April','May','June',
                                   'July','August','September','October','November','December'), 1):
@@ -44,7 +45,7 @@ def _monthly_price_matrix(frame, *, as_of, unit):
             title = f'Monthly average {relation} than reference; {int(counts.loc[year, month])} observations'
             if partial:
                 title += '; current calendar month is partial'
-            cells.append(f'<td class="price-{relation}" title="{title}">{value:.0f}'+(' *' if partial else '')+'</td>')
+            cells.append(f'<td class="price-{relation}" title="{title}">{value:.{decimals}f}'+(' *' if partial else '')+'</td>')
         rows.append('<tr><th scope="row">'+name+'</th>'+''.join(cells)+'</tr>')
     header = '<tr><th scope="col">Month / Year</th>'+''.join(f'<th scope="col">{year}</th>' for year in years)+'</tr>'
     legend = ('<div class="matrix-key" aria-label="Comparison legend">'
@@ -56,10 +57,10 @@ def _monthly_price_matrix(frame, *, as_of, unit):
             f'<caption>Monthly average prices · {years[0]}–{years[-1]} · {escape(unit)}</caption>'
             '<thead>'+header+'</thead><tbody>'+''.join(rows)+'</tbody></table></div>'
             '<aside class="matrix-reference"><span>Reference daily price</span>'
-            f'<strong>{_fmt(reference)}</strong><span>{escape(unit)}</span>'
+            f'<strong>{reference:.{decimals}f}</strong><span>{escape(unit)}</span>'
             f'<span>Observation date: {reference_date}</span>'+legend+'</aside></div>'
             '<p class="muted">Colors compare unrounded monthly means with the last available daily observation through the cutoff, '
-            'in the selected display units. Prices in this matrix are displayed rounded to whole units; calculations and colors retain full precision. '
+            f'in the selected display units. Matrix prices and the reference use {decimals} decimal places; calculations and colors retain full precision. '
             '* Current calendar month is partial. — No data or month after cutoff (hover for the reason); '
             'counts appear on hover. Colors describe historical price levels, not buy/sell signals.</p>')
 

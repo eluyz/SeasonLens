@@ -133,7 +133,7 @@ class DashboardTests(unittest.TestCase):
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             base=f'http://127.0.0.1:{server.server_port}'
             try:
-                self.assertIn(b'Explorer v6',urlopen(base,timeout=5).read())
+                self.assertIn(b'Explorer v7',urlopen(base,timeout=5).read())
                 body=dict(series_id='S',title='Synthetic',unit='Units',source='Invented',semantics='Daily synthetic',
                           csv='date,value\n2026-01-02,130\n',date_column='date',value_column='value',
                           date_format='%Y-%m-%d',delimiter=',',decimal='.',instrument_column='',instrument_filter='',skip_missing=False,skip_rows='0')
