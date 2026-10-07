@@ -28,3 +28,11 @@ This is not a clean dependency-download or cross-platform installation test. Pyt
 SL-000: alternatives/need validation remains open. Technical next task is SL-002 quality reporting, followed by SL-003 explicit CSV import. Use the original SeasonLens plan as context; this file records current implementation progress.
 
 No user data are needed for the next implementation tasks. The owner has connected this repository and authorized the initial import. Automated GitHub checks are a planned next step; local test results above are the currently verified evidence.
+
+## Data-policy update — 2026-10-07
+
+- Documented public code/private imported market data and private derived outputs in DATA_POLICY.md.
+- Selected direct ECB reference rates for future public FX examples; documented conditional Euronext delayed trade files separately from existing imported histories.
+- Added root local-input/output directories to .gitignore and linked the policy from README.md.
+- Reviewed official ECB/Euronext source conditions and the changed documentation. No calculation code changed, so the earlier mathematical test results are unchanged; no new unit-test run was needed for this documentation update.
+- No downloader, new input file, public market-data dataset or chart has been added. Git ignore patterns are safeguards, not access control.

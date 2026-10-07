@@ -58,3 +58,7 @@ Monthly averages describe historical levels. They do not establish predictive se
 The implementation is assisted by coding agents. Mathematical requirements and hand-calculated cases guide review. See [SPEC.md](SPEC.md) for the API contract, [STATUS.md](STATUS.md) for verified progress, and [BACKLOG.md](BACKLOG.md) for planned work. Bug reports and usability feedback are welcome through [GitHub Issues](https://github.com/eluyz/SeasonLens/issues). Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change.
 
 The code is MIT licensed. Example data are synthetic and included under the same license. Licensed market data should not be added to this project without confirmed redistribution rights.
+
+## Data boundaries
+
+Imported market data and analyses generated from restricted inputs remain private by default. Public examples currently use synthetic values. Future public FX examples will use ECB reference rates with attribution and marked calculations. Direct Euronext delayed trade files are a separate candidate subject to their own distribution terms; this does not authorize publication of existing imported futures histories. See [DATA_POLICY.md](DATA_POLICY.md) for source-specific conditions and local storage conventions. Data downloads are not implemented yet.

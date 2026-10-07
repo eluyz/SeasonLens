@@ -11,3 +11,11 @@
 - The first checkpoint was stored as an archive before repository setup. The owner has now connected the public repository eluyz/SeasonLens. Source files will be maintained there; no release tag or background runner is configured.
 - Independent review exposed numeric overflow and unsupported long-double inputs. Reject these explicitly; do not silently emit infinite means or expose pandas' internal type error.
 - Use English for all repository documentation, code comments, issue text and commit messages. Coordination with the owner continues in Polish.
+
+## 2026-10-07 — Public code and private market data
+
+- Keep raw imported futures prices, private provenance and restricted derived outputs private. Public documentation does not identify the owner's private data provider. Private storage does not extend usage rights.
+- Continue with synthetic public examples and a local file-import workflow. Source-specific terms are separate from the MIT code license.
+- Select direct ECB daily reference rates for future public FX examples, with attribution and clearly marked calculations.
+- Treat direct Euronext Delayed Trade Data as a separate conditional candidate for new sessions. Its terms do not clear an existing vendor-sourced MATIF history or establish a free long historical archive.
+- Record requirements in DATA_POLICY.md and ignore local data/output directories. No market-data file or feed is added by this documentation change.

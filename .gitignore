@@ -9,3 +9,9 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Local inputs, private provenance and generated analyses
+/private/
+/data/
+/outputs/
+/exports/
