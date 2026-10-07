@@ -16,6 +16,51 @@ from .comparison import technical_analysis, recent_year_prices
 TECHNICAL_COLUMNS = ('value','sma20','sma100','sma200','bollinger_upper','bollinger_lower')
 
 
+def _monthly_price_matrix(frame, *, as_of, unit):
+    """Ten calendar years, colored against the last cutoff-visible daily price."""
+    selected = frame[frame.date.dt.date <= as_of].sort_values('date')
+    if selected.empty:
+        return '<p>No observations through the cutoff. Reference price unavailable.</p>'
+    monthly = aggregate_monthly(selected)
+    years = tuple(range(max(1, as_of.year - 9), as_of.year + 1))
+    means = monthly.means.reindex(index=years, columns=range(1, 13))
+    counts = monthly.counts.reindex(index=years, columns=range(1, 13)).fillna(0)
+    reference = float(selected.value.iloc[-1])
+    reference_date = selected.date.iloc[-1].date().isoformat()
+    rows = []
+    for month, name in enumerate(('January','February','March','April','May','June',
+                                  'July','August','September','October','November','December'), 1):
+        cells = []
+        for year in years:
+            value = float(means.loc[year, month])
+            if math.isnan(value):
+                cells.append('<td class="missing" title="No observations through the cutoff">Missing</td>')
+                continue
+            relation = 'lower' if value < reference else 'higher' if value > reference else 'equal'
+            partial = (year == as_of.year and month == as_of.month
+                       and as_of.day != __import__('calendar').monthrange(year, month)[1])
+            title = f'Monthly mean {relation} than reference; {int(counts.loc[year, month])} observations'
+            if partial:
+                title += '; current calendar month is partial'
+            cells.append(f'<td class="price-{relation}" title="{title}">{_fmt(value)}'+(' *' if partial else '')+'</td>')
+        rows.append('<tr><th scope="row">'+name+'</th>'+''.join(cells)+'</tr>')
+    header = '<tr><th scope="col">Month / Year</th>'+''.join(f'<th scope="col">{year}</th>' for year in years)+'</tr>'
+    legend = ('<div class="matrix-key" aria-label="Comparison legend">'
+              '<span class="price-higher">Higher monthly mean</span>'
+              '<span class="price-equal">Equal to reference</span>'
+              '<span class="price-lower">Lower monthly mean</span>'
+              '<span class="missing">Missing</span></div>')
+    return ('<div class="price-matrix-layout"><div class="table-wrap"><table class="price-matrix">'
+            f'<caption>Monthly mean prices · {years[0]}–{years[-1]} · {escape(unit)}</caption>'
+            '<thead>'+header+'</thead><tbody>'+''.join(rows)+'</tbody></table></div>'
+            '<aside class="matrix-reference"><span>Reference daily price</span>'
+            f'<strong>{_fmt(reference)}</strong><span>{escape(unit)}</span>'
+            f'<span>Observation date: {reference_date}</span>'+legend+'</aside></div>'
+            '<p class="muted">Colors compare unrounded monthly means with the last available daily observation through the cutoff, '
+            'in the selected display units. * Current calendar month is partial. Missing values stay empty of estimates; '
+            'counts appear on hover. Colors describe historical price levels, not buy/sell signals.</p>')
+
+
 def _recent_year_chart(result, unit):
     colors = ('#93c5fd','#2563eb','#7c3aed','#0f766e','#c45d11','#111827')
     lines = [(str(year),result.monthly_means.loc[year],colors[i]) for i,year in enumerate(result.years)]
@@ -136,6 +181,7 @@ def _view(frame, *, as_of, unit):
     else:
         missing_months = None
     return dict(daily=_records(daily.frame), axes=axes,range_starts=range_starts,
+                price_matrix=_monthly_price_matrix(frame,as_of=as_of,unit=unit),
                 fiveyear=_recent_year_chart(recent_year_prices(frame,as_of=as_of),unit),
                 profiles=_sections(render_seasonal_report(profiles, unit=unit)),
                 normalized=('<p>Normalized view unavailable: '+escape(normalization_error)+'</p>' if normalization_error else

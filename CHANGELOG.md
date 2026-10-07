@@ -26,3 +26,4 @@
 - Monthly means/counts implementation, synthetic example and nine acceptance tests.
 - Explicit errors for aggregation overflow and unsupported wider floating-point types.
 - Initial import into the public repository with English documentation; no release tag yet. See STATUS.md for completed validation.
+- Added a ten-year month-row price matrix comparing monthly means with a dated, cutoff-visible daily reference, with explicit color meanings, missing cells and partial-month markers.
