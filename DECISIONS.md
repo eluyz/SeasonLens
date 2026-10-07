@@ -38,3 +38,9 @@
 - Preserve full-input validation before cutoff/window selection. All-missing selected subsets are valid with NaN statistics and zero counts; numeric overflow remains an explicit error.
 - Add standalone local HTML with inline SVG and tables, escaping labels and retaining chart gaps. No chart dependency, hosted service or graphical upload workflow is added. Rendered values use 12 significant digits; CSV export remains separate work.
 - Command-line output is explicit and refuses overwrite or input aliases. Private reports are produced outside the public repository; only an invented synthetic CSV and its HTML example can be committed.
+
+## 2026-10-07 — Readable chart axes and legend
+
+- Fit line-chart axes to observed levels instead of forcing zero. Currency rates need a useful visible range. Use a shared domain across the 5/10-year charts of one instrument, including both baselines' extrema and the current line, with 8% margin.
+- For constant levels use a 1% level margin (all-zero fallback -1 to 1). Clip only representational overflow at float64 limits; decimal/adaptive-precision tick labels and adaptive label space handle narrow and extreme ranges.
+- Put a visual legend inside every SVG so screenshots retain the meaning of colors and shapes. Explicitly distinguish the historical range of yearly monthly means from daily highs/lows. Statistical definitions and table values are unchanged.

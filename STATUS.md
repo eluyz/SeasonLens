@@ -64,3 +64,10 @@ Validation remains local Python 3.12/pandas 2.2.3, not cross-platform or depende
 - Both actual synthetic report SVG charts rendered successfully to PNG using the existing Sharp runtime; a chart was inspected for readable labels, historical band, reference line and partial-month marker. Full-page Playwright preview could not launch because browser executables are absent. HTML/table semantics and SVG XML were checked programmatically; full browser/mobile layout QA is still unverified.
 
 Remaining limits: this is local Python 3.12/pandas 2.2.3 validation with existing dependencies, not clean dependency-download or Windows/macOS testing. No graphical file selector, live feed, CSV export, normalized-return model, external adoption, scheduled background runner or program acceptance has been implemented or verified. The HTML example uses invented data only; restricted input analyses remain private.
+
+## Axis and legend correction — 2026-10-07
+
+- Changed only chart presentation: automatic padded bounds across both profiles, no forced zero, equal scale for 5/10-year comparison, adaptive decimal labels and left label space. Embedded SVG legends name the two lines, historical range and partial-month marker.
+- `PYTHONPATH=src python3 -m unittest discover -s tests -p test_report.py -v`: 10 report/workflow tests passed, including hand-calculated FX bounds 4.184–4.416 for levels 4.2–4.4, shared scales, narrow/constant/negative/subnormal/extreme values, legend meanings, escaping and no-overwrite behavior. Seasonal aggregation code did not change; the earlier full 54-test checkpoint remains the last full-suite run.
+- Independent reviewer probes closed tick-label issues for adjacent float64 values, maximum values and minimum subnormals. Long-label space was also made adaptive following review.
+- Regenerated synthetic and six private reports; every before/after calculation table matched exactly and the private input hash stayed unchanged. Rendered and inspected the actual private FX SVG with the embedded legend; private outputs remain outside git. Full browser/mobile layout QA remains unverified as recorded above.

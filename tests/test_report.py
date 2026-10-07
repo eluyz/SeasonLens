@@ -99,6 +99,70 @@ class ReportTests(unittest.TestCase):
             with self.subTest(metadata=metadata), self.assertRaises(ValueError):
                 render_seasonal_report([a], import_summary=metadata)
 
+    def test_fx_axis_fits_levels_and_is_shared_between_windows(self):
+        data = daily(['2020-01-01', '2025-01-01', '2026-01-01'], [4.2, 4.3, 4.4])
+        results = [analyze_seasonality(data, as_of=date(2026, 1, 15), window_years=n) for n in (5, 10)]
+        html = render_seasonal_report(results)
+        charts = [ElementTree.fromstring(svg) for svg in re.findall(r'<svg.*?</svg>', html, flags=re.S)]
+        labels = [[float(t.text) for t in svg.findall('text') if t.attrib.get('text-anchor') == 'end'] for svg in charts]
+        self.assertEqual(labels[0], labels[1])
+        # 8% of the 0.2 input range is 0.016: bounds 4.184 and 4.416.
+        self.assertAlmostEqual(labels[0][0], 4.184)
+        self.assertAlmostEqual(labels[0][-1], 4.416)
+        positions = [float(c.attrib['cy']) for c in charts[1].findall('circle')]
+        # Visible mean lines span 4.25–4.4 (not the min–max range 4.2–4.4).
+        self.assertGreater(max(positions) - min(positions), 120)
+        self.assertTrue(all(36 <= v <= 238 for v in positions))
+        self.assertIn('Both profile charts use the same scale', html)
+
+    def test_constant_negative_and_tiny_axes_stay_finite(self):
+        for values in ([4.2], [-4.2], [0], [1e308], [float.fromhex('0x1.fffffffffffffp+1023')], [5e-324]):
+            with self.subTest(values=values):
+                result = analyze_seasonality(daily(['2025-01-01'], values), as_of=date(2026, 1, 15), window_years=1)
+                html = render_seasonal_report([result])
+                svg = ElementTree.fromstring(re.search(r'<svg.*?</svg>', html, flags=re.S).group())
+                self.assertNotRegex(ElementTree.tostring(svg, encoding='unicode'), r'(?i)(?:nan|inf)')
+                positions = [float(c.attrib['cy']) for c in svg.findall('circle')]
+                self.assertTrue(all(36 <= v <= 238 for v in positions))
+                labels = [float(t.text) for t in svg.findall('text') if t.attrib.get('text-anchor') == 'end']
+                raw_labels = [t.text for t in svg.findall('text') if t.attrib.get('text-anchor') == 'end']
+                self.assertEqual(len(set(raw_labels)), 5)
+                self.assertTrue(all(pd.notna(v) and abs(v) != float('inf') for v in labels))
+                axis_labels = [t for t in svg.findall('text') if t.attrib.get('text-anchor') == 'end']
+                self.assertGreaterEqual(float(axis_labels[0].attrib['x']), max(len(label) for label in raw_labels) * 7)
+                self.assertLessEqual(labels[0], values[0])
+                self.assertGreaterEqual(labels[-1], values[0])
+                if values[0] > 1:
+                    self.assertGreater(labels[0], 0)
+                elif values[0] < -1:
+                    self.assertLess(labels[-1], 0)
+
+    def test_narrow_range_axis_labels_remain_distinct(self):
+        result = analyze_seasonality(daily(['2025-01-01', '2025-03-01'], [4.200001, 4.200003]), as_of=date(2026, 1, 15), window_years=1)
+        html = render_seasonal_report([result])
+        svg = ElementTree.fromstring(re.search(r'<svg.*?</svg>', html, flags=re.S).group())
+        labels = [t.text for t in svg.findall('text') if t.attrib.get('text-anchor') == 'end']
+        self.assertEqual(len(set(labels)), 5)
+        self.assertGreater(float(labels[0]), 4.2)
+        self.assertLess(float(labels[-1]), 4.200004)
+
+    def test_legend_in_each_chart_names_lines_band_and_partial_marker(self):
+        data = daily(['2025-01-01', '2026-01-01'], [4.2, 4.3])
+        results = [analyze_seasonality(data, as_of=date(2026, 1, 15), window_years=n) for n in (5, 10)]
+        html = render_seasonal_report(results)
+        charts = [ElementTree.fromstring(svg) for svg in re.findall(r'<svg.*?</svg>', html, flags=re.S)]
+        for window, svg in zip((5, 10), charts):
+            legend = svg.find("g[@class='chart-legend']")
+            self.assertIsNotNone(legend)
+            text = ''.join(legend.itertext())
+            self.assertIn(f'{window}-year average', text)
+            self.assertIn('2026 monthly average', text)
+            self.assertIn('Historical min–max', text)
+            self.assertIn('not daily highs/lows', text)
+            self.assertIn('partial month', text)
+            self.assertEqual([line.attrib['stroke'] for line in legend.findall('line')], ['#2563eb', '#c45d11'])
+            self.assertEqual(legend.find('rect').attrib['fill'], '#dbeafe')
+
     def test_cli_end_to_end_and_input_output_preservation(self):
         root = Path(__file__).resolve().parents[1]
         env = dict(os.environ, PYTHONPATH=str(root / 'src'))

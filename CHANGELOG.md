@@ -2,6 +2,8 @@
 
 ## Unreleased — 2026-10-07
 
+- Auto-scaled shared chart axes with padding, readable narrow-range labels and an embedded visual legend for lines, historical range and partial months.
+
 - Equal-year seasonal profiles for exact declared calendar windows with coverage and monthly-mean extrema.
 - Explicit inclusive reference date, current-year comparison and visible partial-calendar-month status.
 - Standalone local HTML/SVG charts and inspectable tables; synthetic CSV-to-report example.
