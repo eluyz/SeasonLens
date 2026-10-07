@@ -29,3 +29,4 @@
 - Added a ten-year month-row price matrix comparing monthly means with a dated, cutoff-visible daily reference, with explicit color meanings, missing cells and partial-month markers.
 - Renamed the price matrix Monthly average prices, displayed its monthly prices without decimal places and replaced unavailable numeric table values with —, distinguishing future months from historical gaps.
 - Price-matrix display precision now depends on units: whole commodity prices and three decimals for currency quotes, including the corresponding reference value.
+- Prepared a synthetic-only GitHub Pages explorer with mobile table/chart scrolling, collapsed advanced analysis, local-app guidance, reproducible builder and sample CSV. Hosting activation remains separate from committing the page.

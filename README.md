@@ -6,6 +6,12 @@ An open-source project for auditable seasonality analysis of CSV and Excel time 
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 
+## Browser demo
+
+The static browser demo is prepared in `docs/index.html`. It includes invented price and FX observations only. Repository administrators can publish it using GitHub Pages (`main` → `/docs`); see [deployment instructions](docs/PAGES.md). The expected URL after successful activation is https://eluyz.github.io/SeasonLens/. Publishing files alone does not enable hosting.
+
+The demo supports instrument/unit selection, monthly tables, six-line technical analysis, seasonal views and CSV export without installation. Own-file browser import is not available yet; the local app handles private CSV files. To rebuild the synthetic page, run `PYTHONPATH=src python3 examples/build_pages.py`.
+
 ## Quick start
 
 Python 3.10+ is declared; this checkpoint was developed with Python 3.12 and pandas 2.2.3. This dependency is pinned for reproducibility.
