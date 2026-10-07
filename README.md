@@ -2,7 +2,7 @@
 
 An open-source project for auditable seasonality analysis of CSV and Excel time series, starting with a small monthly aggregation core.
 
-**Current milestone: CSV import, quality reporting, monthly aggregation, equal-year profiles and local HTML charts (experimental 0.0.1 source checkpoint).** This is not the complete v0.1 application or a published PyPI package. XLSX import, CSV export, graphical file selection and public data downloads are still planned.
+**Current milestone: private SQLite persistence, direct ECB reference-rate updates, a local CSV-import app and an interactive multi-series explorer (experimental 0.0.1 source checkpoint).** XLSX import, automatic futures continuation closes, hosted deployment and a tagged release remain unimplemented.
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 
@@ -102,7 +102,7 @@ For example, January 2024 observations 100 and 120 give 110; January 2025 observ
 
 The reference-year line uses observations on or before the inclusive cutoff. Difference means reference monthly mean minus baseline mean, in original units; it is not a percentage return. Future dates remain excluded and counted, with validation of the entire input first. A mid-month reference mean is compared with full historical calendar months and is marked **Partial calendar month** (hollow orange marker). **Calendar month ended** describes a calendar boundary, not complete trading-session coverage. Missing chart points remain gaps. Each chart includes a visual legend for both lines, the historical min–max band and partial-month marker. The Y-axis automatically fits the plotted values with a small margin, without forcing zero; the 5/10-year charts share a scale for comparison. Profile means are monthly levels, not a normalized seasonal performance strategy or forecast.
 
-`render_seasonal_report` returns a self-contained HTML string with inline SVG and tables, without writing or networking. Table values display 12 significant digits. The command-line example writes one report for one explicitly selected instrument, supports the CSV mapping/format options and protects the input and existing output. Generated reports from restricted inputs must remain private. Local HTML reporting is implemented; interactive file selection, multi-instrument panels and CSV export are still pending.
+`render_seasonal_report` returns a self-contained HTML string with inline SVG and tables, without writing or networking. Table values display 12 significant digits. The command-line example writes one report for one explicitly selected instrument, supports the CSV mapping/format options and protects the input and existing output. Generated reports from restricted inputs must remain private. The interactive explorer adds instrument selection, daily lines/SMA, CSV export and the local import form described below.
 
 ## Development
 
@@ -112,4 +112,52 @@ The code is MIT licensed. Example data are synthetic and included under the same
 
 ## Data boundaries
 
-Imported market data and analyses generated from restricted inputs remain private by default. Public examples currently use synthetic values. Future public FX examples will use ECB reference rates with attribution and marked calculations. Direct Euronext delayed trade files are a separate candidate subject to their own distribution terms; this does not authorize publication of existing imported futures histories. See [DATA_POLICY.md](DATA_POLICY.md) for source-specific conditions and local storage conventions. Data downloads are not implemented yet.
+Imported market data and analyses generated from restricted inputs remain private by default. Public examples currently use synthetic values. Future public FX examples will use ECB reference rates with attribution and marked calculations. Direct Euronext delayed trade files are a separate candidate subject to their own distribution terms; this does not authorize publication of existing imported futures histories. See [DATA_POLICY.md](DATA_POLICY.md) for source-specific conditions and local storage conventions. The direct ECB downloader is implemented; automatic futures downloads are not configured.
+
+## Interactive explorer and private database
+
+Generate an entirely invented, self-contained demo and open it locally:
+
+```bash
+python examples/explorer_demo.py
+```
+
+Open `examples/explorer_demo.html`. Every observation, including FX, is invented. The standalone explorer works without a server; CSV import requires the local app. It contains:
+
+- Daily observations and full-window SMA20/SMA50, with line toggles and 90-day/12-month/full-history ranges.
+- Original-unit 5/10-year seasonal levels and normalized monthly index profiles.
+- Monthly close-to-close changes, with missing/partial months visible.
+- Matched partial-month comparisons through the same calendar day of preceding years.
+- EUR/t to PLN/t using exact-date ECB EUR/PLN matches (synthetic FX only in the invented demo).
+- Observation count, last date, age against the cutoff and missing calendar months.
+- CSV export of selected observations/SMA; graphical CSV import into a private database.
+
+Create data **outside this public source checkout**:
+
+```bash
+python -m seasonlens.cli --db ../seasonlens-private/seasonlens.sqlite init
+python -m seasonlens.cli --db ../seasonlens-private/seasonlens.sqlite update-ecb --history
+python -m seasonlens.app --db ../seasonlens-private/seasonlens.sqlite --as-of 2026-10-06
+```
+
+Open `http://127.0.0.1:8765`. Select a CSV, set its columns/date format, choose an instrument if applicable, supply the source/quote definition and explicitly allow blank omissions if wanted. An empty database can start the import screen without an ECB download. CSV imports cannot write reserved direct ECB IDs; give other sources distinct IDs. Existing source/unit/quote metadata are immutable, preventing accidental provider mixing. The app binds only to loopback, not a public network. It uploads the file to that local process.
+
+For repeated files, use the same series ID and metadata. Dates are unique per series; new dates are inserted, corrected observations receive a revision record, unchanged values retain their observation timestamp. Imports are atomic. Omitting a date does not delete or fill it. Graphical imports retain original provenance and existing history. Future observations are validated and stored but excluded from a report before its explicit cutoff. Raw observations are embedded in standalone HTML, so restricted outputs stay private.
+
+Nightly ECB refresh re-reads the last 90 days to recover short interruptions and revisions:
+
+```bash
+python -m seasonlens.cli --db ../seasonlens-private/seasonlens.sqlite update-ecb
+python -m seasonlens.cli --db ../seasonlens-private/seasonlens.sqlite backup --output ../seasonlens-private/backup-new.sqlite
+python -m seasonlens.app --db ../seasonlens-private/seasonlens.sqlite --as-of 2026-10-06 --output ../seasonlens-private/explorer-new.html
+```
+
+After an interruption longer than 90 days, use `update-ecb --history`. Backups/exports/snapshots refuse existing output paths. `--as-of` controls report calculations; change it when generating a new day's report. Updater cutoffs default to the current Warsaw calendar date and reject future-dated ECB responses. A fresh reference rate can still be yesterday's rate on a nonpublication day.
+
+SQLite is a file, not a hosted service. Local use requires keeping that file and backups on your own disk. For unattended hosting, `examples/private_nightly.yml` is an **inactive template** for a separate **private data repository**: it seeds futures once from private inputs, obtains FX history directly from ECB, backs up, refreshes, generates a private snapshot and commits state there around 02:17 Europe/Warsaw. It does not enable a job in this public project. GitHub schedules can be delayed. A private repository and its runner must be configured before claiming unattended operation. See [docs/OPERATIONS.md](docs/OPERATIONS.md).
+
+## Additional calculation definitions
+
+SMA uses the previous 20/50 observations, not calendar days. Monthly change uses the last observed value divided by the immediately preceding calendar month's last observed value minus one, times 100. It is not a certified settlement return; a missing calendar month breaks the calculation. Normalization divides each daily positive value by that year's first observed positive value and multiplies by 100; monthly means of those index levels can differ from 100 even in the first month. Base dates and values are visible. Both return and normalized views require strictly positive input; other level views still accept zero/negative values. No futures roll adjustment or investable-return interpretation is supplied.
+
+Matched partial-month comparison takes only the cutoff month's observations through the same calendar day in each exact preceding N-year window. February 29 clamps to February 28 in non-leap years. Each available year's mean gets equal weight. The matched cutoff removes a full-month/partial-month mismatch; it does not equalize session counts. Currency conversion matches dates exactly and reports unmatched observations, with no forward-fill.

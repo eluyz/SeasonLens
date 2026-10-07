@@ -1,0 +1,61 @@
+# TEMPLATE ONLY. Copy to .github/workflows/ in a PRIVATE DATA repository after
+# configuring inputs. It is deliberately outside .github/workflows here.
+# Keep futures-only master input + metadata under inputs/, SQLite under state/.
+# Reserved direct ECB FX IDs are populated only by the ECB updater.
+# GitHub schedules can be delayed; DST spring-forward advances a skipped time.
+name: SeasonLens private nightly ECB update
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * *'
+      timezone: Europe/Warsaw
+permissions:
+  contents: write
+concurrency:
+  group: private-seasonlens-update
+  cancel-in-progress: false
+jobs:
+  update:
+    if: ${{ github.event.repository.private == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: private-state
+      - uses: actions/checkout@v4
+        with:
+          repository: eluyz/SeasonLens
+          path: code
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public calculation code
+        run: python -m pip install ./code
+      - name: Seed only if private database is absent
+        run: |
+          if [ ! -f private-state/state/seasonlens.sqlite ]; then
+            python -m seasonlens.cli --db private-state/state/seasonlens.sqlite init
+            python -m seasonlens.cli --db private-state/state/seasonlens.sqlite import-master private-state/inputs/master.csv --metadata private-state/inputs/metadata.json --skip-missing
+            python -m seasonlens.cli --db private-state/state/seasonlens.sqlite update-ecb --history
+          fi
+      - name: Back up existing private state
+        run: |
+          rm -f private-state/backups/prior.sqlite
+          python -m seasonlens.cli --db private-state/state/seasonlens.sqlite backup --output private-state/backups/prior.sqlite
+      - name: Update direct ECB reference history
+        run: python -m seasonlens.cli --db private-state/state/seasonlens.sqlite update-ecb
+      - name: Render private snapshot at previous Warsaw calendar day
+        run: |
+          TASK_AS_OF=$(python -c "from datetime import datetime,timedelta; from zoneinfo import ZoneInfo; print((datetime.now(ZoneInfo('Europe/Warsaw')).date()-timedelta(days=1)).isoformat())")
+          rm -f private-state/reports/latest.html
+          python -m seasonlens.app --db private-state/state/seasonlens.sqlite --as-of "$TASK_AS_OF" --output private-state/reports/latest.html
+      - name: Persist SQLite in this private repository
+        working-directory: private-state
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add state/seasonlens.sqlite reports/latest.html backups/prior.sqlite
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update private SeasonLens data state'
+          git push

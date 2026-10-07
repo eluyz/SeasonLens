@@ -44,3 +44,13 @@
 - Fit line-chart axes to observed levels instead of forcing zero. Currency rates need a useful visible range. Use a shared domain across the 5/10-year charts of one instrument, including both baselines' extrema and the current line, with 8% margin.
 - For constant levels use a 1% level margin (all-zero fallback -1 to 1). Clip only representational overflow at float64 limits; decimal/adaptive-precision tick labels and adaptive label space handle narrow and extreme ranges.
 - Put a visual legend inside every SVG so screenshots retain the meaning of colors and shapes. Explicitly distinguish the historical range of yearly monthly means from daily highs/lows. Statistical definitions and table values are unchanged.
+
+## 2026-10-07 — Private state and extended local exploration
+
+- Keep SQLite as an explicit private file outside the public source checkout; persist hosted state only in a separate private data repository, requiring configuration before any schedule is claimed active.
+- Preserve source/quote definitions per ID and audit inserted/revised values. Source/quote conflicts require distinct IDs. Reserved direct ECB IDs cannot be populated by CSV.
+- Derive USD/PLN from daily same-date ECB quotations, then aggregate; use a 90-day re-fetch for missed runs/revisions and explicit full history for bootstrap/recovery.
+- Treat futures input as continuation session closes with roll/adjustment definitions recorded. A delayed final trade or individual-expiry settlement does not automatically reproduce that history. The automatic continuation-close collector remains open.
+- Add observation-based SMA, immediately preceding-calendar-month returns, first-observed annual indexing, matched day-of-month comparisons and exact-date FX conversion. Expose partial months, missing observations and normalization bases.
+- Provide a loopback-only CSV import app and private standalone explorer. The standalone embeds observations, supports exploration/export, and requires the local app for imports. English labels explain every line/range; Python computes axis variants so browser toggles retain narrow/extreme precision.
+- Keep the public explorer completely invented, including its synthetic FX. Independent review found and closed reserved-ID CSV relabeling, future-dependent coverage and daily-axis precision defects.

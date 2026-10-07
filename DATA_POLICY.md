@@ -22,7 +22,7 @@ Under the [ECB copyright conditions](https://www.ecb.europa.eu/services/using-ou
 
 Label values as daily reference rates, not exchange closes or executable quotes. ECB quotations use EUR as the base currency. A calculated USD/PLN rate is PLN per EUR divided by USD per EUR; label it as a calculation from ECB reference rates.
 
-No ECB downloader or public FX dataset is implemented in this checkpoint.
+A direct ECB downloader and private SQLite updater are implemented. USD/PLN is calculated daily before any monthly aggregation; it is not a ratio of monthly average inputs. Public example values remain invented. Direct ECB IDs are protected from CSV imports and other providers must use distinct series IDs.
 
 ## MATIF: separate Euronext candidate
 
@@ -33,3 +33,7 @@ The portal's [Delayed Trade Data terms](https://www.euronext.com/sites/default/f
 This route applies only to data actually obtained under those terms. It does not clear an existing MATIF history obtained from another supplier. Keep those imported files private. Last-trade prices are not automatically official settlement prices; any aggregation and contract-roll method must be documented.
 
 No Euronext downloader, historical archive or public market-price dataset is implemented in this checkpoint.
+
+## Private persistence and embedded outputs
+
+SQLite databases, backups, private source metadata and real-data explorer snapshots stay outside this public code checkout. The explorer embeds daily values, so it is private whenever its inputs are restricted. The private nightly example is a template, not a configured public job. Synthetic demo FX values are explicitly invented, and are never attributed to ECB.

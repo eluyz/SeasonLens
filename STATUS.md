@@ -1,6 +1,6 @@
 # Project status
 
-Date: 2026-10-07. Checkpoint: experimental 0.0.1 source with CSV preparation, equal-year profiles and local HTML reporting.
+Date: 2026-10-07. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics and local interactive explorer. Earlier checkpoint sections remain historical records.
 
 Repository: https://github.com/eluyz/SeasonLens. This source checkpoint is the first code import after the owner's repository initialization. Documentation is in English. No release tag has been created.
 
@@ -30,9 +30,7 @@ This is not a clean dependency-download or cross-platform installation test. Pyt
 
 ## Next
 
-SL-000: alternatives/need validation remains open. SL-004 is implemented. Technical next tasks are SL-001A automated checks and the SL-007 local file-selection workflow; CSV export (remaining SL-005) and XLSX import (SL-006) remain planned. Automated GitHub checks (SL-001A) are still planned. Use the original SeasonLens plan as context; this file records current implementation progress.
-
-No user data are needed for the next implementation tasks. The owner has connected this repository and authorized the initial import. Automated GitHub checks are a planned next step; local test results above are the currently verified evidence.
+Configure a separate private data repository/runner and verify a manual update before enabling unattended execution. Verify a compatible MATIF continuation-close feed and its roll/adjustment rules. Full-browser/mobile QA, automated GitHub checks, XLSX import, alternatives validation and independent user feedback remain open. No hosted job or automatic futures feed is active.
 
 ## Data-policy update — 2026-10-07
 
@@ -71,3 +69,19 @@ Remaining limits: this is local Python 3.12/pandas 2.2.3 validation with existin
 - `PYTHONPATH=src python3 -m unittest discover -s tests -p test_report.py -v`: 10 report/workflow tests passed, including hand-calculated FX bounds 4.184–4.416 for levels 4.2–4.4, shared scales, narrow/constant/negative/subnormal/extreme values, legend meanings, escaping and no-overwrite behavior. Seasonal aggregation code did not change; the earlier full 54-test checkpoint remains the last full-suite run.
 - Independent reviewer probes closed tick-label issues for adjacent float64 values, maximum values and minimum subnormals. Long-label space was also made adaptive following review.
 - Regenerated synthetic and six private reports; every before/after calculation table matched exactly and the private input hash stayed unchanged. Rendered and inspected the actual private FX SVG with the embedded legend; private outputs remain outside git. Full browser/mobile layout QA remains unverified as recorded above.
+
+## SQLite and extended explorer checkpoint — 2026-10-07
+
+- Added private SQLite series/observations/revisions/imports, atomic inserts/corrections, immutable metadata, explicit backups/export and cutoff freshness. Data files stay outside this public checkout.
+- Added fixed official ECB XML parser/downloader; last-90-day refresh, full-history opt-in, future-date rejection, same-date derived USD/PLN and source-isolated reserved IDs protected against CSV relabeling.
+- Added observation SMA20/50, calendar-month close changes, normalized annual index with visible bases, matched partial-month means and exact-date PLN conversion without filling.
+- Added loopback local CSV import app, empty-DB import screen and standalone multi-series explorer with controls, CSV export, coverage and embedded SVG legends. Public example is entirely invented, including FX.
+- Added an inactive private-only nightly template that seeds futures once, obtains FX history directly, backs up, refreshes, renders and persists private state. No hosted job has been enabled or executed.
+- `PYTHONPATH=src python3 -m unittest discover -s tests -v`: **101 tests passed**. This includes existing tests and hand-calculated analytics, revision/atomicity/source protection, source parser, CSV commands, exact-date conversion, future-independent coverage, escaping, localhost origins and empty-DB workflow.
+- `python3 -m pip install --no-deps --no-build-isolation --target /tmp/seasonlens-v3-install-20261007 .`: wheel built and installed; installed `python -m seasonlens.app` ran from /tmp against an explicit private DB and wrote a standalone explorer. Packaged HTML assets were included. Existing dependency environment only, not a clean dependency download.
+- Independent cross-review accepted analytics definitions and storage/report integration. Concrete defects in reserved-ID CSV relabeling, daily narrow/extreme axes and future-dependent missing-month counts were reproduced, repaired and rechecked. Daily axis variants now use the tested Python Decimal-axis logic.
+- Actual embedded JavaScript executed in a Node DOM/control harness against the private explorer: instrument/PLN selection, 90/all/365 ranges and SMA toggles passed; CSV export retained all 4,292 selected cutoff observations irrespective of the visible 90-day range. Actual daily FX/PLN-grain SVGs rendered with Sharp and were visually inspected for readable fitted axes and legends. This is not a full-browser/mobile layout test; browser executables remain unavailable.
+- Existing direct ECB history XML was parsed to seed private FX. Live recent-XML transport attempts with 10- and 5-second timeouts failed with URLError/timeouts in this environment. URL/timeout behavior is tested with fixture transport; a successful live download through the new updater remains unverified.
+- Private six-series history/import omissions and derived explorer stayed outside the public repository. An independent 10-date ECB cross-rate/official NBP comparison is included only in the private delivery. No raw futures or real-price HTML has been published.
+
+Limits: Python 3.12/pandas 2.2.3 only; no Windows/macOS/other-Python execution, full-browser QA, hosted schedule, compatible automatic futures collector, release tag, public adoption or OSS-program acceptance is claimed.

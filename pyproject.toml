@@ -15,5 +15,12 @@ dependencies = ["pandas==2.2.3", "numpy>=1.26,<3"]
 Repository = "https://github.com/eluyz/SeasonLens"
 Issues = "https://github.com/eluyz/SeasonLens/issues"
 
+[project.scripts]
+seasonlens-data = "seasonlens.cli:main"
+seasonlens-app = "seasonlens.app:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+seasonlens = ["dashboard.html"]
