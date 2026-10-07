@@ -1,6 +1,6 @@
 # Project status
 
-Date: 2026-10-07. Checkpoint: experimental 0.0.1 source with CSV preparation and monthly core.
+Date: 2026-10-07. Checkpoint: experimental 0.0.1 source with CSV preparation, equal-year profiles and local HTML reporting.
 
 Repository: https://github.com/eluyz/SeasonLens. This source checkpoint is the first code import after the owner's repository initialization. Documentation is in English. No release tag has been created.
 
@@ -14,8 +14,10 @@ Repository: https://github.com/eluyz/SeasonLens. This source checkpoint is the f
 - SL-002: read-only prepared-series quality reports with source-row issue locations.
 - SL-003: explicit CSV parsing, instrument selection, auditable missing-value and cutoff omissions.
 - Synthetic CSV-to-monthly command-line example.
+- SL-004: exact-window equal-year profiles, contributor/observation counts, monthly-mean extrema and cutoff-limited reference-year comparison.
+- Local standalone HTML/SVG report and synthetic CSV-to-report command-line example (partial SL-005).
 
-## Validation
+## Earlier monthly-core validation
 
 Environment: Python 3.12.14, pandas 2.2.3, NumPy 2.3.5.
 
@@ -24,11 +26,11 @@ Environment: Python 3.12.14, pandas 2.2.3, NumPy 2.3.5.
 - Demo run with installed package: January 2024 mean 110/count 2; all of 2025 absent; February 2026 mean 200/count 1.
 - Independent agent review found overflow and unsupported long-double handling. Both were repaired with explicit ValueError and regression tests.
 
-This is not a clean dependency-download or cross-platform installation test. Python versions other than 3.12 and Windows/macOS have not been executed. No UI, XLSX importer, multi-year profiles, charts, report export, external user adoption, background runner or OSS-program application has been verified or implemented yet.
+This is not a clean dependency-download or cross-platform installation test. Python versions other than 3.12 and Windows/macOS have not been executed. At the earlier monthly-core checkpoint, no UI, XLSX importer, multi-year profiles, charts or export existed. Later checkpoints below record added behavior. External user adoption, a background runner and an OSS-program application remain unverified.
 
 ## Next
 
-SL-000: alternatives/need validation remains open. Technical next task is SL-004 equal-year 5/10-year profiles. Automated GitHub checks (SL-001A) are still planned. Use the original SeasonLens plan as context; this file records current implementation progress.
+SL-000: alternatives/need validation remains open. SL-004 is implemented. Technical next tasks are SL-001A automated checks and the SL-007 local file-selection workflow; CSV export (remaining SL-005) and XLSX import (SL-006) remain planned. Automated GitHub checks (SL-001A) are still planned. Use the original SeasonLens plan as context; this file records current implementation progress.
 
 No user data are needed for the next implementation tasks. The owner has connected this repository and authorized the initial import. Automated GitHub checks are a planned next step; local test results above are the currently verified evidence.
 
@@ -50,4 +52,15 @@ No user data are needed for the next implementation tasks. The owner has connect
 - Standard instrument_id master files now require a selection. Other identifier conventions require caller-supplied mapping. The supported Python CSV dialect is documented, without claiming full RFC-conformance validation.
 - A first exact private FX comparison used pandas' default decimal parser, which can differ at floating-point rounding precision. The final independent comparison used round-trip parsing and reconciled every imported value exactly; no importer or source data change was required.
 
-Validation remains local Python 3.12/pandas 2.2.3, not cross-platform or dependency-download testing. Quality reports describe selected input before explicitly accepted omissions; a successful import can retain missing-value issues in that input report. No public data feed, graphical interface or seasonal profile has been implemented by this checkpoint.
+Validation remains local Python 3.12/pandas 2.2.3, not cross-platform or dependency-download testing. Quality reports describe selected input before explicitly accepted omissions; a successful import can retain missing-value issues in that input report. No public data feed, graphical interface or seasonal profile existed at the CSV checkpoint; seasonal profiles are added in the checkpoint below.
+
+## Seasonal profiles and HTML checkpoint validation — 2026-10-07
+
+- `PYTHONPATH=src python3 -m unittest discover -s tests -v`: all 54 tests passed (35 existing, 13 seasonal, 6 report/workflow). Coverage includes unequal daily observation counts, exact windows, missing baselines, inclusive future cutoffs, leap February, explicit overflow, HTML escaping/gaps, compatible windows and no-overwrite input/output guards.
+- `PYTHONPATH=src python3 examples/seasonal_demo.py examples/data/synthetic_seasonal_prices.csv --instrument SYNTHETIC_GRAIN --as-of 2026-10-06 --skip-missing --unit 'Synthetic units' --output examples/seasonal_demo.html`: produced the public synthetic example. It records one omitted blank, one other-instrument row and two valid future observations excluded from calculations.
+- `python3 -m pip install --no-deps --no-build-isolation --target /tmp/seasonlens-seasonal-install-20261007 .`: wheel built and installed successfully with existing environment dependencies. The CSV-to-seasonal-report example also ran from /tmp using that installed package, producing a report outside the checkout.
+- Independent mathematical/report review accepted the implementation. Separate probes confirmed the 155/110/200 hand example, cutoff behavior, unchanged input, absence of future sentinel values in HTML and explicit overflow handling.
+- Local private checks independently recalculated every month for both 5/10-year windows across six series using standard-library grouping and math.fsum, reconciling means, extrema, contributor/observation counts and current differences within float64 tolerance. The private source hash remained unchanged. Private HTML outputs and their package are outside the public repository and are not committed.
+- Both actual synthetic report SVG charts rendered successfully to PNG using the existing Sharp runtime; a chart was inspected for readable labels, historical band, reference line and partial-month marker. Full-page Playwright preview could not launch because browser executables are absent. HTML/table semantics and SVG XML were checked programmatically; full browser/mobile layout QA is still unverified.
+
+Remaining limits: this is local Python 3.12/pandas 2.2.3 validation with existing dependencies, not clean dependency-download or Windows/macOS testing. No graphical file selector, live feed, CSV export, normalized-return model, external adoption, scheduled background runner or program acceptance has been implemented or verified. The HTML example uses invented data only; restricted input analyses remain private.

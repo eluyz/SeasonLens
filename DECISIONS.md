@@ -28,3 +28,13 @@
 - Validate selected rows and duplicates before missing-value or date-cutoff omissions. Record filters and omissions separately; do not hide malformed later rows behind a cutoff.
 - Keep original physical CSV line starts through multiline records and chronological sorting. Report input issues before approved omissions, distinct from the prepared output frame.
 - Use synthetic public examples and tests. Private files can exercise the reader locally without being committed or publishing their calculated prices.
+
+## 2026-10-07 — Equal-year profiles and local HTML
+
+- Use an explicit reference date; exclude its entire calendar year from exactly the preceding N-year baseline. Missing years do not expand the window.
+- Give available yearly monthly means equal weight, independent of daily observation counts. Show contributor years and observations beside each month; counts do not certify trading-session completeness.
+- Define profile extrema over yearly monthly means. Keep input-unit levels and absolute differences; no percentage-return or forecast interpretation is introduced.
+- Mark the cutoff month as partial unless it is the last calendar day, including leap February. This compares partial current-month observations with historical full-month means; the mismatch is visible rather than extrapolated away.
+- Preserve full-input validation before cutoff/window selection. All-missing selected subsets are valid with NaN statistics and zero counts; numeric overflow remains an explicit error.
+- Add standalone local HTML with inline SVG and tables, escaping labels and retaining chart gaps. No chart dependency, hosted service or graphical upload workflow is added. Rendered values use 12 significant digits; CSV export remains separate work.
+- Command-line output is explicit and refuses overwrite or input aliases. Private reports are produced outside the public repository; only an invented synthetic CSV and its HTML example can be committed.
