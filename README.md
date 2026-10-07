@@ -124,7 +124,8 @@ python examples/explorer_demo.py
 
 Open `examples/explorer_demo.html`. Every observation, including FX, is invented. The standalone explorer works without a server; CSV import requires the local app. It contains:
 
-- Daily observations and full-window SMA20/SMA50, with line toggles and 90-day/12-month/full-history ranges.
+- Six-line technical chart: daily price, full-window SMA20/SMA100/SMA200 and Bollinger upper/lower (20 observations, ±2 population standard deviations), with toggles and 90-day/12-calendar-month/full-history ranges.
+- Monthly average prices for exactly five calendar years including the cutoff year, plus their equal-year monthly mean.
 - Original-unit 5/10-year seasonal levels and normalized monthly index profiles.
 - Monthly close-to-close changes, with missing/partial months visible.
 - Matched partial-month comparisons through the same calendar day of preceding years.
@@ -161,3 +162,9 @@ SQLite is a file, not a hosted service. Local use requires keeping that file and
 SMA uses the previous 20/50 observations, not calendar days. Monthly change uses the last observed value divided by the immediately preceding calendar month's last observed value minus one, times 100. It is not a certified settlement return; a missing calendar month breaks the calculation. Normalization divides each daily positive value by that year's first observed positive value and multiplies by 100; monthly means of those index levels can differ from 100 even in the first month. Base dates and values are visible. Both return and normalized views require strictly positive input; other level views still accept zero/negative values. No futures roll adjustment or investable-return interpretation is supplied.
 
 Matched partial-month comparison takes only the cutoff month's observations through the same calendar day in each exact preceding N-year window. February 29 clamps to February 28 in non-leap years. Each available year's mean gets equal weight. The matched cutoff removes a full-month/partial-month mismatch; it does not equalize session counts. Currency conversion matches dates exactly and reports unmatched observations, with no forward-fill.
+
+## Five-year prices and six-line technical chart
+
+The primary monthly-price comparison includes the cutoff year: at a 2026 cutoff it displays 2022–2026, one line per year and a black dashed period mean. Each available year's monthly arithmetic mean has equal weight. Missing years/months are not replaced with older history. The current partial month contributes only its available observations; later months' period mean uses available preceding years. The table shows contributor counts. This differs deliberately from the separate seasonal baseline, which still excludes the current year.
+
+The technical chart defaults to the last **12 calendar months**, including both date endpoints. Indicators are calculated using all cutoff-visible earlier history before restricting the plot, so SMA200 can be present at the first displayed date. Exactly six lines are on by default: price, SMA20, SMA100, SMA200, Bollinger upper and Bollinger lower. Bollinger = SMA20 ± 2 × population standard deviation of the last 20 observations (`ddof=0`); SMA20 already is its middle line. Each rolling indicator requires its full observation window. Missing sessions/weekends are not inserted. CSV export contains the full cutoff-visible history and these six columns, irrespective of chart zoom.

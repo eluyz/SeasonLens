@@ -11,6 +11,48 @@ from .analytics import (moving_averages, monthly_returns, normalized_seasonality
 from .monthly import aggregate_monthly
 from .seasonal import analyze_seasonality
 from .report import render_seasonal_report, _axis
+from .comparison import technical_analysis, recent_year_prices
+
+TECHNICAL_COLUMNS = ('value','sma20','sma100','sma200','bollinger_upper','bollinger_lower')
+
+
+def _recent_year_chart(result, unit):
+    colors = ('#93c5fd','#2563eb','#7c3aed','#0f766e','#c45d11','#111827')
+    lines = [(str(year),result.monthly_means.loc[year],colors[i]) for i,year in enumerate(result.years)]
+    lines.append(('Period mean',result.mean_series,colors[-1]))
+    values = [float(v) for _,row,_ in lines for v in row if not math.isnan(float(v))]
+    if not values:
+        return '<p>No observations in these five calendar years.</p>'
+    scale,low,high,labels = _axis(values)
+    left=max(76,max(len(label) for label in labels)*7+12)
+    x=lambda m:left+(m-1)*(1040-left)/11
+    y=lambda v:260-(float(v)/scale-low)/(high-low)*220
+    svg=['<svg viewBox="0 0 1120 355" role="img" aria-label="Five calendar-year monthly average price lines including the current year, and period mean"><title>Monthly mean prices by year and equal-year period mean</title>',f'<text x="{left}" y="19">{escape(unit)}</text>']
+    for i,label in enumerate(labels):
+        yy=260-i*55
+        svg.append(f'<line x1="{left}" x2="1040" y1="{yy}" y2="{yy}" stroke="#dce3ed"/><text x="{left-10}" y="{yy+4}" text-anchor="end">{escape(label)}</text>')
+    for index,(name,row,color) in enumerate(lines):
+        path='';opened=False;markers=[]
+        for month,value in row.items():
+            if math.isnan(float(value)):
+                opened=False;continue
+            path+=(' L ' if opened else ' M ')+f'{x(month):.3f},{y(value):.3f}';opened=True
+            hollow=(name==str(result.as_of.year) and month==result.as_of.month
+                    and result.as_of.day!=__import__('calendar').monthrange(result.as_of.year,month)[1])
+            markers.append(f'<circle data-year-line="{index}" cx="{x(month):.3f}" cy="{y(value):.3f}" r="3" fill="{"#fff" if hollow else color}" stroke="{color}"/>')
+        width='3.2' if index==5 else '2.2';dash=' stroke-dasharray="7 4"' if index==5 else ''
+        svg.append(f'<path data-year-line="{index}" d="{path}" fill="none" stroke="{color}" stroke-width="{width}"{dash}/>'+''.join(markers))
+        xx=left+(index%3)*310;yy=309+(index//3)*25
+        svg.append(f'<line x1="{xx}" x2="{xx+25}" y1="{yy}" y2="{yy}" stroke="{color}" stroke-width="{width}"{dash}/><text x="{xx+34}" y="{yy+4}">{escape(name)}</text>')
+    for month,name in enumerate(('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),1):
+        svg.append(f'<text x="{x(month):.3f}" y="283" text-anchor="middle">{name}</text>')
+    svg.append('</svg>')
+    controls='<div class="checks">'+''.join(f'<label><input type="checkbox" data-year-toggle="{i}" checked> <span style="color:{color}">{escape(name)}</span></label>' for i,(name,_,color) in enumerate(lines))+'</div>'
+    table=[]
+    for month,name in enumerate(('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),1):
+        table.append('<tr><th>'+name+'</th>'+''.join(f'<td>{_fmt(result.monthly_means.loc[year,month])}</td>' for year in result.years)+f'<td>{_fmt(result.mean_series.loc[month])}</td><td>{int(result.year_count.loc[month])}/5</td><td>{int(result.observation_count.loc[month])}</td></tr>')
+    header='<tr><th>Month</th>'+''.join(f'<th>{year}</th>' for year in result.years)+'<th>Period mean</th><th>Years used</th><th>Observations</th></tr>'
+    return f'<h3>{result.years[0]}–{result.years[-1]} · {escape(unit)}</h3>'+controls+''.join(svg)+'<details><summary>Monthly values and coverage</summary><div class="table-wrap"><table><thead>'+header+'</thead><tbody>'+''.join(table)+'</tbody></table></div></details>'
 
 
 def _sections(document):
@@ -53,12 +95,14 @@ def _heatmap(frame):
 
 
 def _view(frame, *, as_of, unit):
-    daily = moving_averages(frame, as_of=as_of)
+    daily = technical_analysis(frame, as_of=as_of)
     axes = {}
-    for horizon in ('90', '365', 'all'):
-        visible = daily.frame if horizon == 'all' else daily.frame[daily.frame.date.dt.date >= as_of-timedelta(days=int(horizon))]
-        for mask in range(1,8):
-            columns = [name for i,name in enumerate(('value','sma20','sma50')) if mask & (1 << i)]
+    range_starts = {'12m':(pd.Timestamp(as_of)-pd.DateOffset(months=12)).date().isoformat(),
+                    '90':(as_of-timedelta(days=90)).isoformat(),'all':None}
+    for horizon,start in range_starts.items():
+        visible = daily.frame if start is None else daily.frame[daily.frame.date.dt.date >= date.fromisoformat(start)]
+        for mask in range(1,64):
+            columns = [name for i,name in enumerate(TECHNICAL_COLUMNS) if mask & (1 << i)]
             values = [float(v) for name in columns for v in visible[name] if not math.isnan(float(v))]
             axes[horizon+':'+str(mask)] = _axis(values) if values else None
     profiles = [analyze_seasonality(frame, as_of=as_of, window_years=n) for n in (5, 10)]
@@ -91,7 +135,9 @@ def _view(frame, *, as_of, unit):
         missing_months = sum(month not in observed_months for month in calendar_months)
     else:
         missing_months = None
-    return dict(daily=_records(daily.frame), axes=axes, profiles=_sections(render_seasonal_report(profiles, unit=unit)),
+    return dict(daily=_records(daily.frame), axes=axes,range_starts=range_starts,
+                fiveyear=_recent_year_chart(recent_year_prices(frame,as_of=as_of),unit),
+                profiles=_sections(render_seasonal_report(profiles, unit=unit)),
                 normalized=('<p>Normalized view unavailable: '+escape(normalization_error)+'</p>' if normalization_error else
                             _sections(render_seasonal_report(normalized, unit='Index: first observed value of each year = 100'))+''.join(bases)),
                 heatmap=returns, partial=''.join(partial_rows), unit=unit,

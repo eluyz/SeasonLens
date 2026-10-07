@@ -32,6 +32,29 @@ class DashboardTests(unittest.TestCase):
         self.assertIn('Same partial-month comparison',html)
         self.assertIn('first observed positive daily value',html)
 
+    def test_five_year_chart_and_exact_six_technical_columns(self):
+        f=frame((999.,100.,120.,200.),('2021-01-01','2022-01-01','2022-01-02','2026-01-01'))
+        html=render_dashboard({'S':dict(frame=f)},as_of=date(2026,1,15))
+        v=json.loads(re.search(r'<script id="dataset" type="application/json">(.*?)</script>',html,re.S)[1])['S']['views']['Original']
+        self.assertEqual(set(v['daily'][0]),{'date','value','sma20','sma100','sma200','bollinger_upper','bollinger_lower'})
+        self.assertEqual(v['fiveyear'].count('<path data-year-line='),6)
+        self.assertIn('2022–2026',v['fiveyear'])
+        self.assertIn('<td>155</td>',v['fiveyear'])
+        self.assertNotIn('<td>999</td>',v['fiveyear'])
+        self.assertIn('black dashed period mean',html)
+        self.assertIn('already SMA20',html)
+
+    def test_calendar_twelve_months_and_indicator_warmup(self):
+        f=pd.DataFrame({'date':pd.bdate_range('2022-01-01','2024-02-29'),'value':100.})
+        html=render_dashboard({'S':dict(frame=f)},as_of=date(2024,2,29))
+        v=json.loads(re.search(r'<script id="dataset" type="application/json">(.*?)</script>',html,re.S)[1])['S']['views']['Original']
+        self.assertEqual(v['range_starts']['12m'],'2023-02-28')
+        first=next(r for r in v['daily'] if r['date']>=v['range_starts']['12m'])
+        self.assertEqual(first['sma200'],100.)
+        self.assertEqual(first['bollinger_upper'],100.)
+        self.assertEqual(first['bollinger_lower'],100.)
+        self.assertIsNotNone(v['axes']['12m:63'])
+
     def test_conversion_requires_explicit_quote_metadata(self):
         html=render_dashboard({'GRAIN':dict(frame=frame(),unit='EUR/t'),
                                'EUR_PLN':dict(frame=frame(),unit='EUR per PLN',source='Unrelated')},as_of=date(2026,1,15))
@@ -84,7 +107,7 @@ class DashboardTests(unittest.TestCase):
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             base=f'http://127.0.0.1:{server.server_port}'
             try:
-                self.assertIn(b'Explorer v3',urlopen(base,timeout=5).read())
+                self.assertIn(b'Explorer v4',urlopen(base,timeout=5).read())
                 body=dict(series_id='S',title='Synthetic',unit='Units',source='Invented',semantics='Daily synthetic',
                           csv='date,value\n2026-01-02,130\n',date_column='date',value_column='value',
                           date_format='%Y-%m-%d',delimiter=',',decimal='.',instrument_column='',instrument_filter='',skip_missing=False,skip_rows='0')

@@ -54,3 +54,9 @@
 - Add observation-based SMA, immediately preceding-calendar-month returns, first-observed annual indexing, matched day-of-month comparisons and exact-date FX conversion. Expose partial months, missing observations and normalization bases.
 - Provide a loopback-only CSV import app and private standalone explorer. The standalone embeds observations, supports exploration/export, and requires the local app for imports. English labels explain every line/range; Python computes axis variants so browser toggles retain narrow/extreme precision.
 - Keep the public explorer completely invented, including its synthetic FX. Independent review found and closed reserved-ID CSV relabeling, future-dependent coverage and daily-axis precision defects.
+
+## 2026-10-07 — Five-year price comparison and technical chart
+
+- The requested recent-price chart includes the current calendar year: exact year−4 through year. Keep the separate current-excluded seasonal baselines unchanged. Give available yearly monthly means equal weight, show contributor counts and include observed partial current months without projecting future prices.
+- Adopt explicit Bollinger20 parameters: population standard deviation ddof0, multiplier2. SMA20 is already the middle band; price + SMA20/100/200 + upper/lower equals six displayed lines.
+- Calculate rolling indicators from the entire cutoff-visible history before applying the trailing 12-calendar-month plot interval. Use observations, not invented weekend/session rows, and keep full-window minima. Retain the prior SMA20/50 API for backward compatibility.

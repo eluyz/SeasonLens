@@ -11,6 +11,7 @@ from .storage import (SeriesMetadata, initialize_database, upsert_series,
                       upsert_many, read_series, list_series, freshness,
                       export_series, backup_database)
 from .dashboard import render_dashboard
+from .comparison import technical_analysis, recent_year_prices
 
 __all__ = [
     "MonthlyResult", "aggregate_monthly", "QualityIssue", "QualityReport",
@@ -19,5 +20,5 @@ __all__ = [
     "moving_averages", "monthly_returns", "normalized_seasonality",
     "partial_month_comparison", "convert_eur_to_pln", "SeriesMetadata",
     "initialize_database", "upsert_series", "upsert_many", "read_series",
-    "list_series", "freshness", "export_series", "backup_database", "render_dashboard",
+    "list_series", "freshness", "export_series", "backup_database", "render_dashboard", "technical_analysis", "recent_year_prices",
 ]

@@ -15,7 +15,7 @@
 | SL-009 | Pilot | Real independent feedback and documented corrections | Planned |
 
 | SL-010 | Private persistence and direct ECB updater | Atomic unique-date revisions, auditable sources, no silent mixing, explicit backup/recovery | Implemented; hosted schedule and live transport unverified |
-| SL-011 | Extended exploration | Daily/SMA, returns, matched partial months, normalized index, exact-date PLN conversion, coverage | Implemented; synthetic demo and private snapshot |
+| SL-011 | Extended exploration | Daily/SMA/Bollinger, recent five-year prices, returns, matched partial months, normalized index, exact-date PLN conversion, coverage | Implemented; six-line technical and current-inclusive five-year views |
 | SL-012 | MATIF continuation-close collector | Verified close definition, underlying expiry/roll/adjustment rules and compatible feed | Open; no automatic futures feed |
 
 

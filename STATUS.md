@@ -85,3 +85,12 @@ Remaining limits: this is local Python 3.12/pandas 2.2.3 validation with existin
 - Private six-series history/import omissions and derived explorer stayed outside the public repository. An independent 10-date ECB cross-rate/official NBP comparison is included only in the private delivery. No raw futures or real-price HTML has been published.
 
 Limits: Python 3.12/pandas 2.2.3 only; no Windows/macOS/other-Python execution, full-browser QA, hosted schedule, compatible automatic futures collector, release tag, public adoption or OSS-program acceptance is claimed.
+
+## Five-year prices and six-line technical explorer — 2026-10-07
+
+- Explorer v4 shows monthly average prices for the exact last five calendar years including the current year, with an equal-year mean, contributor counts, gaps and partial-current-month markers. At the supplied cutoff these are 2022–2026. The earlier completed-year seasonal baselines remain separate.
+- Technical analysis shows daily continuation prices, SMA20/100/200 and Bollinger upper/lower 20 (SMA20 ±2 population standard deviations). Windows use observed sessions and full cutoff-visible history before cropping to the last 12 calendar months. All six lines have explicit legends and independent toggles; axes fit the visible selections without forcing zero.
+- `PYTHONPATH=src python3 -m unittest discover -s tests -q`: **115 tests passed**. Twelve new core cases and two dashboard cases cover hand calculations, missing/current years, future exclusion, warmup, narrow values, overflow and leap-year display cutoffs.
+- Independent mathematical review confirmed arithmetic means, equal-year weights and population sigma. The actual embedded JavaScript passed all 63 nonempty line masks, the empty selection, 12m/90/all ranges, instrument/PLN selection, six yearly toggles and exact seven-column full-series CSV export. Actual private FX and grain SVGs rendered with Sharp; fitted axes and both two-row legends were visually inspected. This is bounded DOM/SVG validation, not a full-browser/mobile test.
+- Real observations and private outputs remain outside the public checkout; public demonstration data are invented. No new data collection or unattended service was enabled.
+- The final v4 wheel built and installed with existing dependencies; its packaged app and HTML assets generated a standalone private explorer from outside the checkout. The copied private SQLite file is byte-identical to the v3 snapshot.

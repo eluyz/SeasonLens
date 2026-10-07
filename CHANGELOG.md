@@ -2,6 +2,9 @@
 
 ## Unreleased — 2026-10-07
 
+- Current-inclusive five-calendar-year monthly price comparison with equal-year period mean and observed coverage.
+- Six-line technical plot: price, SMA20/100/200 and Bollinger20 upper/lower (±2 population standard deviations), full-history warm-up, exact 12-calendar-month default range and matching CSV export.
+
 - Private SQLite persistence with atomic updates, revision audit, source/quote isolation, export and backups.
 - Direct ECB reference-rate parser/updater and same-date derived USD/PLN; reserved IDs protected from CSV imports.
 - Local CSV import app and multi-instrument standalone explorer with SMA20/50, line/range controls, monthly-change heatmap, matched partial-month comparisons, normalized profiles/base dates, exact-date PLN conversion and coverage.
