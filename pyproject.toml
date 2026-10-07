@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seasonlens"
+version = "0.0.1"
+description = "Auditable monthly summaries for time-series analysis"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["pandas==2.2.3", "numpy>=1.26,<3"]
+
+[project.urls]
+Repository = "https://github.com/eluyz/SeasonLens"
+Issues = "https://github.com/eluyz/SeasonLens/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
