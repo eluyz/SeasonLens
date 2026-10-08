@@ -1,5 +1,12 @@
 # Changelog
 
+## First-visit guide and narrow-screen usability — 2026-10-08
+
+- Optional Start here guide with example exploration, private import and report paths.
+- Downloadable invented six-series XLSX template with explicit rows, units and roles; the existing strict importer remains unchanged.
+- Bounded compact menu, readable native controls and locally scrollable report tables/charts on narrow screens, with print-only width resets.
+- Isolated public CSS-viewport check page for responsive verification; this is not a physical-device test.
+
 ## Quick controls and report export — 2026-10-08
 
 - Compact sticky instrument/unit controls, visible cutoff and five shortcuts, with keyboard-accessible scrollable chart/table frames.

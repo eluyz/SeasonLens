@@ -4,6 +4,7 @@ Run from any directory: PYTHONPATH=/path/to/SeasonLens/src python build_pages.py
 This builder accepts no market-data input or database path.
 """
 from datetime import date
+import base64
 from pathlib import Path
 import re
 
@@ -28,10 +29,10 @@ def build_public_demo():
 <nav class="demo-nav" aria-label="Explore SeasonLens"><a href="#market-overview">Explore market analysis</a><a href="#browser-import-panel">Open Excel or CSV</a><a href="https://github.com/eluyz/SeasonLens">Source code</a></nav>
 <p class="muted">On a phone, swipe wide tables and charts horizontally. No installation is needed to explore this sample.</p>
 </section>'''
-    controls = '<div class="panel controls">'
-    if html.count(controls) != 1:
-        raise ValueError('Expected exactly one explorer controls panel.')
-    html = html.replace(controls, intro+controls, 1)
+    guide = '<section id="seasonlens-start"'
+    if html.count(guide) != 1:
+        raise ValueError('Expected exactly one start guide.')
+    html = html.replace(guide, intro+guide, 1)
 
     html = html.replace('<section><h2>Monthly average prices — last five', '<section id="year-comparison"><h2>Monthly average prices — last five', 1)
 
@@ -54,7 +55,7 @@ def build_public_demo():
 @media(max-width:700px){.welcome h2{font-size:24px}.controls{display:grid;grid-template-columns:1fr;gap:12px}.controls label{min-width:0}.controls select{width:100%}.controls button{grid-column:1/-1}.checks{gap:12px}.checks label{padding:5px 0;min-height:44px}#daily svg{min-width:760px}#fiveyear svg{min-width:760px}.table-wrap{margin-bottom:8px}.advanced{padding:14px}.advanced svg{min-width:620px}.advanced section{overflow-x:auto}.demo-nav a{flex:1 1 180px;text-align:center}}
 '''
     html = html.replace('</style>', styles+'</style>', 1)
-    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@', '@@REPORT_', '@@QUICK_')):
+    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@', '@@REPORT_', '@@QUICK_', '@@START_', '@@TEMPLATE_', '@@IMPORT_TEMPLATE_')):
         raise ValueError('Unexpected local import or unexpanded template in public demo.')
     return html, series
 
@@ -66,6 +67,8 @@ if __name__ == '__main__':
     html, series = build_public_demo()
     (output / 'index.html').write_text(html, encoding='utf-8')
     (output / '.nojekyll').write_text('', encoding='utf-8')
+    (output / 'layout-check.html').write_bytes((root/'examples/responsive_check.html').read_bytes())
+    (output / 'seasonlens-import-template.xlsx').write_bytes(base64.b64decode((root/'src/seasonlens/import_template.xlsx.b64').read_text().strip(), validate=True))
     sample = series['SYNTHETIC_GRAIN']['frame']
     sample.loc[sample.date.dt.date <= date(2026, 10, 6)].to_csv(output / 'sample_prices.csv', index=False, date_format='%Y-%m-%d')
     print('Public Pages demo built from invented observations only.')

@@ -8,6 +8,8 @@ The CSV reader prepares one explicitly selected series; the core computes monthl
 
 ## Browser demo
 
+For a first visit, expand **Start here**: explore examples, download the invented six-series XLSX template, privately import a file or create a report. See the [step-by-step browser guide](docs/GETTING_STARTED.md). Wide tables and charts scroll inside their frames on small screens.
+
 The [public browser demo](https://eluyz.github.io/SeasonLens/) is hosted on GitHub Pages from `docs/index.html`. It includes invented wheat, corn, rapeseed, EUR/PLN, EUR/USD and derived USD/PLN observations only. All three commodities support EUR/t and exact-date synthetic PLN/t views. See [deployment instructions](docs/PAGES.md) for publishing source and rebuild details.
 
 The demo supports instrument/unit selection, monthly tables, six-line technical analysis, market snapshots, historical price positions, commodity/FX attribution, index-100 comparisons, volatility, RSI, correlations, wheat/corn spreads, seasonal distributions and scenario calculations. Open an XLSX master file or one CSV series directly in the browser without uploading it to a server; imported series stay in tab memory and disappear on reload. The local app additionally maintains an auditable private SQLite history. To rebuild the invented built-in samples, run `PYTHONPATH=src python3 examples/build_pages.py`.

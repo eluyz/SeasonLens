@@ -17,6 +17,8 @@ Separate fundamental context is unchecked by default. Open that panel and select
 
 ## Privacy and limits
 
+On narrow screens, preview and downloaded HTML retain readable chart widths and locally scroll wide tables. Scroll frames support keyboard focus. Print styles remove those scrolling limits so the whole result can be paginated.
+
 Report creation, preview and download run in the browser. No report is uploaded, published or saved in browser persistent storage. The downloaded HTML includes selected rendered results and SVG charts, without the original observation arrays or application scripts. It can still contain private prices, calculated results and declared source information; keep private exports private unless sharing is permitted.
 
 The preview and download preserve one immutable snapshot. Switching instruments or settings while a snapshot is being prepared rejects the build. Unavailable calculations remain visibly unavailable. The export does not invent forecasts, fill gaps or change calculations. PDF saving uses the browser's facilities rather than a bundled PDF-generation service; availability and pagination can differ between browsers. Downloaded HTML is the portable fallback.

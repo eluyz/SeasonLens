@@ -8,6 +8,7 @@ on:
       - '.github/workflows/build-public-demo.yml'
       - 'examples/explorer_demo.py'
       - 'examples/build_pages.py'
+      - 'examples/responsive_check.html'
       - 'src/**'
       - 'pyproject.toml'
 
@@ -64,14 +65,18 @@ jobs:
                   assert all('localStorage' not in Path('src/seasonlens/'+name).read_text() for name in ('browser_import.js','workbook_import.js','workbook_ui.js','private_import.js','market_ui.js','science_common.js','risk_analysis.js','seasonal_stats.js','forecast_lab.js','fundamentals.js','scientific_ui.js','quick_controls.js','report_export.js'))
                   assert 'id="scientific-analysis"' in html
                   assert 'id="report-export-panel"' in html and 'initSeasonLensQuickControls' in html
+                  assert 'id="seasonlens-start"' in html and 'initSeasonLensStartGuide' in html
                   assert all('id="science-'+name+'-panel"' in html for name in ('risk','seasonal','fx','forecast','fundamental'))
                   import hashlib
                   assert hashlib.sha256(Path('src/seasonlens/vendor/xlsx.mini.min.js').read_bytes()).hexdigest() == '0cb353f830d7288385492c83d277b058ddeac664ca51cf1393aa1fd3e2b70939'
           print('Both pages contain exactly six invented instruments and nine views.')
+          import base64
+          assert Path('docs/seasonlens-import-template.xlsx').read_bytes() == base64.b64decode(Path('src/seasonlens/import_template.xlsx.b64').read_text().strip(), validate=True)
+          assert Path('docs/layout-check.html').read_bytes() == Path('examples/responsive_check.html').read_bytes()
           PY
       - name: Save generated files on a candidate branch
         run: |
-          if git diff --quiet -- docs/index.html docs/.nojekyll docs/sample_prices.csv examples/explorer_demo.html; then
+          if git diff --quiet -- docs/index.html docs/.nojekyll docs/sample_prices.csv examples/explorer_demo.html && test -f docs/seasonlens-import-template.xlsx && git ls-files --error-unmatch docs/seasonlens-import-template.xlsx docs/layout-check.html >/dev/null 2>&1 && git diff --quiet -- docs/seasonlens-import-template.xlsx docs/layout-check.html; then
             echo 'Generated files already match the committed source.' >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
@@ -79,7 +84,7 @@ jobs:
           git switch -c "$candidate"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- docs/index.html docs/.nojekyll docs/sample_prices.csv examples/explorer_demo.html
+          git add -- docs/index.html docs/.nojekyll docs/sample_prices.csv docs/seasonlens-import-template.xlsx docs/layout-check.html examples/explorer_demo.html
           git commit -m 'Regenerate public demo from six invented instruments'
           git push origin "HEAD:refs/heads/$candidate"
           printf 'Candidate branch: `%s`\n\nGenerated commit: `%s`\n\nPromote this commit with a checked fast-forward through the authorized GitHub connection to trigger Pages. This workflow does not update main or deploy the site.\n' "$candidate" "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"

@@ -1,5 +1,13 @@
 # Project status
 
+## First-visit and narrow-screen source validation — 2026-10-08
+
+- Added optional Start here navigation and a packaged, downloadable invented XLSX template. Its Prices sheet has header row1, units row2, an excluded invented live example row3 and 210 weekday observations in rows4–213, dated2025-12-17 through2026-10-06. Worksheet, roles and units still require explicit review; download never accesses imported observations.
+- The artifact-tool XLSX export initially failed the strict importer because the package lacked an explicit workbook content-type override. The authoring helper now normalizes only that declaration, checks every other ZIP entry is unchanged and preserves the strict importer. Final template round-trip checks passed.
+- `PYTHONPATH=src python3 -m unittest discover -s tests -q`: **251 tests passed** in121.777s on the final stable source. Independent read-only review approved template mapping/cutoff/privacy and guide/report behavior with no unresolved blockers. No analytical definitions changed.
+- Built and installed the wheel with existing dependencies into `/tmp/seasonlens-onboarding-install-20261008`; rendering outside the checkout included the guide, template and inline assets with no unresolved placeholders. This is not a fresh external dependency or Windows/macOS check.
+- Added bounded narrow-screen menus, native-control font sizes and local table/chart report scroll frames; print styles reset screen minimum widths. The isolated responsive check page loads only the same public invented demo in a fixed same-origin iframe. Publication and actual browser CSS-viewport verification are pending below; no physical phone or Safari claim is made.
+
 Date: 2026-10-08. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics, private browser XLSX master-file import and the statistical-analysis extension. Earlier checkpoint sections remain historical records.
 
 Repository: https://github.com/eluyz/SeasonLens. Documentation is in English. No release tag has been created.

@@ -1,5 +1,6 @@
 """Private, standalone multi-series explorer; all calculations run in Python."""
 from datetime import date, timedelta
+import base64
 from html import escape
 import json
 import math
@@ -218,12 +219,18 @@ def _embedded_scripts(template):
               '@@FUNDAMENTALS_JS@@': 'fundamentals.js', '@@SCIENCE_UI_JS@@': 'scientific_ui.js',
               '@@REPORT_PANEL@@': 'report_panel.html', '@@REPORT_CSS@@': 'report.css',
               '@@REPORT_JS@@': 'report_export.js', '@@QUICK_CSS@@': 'quick_controls.css',
-              '@@QUICK_JS@@': 'quick_controls.js'}
+              '@@QUICK_JS@@': 'quick_controls.js', '@@START_PANEL@@': 'start_panel.html',
+              '@@START_CSS@@': 'start.css', '@@START_JS@@': 'start_ui.js',
+              '@@TEMPLATE_JS@@': 'template_download.js'}
     for marker, name in assets.items():
         content = (root/name).read_text(encoding='utf-8')
         if name.endswith('.js'):
             content = content.replace('</script', '<\\/script')
         template = template.replace(marker, content)
+    encoded = (root/'import_template.xlsx.b64').read_text(encoding='ascii').strip()
+    if not base64.b64decode(encoded, validate=True).startswith(b'PK\x03\x04'):
+        raise ValueError('The packaged import template must be an XLSX ZIP file.')
+    template = template.replace('@@IMPORT_TEMPLATE_B64@@', encoded)
     return template
 
 

@@ -1,5 +1,9 @@
 # Decisions
 
+## First-visit guide and import template — 2026-10-08
+
+Keep the three-path guide optional and collapsed. Embed one fixed invented XLSX as base64 in standalone builds so its download needs no network or account. Imported files retain USER_FILE identity and require explicit roles; template column names never auto-select instruments. The exported workbook's content-type declarations are normalized for the existing strict reader without editing worksheet content or weakening validation. Check narrow CSS viewports with a separate same-origin demo iframe; never call that physical phone or Safari testing.
+
 ## Browser-local report snapshots and compact controls — 2026-10-08
 
 Mirror the canonical instrument/unit selectors rather than maintain another data-selection state. Keep the toolbar compact, expandable and in document flow while sticky, with a visible cutoff. Use independent table/chart overflow and native controls.

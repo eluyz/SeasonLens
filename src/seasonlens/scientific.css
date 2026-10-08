@@ -1,6 +1,7 @@
 .science-panel { margin-top: 1.3rem; scroll-margin-top: 1rem; }
 .science-controls { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: .8rem; margin: 1rem 0; align-items: end; }
 .science-controls label { display: flex; flex-direction: column; gap: .4rem; }
+.science-controls > * { min-width: 0; }
 .science-controls input,.science-controls select,.science-controls button { min-height: 44px; width: 100%; }
 .science-section { border: 1px solid #cbd5e1; border-radius: 10px; padding: .9rem 1rem; margin: .8rem 0; background: #fff; }
 .science-section > summary { min-height: 44px; font-size: 1.05rem; font-weight: 650; cursor: pointer; display: list-item; padding-top: .5rem; }
@@ -17,4 +18,4 @@
 .science-histogram figcaption { margin-top: .5rem; color: #475569; }
 #science-fundamental-import[hidden],#science-fundamental-add[hidden] { display: none !important; }
 #science-fundamental-error { color: #991b1b; }
-@media(max-width:600px) { .science-controls { grid-template-columns: 1fr; } .science-section { padding: .75rem; } .science-panel .market-grid { grid-template-columns: 1fr; } }
+@media(max-width:700px) { .science-controls { grid-template-columns: minmax(0,1fr); } .science-controls input,.science-controls select { font-size:16px; max-width:100%; } .science-section { padding: .75rem; } .science-panel .market-grid { grid-template-columns: minmax(0,1fr); } }

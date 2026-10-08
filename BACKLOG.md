@@ -2,6 +2,11 @@
 
 | ID | Scope | Acceptance | Status |
 |---|---|---|---|
+| SL-019 | First-visit guide and template | Three accessible paths, offline six-series XLSX download, explicit physical rows and units/roles, strict importer round-trip | Implemented; deployment verification in STATUS.md |
+| SL-020 | Narrow-screen analysis and reports | Bounded sticky menu, readable native controls, local table/chart scrolling, full print reset, browser viewport verification | Implemented; physical phone/Safari QA remains open |
+
+| ID | Scope | Acceptance | Status |
+|---|---|---|---|
 | SL-017 | Compact analysis controls | Canonical instrument/unit synchronization, visible cutoff, focused shortcuts and independent overflow | Implemented and independently reviewed; deployment QA in STATUS.md |
 | SL-018 | Local report export | Selected sections, exact metadata/settings, immutable inert HTML/SVG snapshot, preview and native PDF printing | Implemented and independently reviewed; deployment QA in STATUS.md |
 

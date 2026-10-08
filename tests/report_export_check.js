@@ -39,6 +39,11 @@ const adversarial=n('section',{id:'adversarial',onclick:'alert(1)',style:'color:
  n('details',{},n('summary',{},'Method explanation'),n('p',{},'Unavailable: insufficient warmup; — is not zero.')),
  n('table',{},n('caption',{},'Observed coverage'),n('tbody',{},n('tr',{},n('th',{scope:'row'},'2026'),n('td',{class:'missing',title:'No observations'},'—')))));
 const safe=R.serialize(adversarial);
+const scroll=n('div',{class:'table-wrap untrusted',tabindex:'0',role:'region'},n('table',{},'Readable result'));
+assert.match(R.serialize(scroll),/class="table-wrap" tabindex="0" role="region"/);
+assert(!R.serialize(n('div',{class:'table-wrap',tabindex:'-1'})).includes('tabindex'));
+assert(!R.serialize(n('div',{class:'untrusted',tabindex:'0'})).includes('tabindex'));
+assert.match(R.serialize(n('svg',{viewBox:'0 0 100 100'},n('path',{d:'M0 0 L100 100'}))),/^<div class="report-chart" tabindex="0" role="region"/);
 assert.match(safe,/&lt;Private title &amp; &quot;source&quot;&gt;/);assert.match(safe,/viewBox="0 0 650 270"/);assert.match(safe,/stroke="#2563eb"/);assert.match(safe,/--line:#2563eb/);assert.match(safe,/Method explanation/);assert.match(safe,/Unavailable: insufficient warmup/);assert.match(safe,/title="No observations"/);assert.match(safe,/<h3>Method explanation<\/h3>/);
 for(const token of ['onclick','onload','evil.test','javascript:','ORIGINAL_DATASET','PRIVATE_INPUT','PRIVATE_FORM','PRIVATE_CONTROL','PRIVATE_WIZARD','PRIVATE_OPTIONS','HIDDEN_SECRET','LINK_SECRET','SVG_HTML_SECRET','position:','HIDDEN_YEAR_LINE_SECRET','M999 888','href=','xlink','<animate','<style','<script','<select','<input'])assert(!safe.includes(token),'Leaked '+token);
 const hiddenLine=n('path',{d:'M100 200'});hiddenLine.style={display:'none'};assert.equal(R.serialize(hiddenLine,true),'');

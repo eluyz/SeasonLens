@@ -1,5 +1,7 @@
 # Core contract — SL-001
 
+First-visit navigation and the packaged invented XLSX are documented in [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md). Downloading the static template does not access observations, fetch a provider or add instruments. Import still requires explicit rows, dates, units, roles, validation and a separate Add action. Narrow-screen analysis and report frames keep horizontal overflow local; printed reports remove screen-only minimum widths. The isolated responsive-check page renders only the same public invented demo in one fixed same-origin iframe.
+
 The browser statistical extension is specified separately in [docs/SCIENCE_SPEC.md](docs/SCIENCE_SPEC.md): historical risk, completed-year monthly-change stability, exact-interval FX variance, fixed-model walk-forward comparisons and separate fundamental-release vintages. Existing core contracts below remain in force.
 
 Browser-local selected-section report snapshots and compact mirrored controls are documented in [docs/REPORTS.md](docs/REPORTS.md). Reports retain selected metadata/settings and rendered results, omit the original observation arrays and application scripts, and support preview, native PDF printing and standalone HTML download. They do not publish imported observations. Statistical UI `prepare(names)` accepts only known panel names and renders requested panels without changing their open state. Input validation and calculation contracts remain unchanged.
