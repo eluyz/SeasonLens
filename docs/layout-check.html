@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; frame-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>SeasonLens responsive layout check</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#edf2f8;color:#172b43;font:16px/1.5 system-ui,sans-serif}main{padding:18px;max-width:1240px;margin:auto}h1{font-size:24px;margin:0 0 8px}.tools{display:flex;gap:14px;flex-wrap:wrap;align-items:end;margin:14px 0}label{display:flex;flex-direction:column;gap:4px}select,button{font:inherit;padding:10px;min-height:44px;border:1px solid #94a3b8;border-radius:7px}button{color:#fff;background:#1d4ed8;cursor:pointer}#frame-wrap{overflow:auto;max-width:100%;padding:4px}iframe{display:block;border:1px solid #64748b;background:#fff;width:390px;height:860px}a{color:#1d4ed8}#viewport-note{color:#475569}</style>
+</head><body><main><h1>Responsive layout check</h1><p>Test the public invented-data demo at a narrow CSS viewport. This does not emulate a physical phone, touch hardware or Safari.</p>
+<div class="tools"><label>Demo viewport width<select id="viewport-width"><option value="320">320 px</option><option value="360">360 px</option><option value="390" selected>390 px</option><option value="430">430 px</option><option value="768">768 px</option></select></label><button id="restart-demo" type="button">Reload demo and clear in-tab imports</button><a href="index.html">Open the full demo</a></div>
+<p id="viewport-note" role="status">390 px wide. Scroll inside the demo; wide charts and tables have their own horizontal scrolling.</p>
+<div id="frame-wrap"><iframe id="layout-demo" src="index.html" title="SeasonLens public demo at the selected viewport width"></iframe></div>
+</main><script>
+'use strict';
+const width=document.getElementById('viewport-width'),frame=document.getElementById('layout-demo'),note=document.getElementById('viewport-note');
+width.addEventListener('change',()=>{const value=Number(width.value);if(![320,360,390,430,768].includes(value))return;frame.style.width=value+'px';note.textContent=value+' px wide. Scroll inside the demo; wide charts and tables have their own horizontal scrolling.';});
+document.getElementById('restart-demo').addEventListener('click',()=>{frame.src='index.html';});
+</script></body></html>
