@@ -9,7 +9,7 @@
 | SL-003 | CSV import | Explicit column mapping, separator, decimal and date format | Complete for experimental checkpoint |
 | SL-004 | 5/10-year profiles | Equal-year weighting, exact calendar window, actual year count, min/max | Complete for experimental checkpoint |
 | SL-005 | CSV/HTML export | Same values and metadata as calculation output | Complete for experimental checkpoint: local HTML, observation CSV and private DB export |
-| SL-006 | XLSX import | Select one sheet, no macro execution, clear formula-value handling | Planned |
+| SL-006 | XLSX import | Explicit worksheet/physical rows/columns/units, cached-formula consent, atomic validation and no transmission | Implemented; browser/public verification pending |
 | SL-007 | Local interface | Complete file-to-result workflow with readable errors | Implemented locally; full-browser/mobile QA pending |
 | SL-008 | Public v0.1 | Tested install, docs, examples, license, public repository | Planned |
 | SL-009 | Pilot | Real independent feedback and documented corrections | Planned |

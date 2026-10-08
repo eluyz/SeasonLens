@@ -2,7 +2,7 @@
 
 An open-source project for auditable seasonality and market analysis of CSV time series. Excel workbook import is planned.
 
-**Current milestone: an interactive public demo, private SQLite persistence, direct ECB reference-rate updates and local CSV analysis (experimental 0.0.1 source checkpoint).** XLSX import, automatic futures continuation closes and a tagged release remain unimplemented.
+**Current milestone: an interactive public demo, private SQLite persistence, direct ECB reference-rate updates and local CSV analysis (experimental 0.0.1 source checkpoint).** Private browser XLSX master-file import is implemented. Automatic futures continuation closes and a tagged release remain unimplemented.
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 
@@ -182,3 +182,15 @@ The technical chart defaults to the last **12 calendar months**, including both 
 The monthly price matrix places months in rows and the exact last ten calendar years (including the current year) in columns. Cells compare each monthly mean against the last available daily observation through the cutoff: green below, red above, blue equal, gray missing. The reference price, observation date and units are shown beside the table. Partial current months carry an asterisk; observation counts appear on hover. Comparisons use unrounded values in the selected display units, including exact-date PLN/t conversions. Colors describe historical levels, not trade recommendations.
 
 Display conventions: the ten-year Monthly average prices matrix displays commodity prices as whole units and FX quotes with three decimal places, for display only. Other tables retain their decimal precision. Tables use — for unavailable values; future months are identified by hover text or calendar status. Underlying calculations, color comparisons and CSV exports retain full precision.
+
+## Private Excel master-file import
+
+The public explorer accepts .xlsx workbooks as well as single-series UTF-8 CSV. Files are read in browser memory without upload. Choose a worksheet, preview physical rows, set the header row and first historical data row, then select the date column and each instrument column. The default header row is 1 and first data row is 4, which leaves row 3 outside the historical selection for live quotes. Each price column needs explicit units and an instrument role; identities are not guessed.
+
+Validation shows each instrument's first/last dates, observation count and blank/future omissions before a separate Add action commits the entire selection. Any changed setting invalidates that approval. Invalid selected rows, including malformed future rows and duplicate dates, reject the whole selection. Empty prices are skipped only with explicit permission.
+
+Excel day numbers follow the workbook's 1900/1904 date system. Text dates use explicitly selected YYYY-MM-DD or DD.MM.YYYY. Dates with times and fictional 1900-02-29 reject. Numeric Excel cells do not depend on display decimal separators; numeric text uses the selected decimal convention. Saved formula values require explicit consent, may be stale, and are never recalculated. Macros, encrypted workbooks, external links and embedded objects are unsupported. Supported limits: 12 MiB file, 64 MiB expanded archive, 250,000 stored cells, 20,000 data rows per instrument, and 20 selected instruments.
+
+Declaring EUR/PLN with units PLN per EUR in the same import group enables positive, exact-date EUR/t to PLN/t conversion, attribution and scenarios for that group's commodities. No sample FX or another private file is substituted. Explicit wheat/corn roles support same-group spreads in identical units. Missing quotes are never filled. Reload clears imported data; selected-series CSV export preserves observations and indicators.
+
+Navigation links locate the main sections. Expandable explanations describe indicators and missing values. Only a strict list of view settings, built-in sample selections and line visibility is remembered in this browser. Imported observations, workbook details, private titles/IDs, cutoffs and scenario inputs are never persisted. Reset view settings clears the preferences without deleting in-memory imports. The bundled SheetJS reader is separately Apache-2.0 licensed; see src/seasonlens/vendor/README.md and LICENSE.

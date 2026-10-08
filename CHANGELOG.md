@@ -37,3 +37,10 @@
 - Price-matrix display precision now depends on units: whole commodity prices and three decimals for currency quotes, including the corresponding reference value.
 - Prepared a synthetic-only GitHub Pages explorer with mobile table/chart scrolling, collapsed advanced analysis, local-app guidance, reproducible builder and sample CSV. Hosting activation remains separate from committing the page.
 - Expanded the public synthetic explorer to wheat, corn, rapeseed and EUR/PLN, EUR/USD, derived USD/PLN; all three commodities support exact-date synthetic PLN/t views.
+
+### Private XLSX import and usability
+
+- Added local Excel master-file preview, sheet/row/column mapping, explicit role/unit selection, strict validation and a separate atomic Add step.
+- Added same-workbook positive exact-date PLN views, currency attribution/scenarios and declared wheat/corn spreads without joining invented sample FX.
+- Added accessible section navigation, indicator explanations, warmup messages, mobile overflow/touch improvements and privacy-preserving view settings with reset.
+- Bundled pinned SheetJS CE0.20.3 mini reader and its Apache-2.0 license, with no runtime CDN requests.

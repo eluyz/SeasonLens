@@ -106,5 +106,15 @@ function buildView(records,{unit,asOf,futureExcluded=0,skippedBlankRows=[],origi
  return {daily,axes,range_starts,price_matrix:priceMatrix(groups,selected,unit,asOf),fiveyear:recent(groups,unit,asOf),profiles:[5,10].map(n=>seasonal(groups,unit,asOf,n)).join(''),normalized,heatmap,partial:partial(selected,asOf),unit,as_of:asOf,observations:selected.length,last_date:last.date,age_days:Math.round((stamp(asOf)-stamp(last.date))/86400000),future_excluded:future+futureExcluded,missing_months:endMonth-firstMonth+1-groups.size,import_summary:{skipped_blank_rows:skippedBlankRows.slice(),excluded_future_rows:futureExcluded},conversion_note:'User CSV stays only in this browser tab. No automatic currency conversion or provider attribution.'};
 }
 function buildEntry(records,options){const opts=options||{};if(typeof opts.title!=='string'||!opts.title.trim())throw Error('An explicit title is required.');if(typeof opts.unit!=='string'||opts.title.length>200||opts.unit.length>100)throw Error('Title and unit labels are too long.');return {title:opts.title,unit:opts.unit,semantics:'User-declared daily observations; '+(opts.semantics||'price / quote definition supplied by user'),source:'USER_FILE',import_summary:{skipped_blank_rows:(opts.skippedBlankRows||[]).slice(),excluded_future_rows:(opts.skippedFutureRows||[]).slice()},views:{Original:buildView(records,{...opts,futureExcluded:opts.skippedFutureRows?opts.skippedFutureRows.length:0})}}}
-globalThis.SeasonLensBrowser=Object.freeze({parseCSV,buildView,buildEntry,indicators,monthly,mean,populationStd:std,axis,validateDate:iso,cutoffDate,escapeHTML:esc,MAX_BYTES,MAX_ROWS});
+function inspectCSV(text,delimiter){
+ if(typeof text!=='string'||new TextEncoder().encode(text).byteLength>MAX_BYTES)throw Error('CSV exceeds the 12 MiB browser limit.');
+ if(![',',';','\t'].includes(delimiter))throw Error('Choose comma, semicolon or tab delimiter.');
+ const rows=csvRows(text.replace(/^\uFEFF/,''),delimiter);
+ if(rows.length<2)throw Error('CSV must have a header and at least one data row.');
+ const header=rows[0].cells;
+ if(new Set(header).size!==header.length)throw Error('CSV header names must be unique.');
+ for(const row of rows)if(row.cells.length!==header.length)throw Error('CSV column count differs at physical line '+row.line+'.');
+ return {header:header.slice(),preview:rows.slice(0,10).map(r=>({row:r.line,cells:r.cells.slice()})),dataRows:rows.length-1};
+}
+globalThis.SeasonLensBrowser=Object.freeze({parseCSV,inspectCSV,buildView,buildEntry,indicators,monthly,mean,populationStd:std,axis,validateDate:iso,cutoffDate,escapeHTML:esc,MAX_BYTES,MAX_ROWS});
 })();

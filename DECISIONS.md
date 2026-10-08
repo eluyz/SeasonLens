@@ -68,3 +68,7 @@
 - Split PLN benchmark changes into commodity,currency andinteraction terms; never omit the product term. Require compatible metadata for automatic FX pairing and prevent private browser CSV observations from joining invented sample FX. Scenarios use declared hypothetical inputs and explicit quantities; no forecast or executable-quote claim.
 - Browser CSV processing stays entirely in current-tab memory with no network or persistent browser storage. It requires one selected series,ISOdates,explicitdialect/cutoff and12MiB/20,000-row limits. Keep the server-backed private SQLite workflow separate; no XLSX claim.
 - Use small source-only connector commits and GitHub-side reproducible generation for large public pages. Verify candidate provenance, tests and tree equality before a checked fast-forward; then verify Pages and actual browser behavior.
+
+## Excel master-file workflow and private FX isolation — 2026-10-08
+
+Use the pinned, bundled SheetJS0.20.3 mini reader for browser XLSX. Keep import selection, staging and analyses local; accept cached formulas only by explicit user choice and never execute them. Use physical row numbers and default start4 for live-row exclusion. Require explicit instrument roles/units; no ticker guessing. Same-import-group FX enables exact-date conversions and same-group commodity spreads. Restrict persisted view preferences to whitelisted built-in IDs and display controls, with a reset action. No raw data, private labels or scenario inputs are persisted.

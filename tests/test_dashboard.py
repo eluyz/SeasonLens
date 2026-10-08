@@ -31,7 +31,7 @@ class DashboardTests(unittest.TestCase):
             self.assertNotIn(token,html)
         for identifier in ('market-overview','browser-import-panel','rsi-chart','scenario-output','correlation-matrix'):
             self.assertIn('id="'+identifier+'"',html)
-        self.assertIn('Private browser CSVs are not joined to invented demo FX',html)
+        self.assertTrue('Invented sample FX is never substituted' in html)
         self.assertIn("new TextDecoder('utf-8',{fatal:true})",html)
 
     def test_monthly_matrix_reference_direction_cutoff_and_gaps(self):

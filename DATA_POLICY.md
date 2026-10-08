@@ -39,3 +39,9 @@ No Euronext downloader, historical archive or public market-price dataset is imp
 The public static demo also supports browser-only CSV analysis. Files are read and processed in the current tab without uploading observations, contacting a provider, using browser persistent storage or writing to the repository. User-imported series are explicitly labelled USER_FILE and remain separate from built-in SYNTHETIC samples and reserved source IDs. Reloading clears them; a user-requested CSV export creates a private local download. This processing path does not grant redistribution rights or publish the user's data. Normal website visits still use GitHub Pages hosting.
 
 SQLite databases, backups, private source metadata and real-data explorer snapshots stay outside this public code checkout. The explorer embeds daily values, so it is private whenever its inputs are restricted. The private nightly example is a template, not a configured public job. Synthetic demo FX values are explicitly invented, and are never attributed to ECB.
+
+## Browser XLSX and view preferences
+
+Excel imports use a bundled offline reader, not runtime CDN requests. They are held only in tab memory and are not sent to SeasonLens or a provider. Worksheet previews, titles, dates, prices and validation summaries remain private. No macros or formulas execute; explicitly accepted saved formula results may be stale. Only selected historical rows are analyzed, with omission counts reported.
+
+The sole persistent browser item is seasonlens.view.v1, a strict whitelist of display settings and built-in sample identifiers. No imported identifiers/titles, file names, dates, prices, scenario values or analysis cutoffs are stored. Storage denial does not prevent analysis. Same-workbook explicitly declared FX can be joined on exact dates; invented demo FX and unrelated private groups cannot be substituted.
