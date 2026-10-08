@@ -61,3 +61,10 @@
 - Adopt explicit Bollinger20 parameters: population standard deviation ddof0, multiplier2. SMA20 is already the middle band; price + SMA20/100/200 + upper/lower equals six displayed lines.
 - Calculate rolling indicators from the entire cutoff-visible history before applying the trailing 12-calendar-month plot interval. Use observations, not invented weekend/session rows, and keep full-window minima. Retain the prior SMA20/50 API for backward compatibility.
 - The month-row matrix mirrors the supplied price-comparison example. Its last-ten-year window includes the current year; colors compare unrounded monthly means with the last daily observation in each selected unit view. The reference observation date is visible, so an older available quote is never presented as today's price. Existing five-year charts and tables remain separate.
+
+## 2026-10-08 — Market context and browser privacy
+
+- Adopt explicitly dated market comparisons, current-inclusive midpoint empirical percentiles, Wilder14 smoothing, unannualized sample log-change volatility and correlations of exact matching percentage-change intervals. Preserve original strict validation and zero/negative level support with unavailable percentage views where necessary. See docs/METHODS.md for formulas and limits.
+- Split PLN benchmark changes into commodity,currency andinteraction terms; never omit the product term. Require compatible metadata for automatic FX pairing and prevent private browser CSV observations from joining invented sample FX. Scenarios use declared hypothetical inputs and explicit quantities; no forecast or executable-quote claim.
+- Browser CSV processing stays entirely in current-tab memory with no network or persistent browser storage. It requires one selected series,ISOdates,explicitdialect/cutoff and12MiB/20,000-row limits. Keep the server-backed private SQLite workflow separate; no XLSX claim.
+- Use small source-only connector commits and GitHub-side reproducible generation for large public pages. Verify candidate provenance, tests and tree equality before a checked fast-forward; then verify Pages and actual browser behavior.

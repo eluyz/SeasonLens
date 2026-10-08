@@ -12,6 +12,7 @@ from .monthly import aggregate_monthly
 from .seasonal import analyze_seasonality
 from .report import render_seasonal_report, _axis
 from .comparison import technical_analysis, recent_year_prices
+from .market_analysis import market_snapshot, market_indicators, seasonal_distribution
 
 TECHNICAL_COLUMNS = ('value','sma20','sma100','sma200','bollinger_upper','bollinger_lower')
 
@@ -188,7 +189,11 @@ def _view(frame, *, as_of, unit):
         missing_months = sum(month not in observed_months for month in calendar_months)
     else:
         missing_months = None
-    return dict(daily=_records(daily.frame), axes=axes,range_starts=range_starts,
+    return dict(daily=_records(daily.frame), as_of=as_of.isoformat(),
+                market=dict(snapshot=market_snapshot(frame,as_of=as_of),
+                            indicators=market_indicators(frame,as_of=as_of),
+                            distribution={str(n):seasonal_distribution(frame,as_of=as_of,window_years=n) for n in (5,10)}),
+                axes=axes,range_starts=range_starts,
                 price_matrix=_monthly_price_matrix(frame,as_of=as_of,unit=unit),
                 fiveyear=_recent_year_chart(recent_year_prices(frame,as_of=as_of),unit),
                 profiles=_sections(render_seasonal_report(profiles, unit=unit)),
@@ -201,12 +206,17 @@ def _view(frame, *, as_of, unit):
                 missing_months=missing_months)
 
 
+def _embedded_scripts(template):
+    root = __import__('pathlib').Path(__file__).parent
+    return template.replace('@@MARKET_JS@@', (root/'market_ui.js').read_text(encoding='utf-8')).replace('@@BROWSER_JS@@', (root/'browser_import.js').read_text(encoding='utf-8'))
+
+
 def render_empty_dashboard(*, as_of):
     """Local import screen for an initialized database with no observations."""
     if type(as_of) is not date:
         raise ValueError('An explicit date is required.')
     template = (__import__('pathlib').Path(__file__).with_name('dashboard.html')).read_text(encoding='utf-8')
-    return template.replace('@@TITLE@@','SeasonLens — import your first CSV').replace('@@ASOF@@',as_of.isoformat()).replace('@@DATA@@','{}').replace('@@LOCAL@@','true')
+    return _embedded_scripts(template).replace('@@TITLE@@','SeasonLens — import your first CSV').replace('@@ASOF@@',as_of.isoformat()).replace('@@DATA@@','{}').replace('@@LOCAL@@','true')
 
 
 def render_dashboard(series, *, as_of, title='SeasonLens', local_import=False):
@@ -236,4 +246,4 @@ def render_dashboard(series, *, as_of, title='SeasonLens', local_import=False):
                                        source=entry.get('source', 'User import'), views=views)
     encoded = json.dumps(payload, allow_nan=False, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&','\\u0026')
     template = (__import__('pathlib').Path(__file__).with_name('dashboard.html')).read_text(encoding='utf-8')
-    return template.replace('@@TITLE@@', escape(title)).replace('@@ASOF@@', as_of.isoformat()).replace('@@DATA@@', encoded).replace('@@LOCAL@@', 'true' if local_import else 'false')
+    return _embedded_scripts(template).replace('@@TITLE@@', escape(title)).replace('@@ASOF@@', as_of.isoformat()).replace('@@DATA@@', encoded).replace('@@LOCAL@@', 'true' if local_import else 'false')

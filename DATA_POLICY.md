@@ -36,4 +36,6 @@ No Euronext downloader, historical archive or public market-price dataset is imp
 
 ## Private persistence and embedded outputs
 
+The public static demo also supports browser-only CSV analysis. Files are read and processed in the current tab without uploading observations, contacting a provider, using browser persistent storage or writing to the repository. User-imported series are explicitly labelled USER_FILE and remain separate from built-in SYNTHETIC samples and reserved source IDs. Reloading clears them; a user-requested CSV export creates a private local download. This processing path does not grant redistribution rights or publish the user's data. Normal website visits still use GitHub Pages hosting.
+
 SQLite databases, backups, private source metadata and real-data explorer snapshots stay outside this public code checkout. The explorer embeds daily values, so it is private whenever its inputs are restricted. The private nightly example is a template, not a configured public job. Synthetic demo FX values are explicitly invented, and are never attributed to ECB.

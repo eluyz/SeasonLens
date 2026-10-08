@@ -18,6 +18,22 @@ def frame(values=(100.,110.,120.),dates=('2025-01-01','2025-02-01','2026-01-01')
 
 
 class DashboardTests(unittest.TestCase):
+    def test_market_payload_is_cutoff_bound_and_daily_export_compatible(self):
+        f=frame((100.,110.,999.),('2025-01-01','2025-01-02','2026-01-16'))
+        html=render_dashboard({'S':dict(frame=f,unit='EUR/t',source='SYNTHETIC')},as_of=date(2026,1,15))
+        v=json.loads(re.search(r'<script id="dataset" type="application/json">(.*?)</script>',html,re.S)[1])['S']['views']['Original']
+        self.assertEqual(v['as_of'],'2026-01-15')
+        self.assertEqual(v['market']['snapshot']['last_value'],110.)
+        self.assertEqual(v['market']['indicators']['dates'],['2025-01-01','2025-01-02'])
+        self.assertEqual(v['market']['distribution']['5']['months'][0]['mean'],105.)
+        self.assertEqual(set(v['daily'][0]),{'date','value','sma20','sma100','sma200','bollinger_upper','bollinger_lower'})
+        for token in ('@@MARKET_JS@@','@@BROWSER_JS@@'):
+            self.assertNotIn(token,html)
+        for identifier in ('market-overview','browser-import-panel','rsi-chart','scenario-output','correlation-matrix'):
+            self.assertIn('id="'+identifier+'"',html)
+        self.assertIn('Private browser CSVs are not joined to invented demo FX',html)
+        self.assertIn("new TextDecoder('utf-8',{fatal:true})",html)
+
     def test_monthly_matrix_reference_direction_cutoff_and_gaps(self):
         f=frame((999.,100.,120.,200.,155.,9999.),
                 ('2016-01-01','2017-01-01','2017-01-02','2025-01-01','2026-01-10','2026-01-16'))

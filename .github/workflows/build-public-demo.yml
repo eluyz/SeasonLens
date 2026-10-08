@@ -38,10 +38,10 @@ jobs:
         run: |
           python examples/explorer_demo.py
           python examples/build_pages.py
-      - name: Verify six synthetic instruments and nine views
+      - name: Verify sample provenance, browser assets and JavaScript syntax
         run: |
           python - <<'PY'
-          import json, re
+          import json, re, subprocess
           from pathlib import Path
           expected = {'SYNTHETIC_GRAIN', 'SYNTHETIC_CORN', 'SYNTHETIC_RAPESEED', 'EUR_PLN', 'EUR_USD', 'USD_PLN'}
           for path in ('docs/index.html', 'examples/explorer_demo.html'):
@@ -51,6 +51,14 @@ jobs:
               assert all(entry['source'] == 'SYNTHETIC' for entry in data.values()), path
               assert sum(len(entry['views']) for entry in data.values()) == 9, path
               assert all(view['daily'] for entry in data.values() for view in entry['views'].values()), path
+              assert all('market' in view and view.get('as_of') == '2026-10-06' for entry in data.values() for view in entry['views'].values()), path
+              scripts = re.findall(r'<script>(.*?)</script>', html, re.S)
+              assert scripts and all('@@' not in script for script in scripts), path
+              for script in scripts:
+                  subprocess.run(['node', '--check'], input=script, text=True, check=True)
+              if path == 'docs/index.html':
+                  assert 'id="browser-upload"' in html and 'id="upload"' not in html
+                  assert all(marker not in ''.join(scripts) for marker in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'WebSocket', 'localStorage', 'indexedDB'))
           print('Both pages contain exactly six invented instruments and nine views.')
           PY
       - name: Save generated files on a candidate branch

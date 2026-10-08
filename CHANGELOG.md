@@ -1,5 +1,11 @@
 # Changelog
 
+## Expanded market analysis checkpoint — 2026-10-08
+
+- Add dated market snapshots, one/five-year empirical price positions, exact-date commodity/FX/interaction attribution, common-date index100 comparisons, Wilder RSI14, unannualized20/60-observation log-change volatility, exact-interval return correlations, wheat/corn benchmark spreads, equal-year seasonal quartiles and explicit benchmark scenarios.
+- Add browser-only CSV processing without data-upload requests or persistent browser storage. Keep user-file identities separate from invented samples; retain the local SQLite import workflow and full-precision CSV export.
+- Document methods, reference dates, warmup, gaps, futures continuation limits and private user-data handling. Include all inline browser assets in installed packages.
+
 ## Unreleased — 2026-10-07
 
 - Current-inclusive five-calendar-year monthly price comparison with equal-year period mean and observed coverage.

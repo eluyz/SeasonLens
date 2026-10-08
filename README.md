@@ -1,8 +1,8 @@
 # SeasonLens
 
-An open-source project for auditable seasonality analysis of CSV and Excel time series, starting with a small monthly aggregation core.
+An open-source project for auditable seasonality and market analysis of CSV time series. Excel workbook import is planned.
 
-**Current milestone: private SQLite persistence, direct ECB reference-rate updates, a local CSV-import app and an interactive multi-series explorer (experimental 0.0.1 source checkpoint).** XLSX import, automatic futures continuation closes, hosted deployment and a tagged release remain unimplemented.
+**Current milestone: an interactive public demo, private SQLite persistence, direct ECB reference-rate updates and local CSV analysis (experimental 0.0.1 source checkpoint).** XLSX import, automatic futures continuation closes and a tagged release remain unimplemented.
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 
@@ -10,7 +10,11 @@ The CSV reader prepares one explicitly selected series; the core computes monthl
 
 The [public browser demo](https://eluyz.github.io/SeasonLens/) is hosted on GitHub Pages from `docs/index.html`. It includes invented wheat, corn, rapeseed, EUR/PLN, EUR/USD and derived USD/PLN observations only. All three commodities support EUR/t and exact-date synthetic PLN/t views. See [deployment instructions](docs/PAGES.md) for publishing source and rebuild details.
 
-The demo supports instrument/unit selection, monthly tables, six-line technical analysis, seasonal views and CSV export without installation. Own-file browser import is not available yet; the local app handles private CSV files. To rebuild the synthetic page, run `PYTHONPATH=src python3 examples/build_pages.py`.
+The demo supports instrument/unit selection, monthly tables, six-line technical analysis, market snapshots, historical price positions, commodity/FX attribution, index-100 comparisons, volatility, RSI, correlations, wheat/corn spreads, seasonal distributions and scenario calculations. Open one CSV series directly in the browser without uploading it to a server; imported series stay in tab memory and disappear on reload. The local app additionally maintains an auditable private SQLite history. To rebuild the invented built-in samples, run `PYTHONPATH=src python3 examples/build_pages.py`.
+
+Browser CSV import requires explicit date/value columns, units, delimiter, decimal convention and cutoff. Dates use `YYYY-MM-DD`; blank prices reject unless you explicitly allow their omission. Duplicate dates and invalid numbers always reject, including rows after the cutoff. Browser import does not overwrite built-in samples, impersonate an official data source or save data between visits. XLSX is not supported.
+
+See [market analysis methods](docs/METHODS.md) for reference dates, percentile ties, RSI warmup, unannualized volatility, currency attribution, exact-interval correlations and the limits of futures continuation prices.
 
 ## Quick start
 

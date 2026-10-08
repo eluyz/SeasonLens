@@ -20,3 +20,8 @@
 
 
 SL-001 is a reversible technical spike while SL-000 remains open; implementation does not establish product demand or OSS-program eligibility.
+
+| ID | Scope | Acceptance | Status |
+|---|---|---|---|
+| SL-013 | Market context and comparisons | Dated snapshot changes, historical percentile, exact-date PLN attribution, common-base index100, Wilder RSI14, unannualized log-change volatility, exact-interval correlations, equal-unit wheat/corn spread, equal-year seasonal quartiles, explicit scenario assumptions | Implemented; independent mathematical and bounded DOM checks passed; public/browser verification pending |
+| SL-014 | Browser-only CSV exploration | Explicit columns/dialect/cutoff, strict rejection before omissions, separate user IDs, no network or persistent storage, actual control and export verification | Implemented; parser/Python parity and source isolation passed; actual browser verification pending |
