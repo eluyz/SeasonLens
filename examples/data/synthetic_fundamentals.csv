@@ -1,0 +1,16 @@
+publication_date,commodity,region,marketing_year,unit,ending_stocks,total_use
+2025-06-12,wheat,Invented region,2025/26,million metric tonnes,25,100
+2025-09-12,wheat,Invented region,2025/26,million metric tonnes,24,102
+2026-06-12,wheat,Invented region,2026/27,million metric tonnes,27,105
+2026-09-14,wheat,Invented region,2026/27,million metric tonnes,26,106
+2026-10-09,wheat,Invented region,2026/27,million metric tonnes,29,107
+2025-06-12,corn,Invented region,2025/26,million metric tonnes,30,200
+2025-09-12,corn,Invented region,2025/26,million metric tonnes,29,202
+2026-06-12,corn,Invented region,2026/27,million metric tonnes,32,205
+2026-09-14,corn,Invented region,2026/27,million metric tonnes,31,206
+2026-10-09,corn,Invented region,2026/27,million metric tonnes,34,207
+2025-06-12,rapeseed,Invented region,2025/26,million metric tonnes,8,40
+2025-09-12,rapeseed,Invented region,2025/26,million metric tonnes,7,42
+2026-06-12,rapeseed,Invented region,2026/27,million metric tonnes,10,45
+2026-09-14,rapeseed,Invented region,2026/27,million metric tonnes,9,46
+2026-10-09,rapeseed,Invented region,2026/27,million metric tonnes,12,47

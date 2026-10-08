@@ -1,5 +1,11 @@
 # Decisions
 
+## Historical statistical analysis — 2026-10-08
+
+Use descriptive historical measures with explicit counts and unavailable states. Empirical Expected Shortfall integrates fractional tail weights and needs five equivalent tail observations. Commodity/FX variance uses returns on each original source grid with matching start and end dates; Euler shares may be negative or exceed 100%. Avoid false precision at numerical cancellation.
+
+Seasonality uses actual consecutive calendar-month closes and equally weighted completed years. Fix early/late calendar splits and show leave-one-year-out sensitivity. Joint two-year block resampling is an approximate historical-mean uncertainty measure, requires at least eight contributing years, and is not a forecast interval. Keep forecasting models fixed, use identical walk-forward origins and retain full earlier history for training. Keep fundamental releases independent from price series and require an explicit private normalized schema until an official adapter is validated. All built-in samples remain invented.
+
 ## 2026-10-07 — First checkpoint
 
 - Scope: monthly arithmetic means and observation counts only. Importers, multi-year profiles and UI are separate tasks.

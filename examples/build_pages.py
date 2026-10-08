@@ -36,7 +36,7 @@ def build_public_demo():
     html = html.replace('<section><h2>Monthly average prices — last five', '<section id="year-comparison"><h2>Monthly average prices — last five', 1)
 
     html = html.replace('<div class="checks" id="profile-controls">', '<details class="advanced"><summary>More seasonal analysis and coverage</summary><div class="checks" id="profile-controls">', 1)
-    html = html.replace('<section id="browser-import-panel"', '</details><section id="browser-import-panel"', 1)
+    html = html.replace('<section id="scientific-analysis"', '</details><section id="scientific-analysis"', 1)
     local_panel = '''<section id="own-data"><h2>Use your own data</h2>
 <p>Open an Excel master file or one CSV series using the browser import panel above. Preview rows, choose columns and units, validate the selection, then add the instruments together. XLSX supports Excel dates and explicitly selected date-text formats. CSV dates use YYYY-MM-DD. Calculations run in this tab; the file is not sent to a server, saved to a database or shared with other visitors. Reloading the page clears imported series.</p>
 <p>Browser import supports .xlsx and .csv. To keep an auditable private SQLite history or update existing observations, use the local SeasonLens app.</p>
@@ -54,7 +54,7 @@ def build_public_demo():
 @media(max-width:700px){.welcome h2{font-size:24px}.controls{display:grid;grid-template-columns:1fr;gap:12px}.controls label{min-width:0}.controls select{width:100%}.controls button{grid-column:1/-1}.checks{gap:12px}.checks label{padding:5px 0;min-height:44px}#daily svg{min-width:760px}#fiveyear svg{min-width:760px}.table-wrap{margin-bottom:8px}.advanced{padding:14px}.advanced svg{min-width:620px}.advanced section{overflow-x:auto}.demo-nav a{flex:1 1 180px;text-align:center}}
 '''
     html = html.replace('</style>', styles+'</style>', 1)
-    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@')):
+    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@')):
         raise ValueError('Unexpected local import or unexpanded template in public demo.')
     return html, series
 

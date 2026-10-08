@@ -1,5 +1,19 @@
 # Market analysis methods
 
+## Statistical analysis
+
+Full input and output definitions are in [SCIENCE_SPEC.md](SCIENCE_SPEC.md). Risk, FX and forecast evaluation use the explicitly selected one-year, five-year or full-history period. Horizons count observed intervals; missing sessions are never inserted. Buyer losses are price rises and seller losses are price falls. Historical VaR uses the empirical quantile; Expected Shortfall integrates the upper tail including its fractional boundary weight. A minimum of five equivalent tail observations is required. Multi-observation horizons overlap and are dependent. Current-budget exposure applies the signed historical change to the latest quote times quantity; it is not futures holding P&L.
+
+Commodity/FX risk matches the start and end dates of each original source's log changes. Sample variances use ddof=1. Euler contributions are cov(component, combined), algebraically own variance plus covariance. They can be negative or above 100%; shares are undefined for zero or numerically unresolved combined variability.
+
+Return seasonality uses actual last observed monthly quotes and the immediately preceding calendar month's quote, requiring positive endpoints. Missing calendar months break changes. The current year is excluded; each completed year contributes at most one change per month. The declared calendar midpoint fixes the early/late split. Leave-one-out means expose single-year sensitivity. A seeded non-circular moving two-year block bootstrap resamples whole year vectors together, retaining missingness. Its approximate 95% interval concerns the historical mean under these assumptions, requires at least eight contributing years and 90% valid replicates, and is not a future-price interval or significance verdict.
+
+Walk-forward comparison trains only through each origin, scores later observations through the cutoff, and uses identical samples for last-price, expanding-history drift and trailing-20-mean models. At least 200 training observations and at most 252 recent eligible origins per horizon are used. MAE/RMSE are in selected units; skill is 1 minus error divided by the naive baseline error, undefined for a zero baseline. Earlier history supplies training even when evaluation is restricted to a shorter period. No model tuning, profitability claim or automatic future forecast is supplied.
+
+Fundamental estimates are separate from prices. [Normalized imports](FUNDAMENTALS.md) retain publication date, commodity, geography, marketing year and units. Stocks-to-use is 100 × ending stocks / total use; revisions compare releases of the same declared balance. Future publication dates are excluded after full validation. USER_FILE imports and SYNTHETIC examples are never labelled official USDA observations.
+
+Method references: [Acerbi and Tasche on Expected Shortfall](https://arxiv.org/abs/cond-mat/0105191), [Forecasting: Principles and Practice on rolling-origin evaluation](https://otexts.com/fpp3/tscv.html), [forecasting baselines](https://otexts.com/fpp3/simple-methods.html) and [time-series bootstrap concepts](https://otexts.com/fpp3/bootstrap.html). These references explain general methods; they do not validate a predictive relationship for these instruments or the invented examples.
+
 SeasonLens describes the supplied observations. Built-in browser samples are invented; a user CSV has its own declared units and cutoff. Observation counts do not certify complete trading sessions. No missing date is filled, and no price series is silently repaired or roll-adjusted.
 
 ## Market snapshot and historical position

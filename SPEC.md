@@ -1,5 +1,7 @@
 # Core contract — SL-001
 
+The browser statistical extension is specified separately in [docs/SCIENCE_SPEC.md](docs/SCIENCE_SPEC.md): historical risk, completed-year monthly-change stability, exact-interval FX variance, fixed-model walk-forward comparisons and separate fundamental-release vintages. Existing core contracts below remain in force.
+
 Status: experimental core implementation specification. Product demand and alternatives research remain open.
 
 API: `aggregate_monthly(frame, *, date_column="date", value_column="value") -> MonthlyResult`.

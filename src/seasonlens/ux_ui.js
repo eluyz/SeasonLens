@@ -34,7 +34,7 @@
   const builtin=id=>BUILTINS.includes(id)&&getData()[id]?.source==='SYNTHETIC';
   const make=(tag,text,className)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(className)n.className=className;return n};
   const nav=make('nav',null,'ux-navigation');nav.id='seasonlens-navigation';nav.setAttribute('aria-label','Analysis sections');
-  for(const [id,text] of [['market-overview','Overview'],['prices-seasonality','Prices and seasonality'],['technical-analysis','Technical analysis'],['market-comparison','Market comparisons'],['browser-import-panel','Import data']]){
+  for(const [id,text] of [['market-overview','Overview'],['prices-seasonality','Prices and seasonality'],['technical-analysis','Technical analysis'],['market-comparison','Market comparisons'],['scientific-analysis','Statistical analysis'],['browser-import-panel','Import data']]){
    const a=make('a',text);a.href='#'+id;nav.append(a);
   }
   const top=document.querySelector('.top');if(top)top.after(nav);else document.querySelector('main').prepend(nav);

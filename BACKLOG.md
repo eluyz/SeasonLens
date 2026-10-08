@@ -2,6 +2,11 @@
 
 | ID | Scope | Acceptance | Status |
 |---|---|---|---|
+| SL-015 | Historical statistical analysis | Fractional-tail risk, exact-interval variance, completed-year stability, no-leakage fixed-model comparison, release-vintage fundamental imports | Implemented and independently reviewed; publication verification recorded in STATUS.md |
+| SL-016 | Official fundamental adapter | Verified commodity/geography/unit mapping, publication vintages, reproducible source parsing and redistribution conditions | Open; private normalized CSV and invented examples available |
+
+| ID | Scope | Acceptance | Status |
+|---|---|---|---|
 | SL-000 | Alternatives and need validation | Identify existing tools and a concrete justified use case | Open |
 | SL-001 | Monthly aggregation core | Hand-calculated means/counts, retained gaps, no input mutation, strict preconditions | Complete for experimental checkpoint |
 | SL-001A | Automated GitHub checks | Run relevant tests on pushes and pull requests; verify a successful run | Public builder source-push checks verified; broader PR CI remains open |

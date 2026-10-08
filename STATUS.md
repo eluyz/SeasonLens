@@ -1,10 +1,12 @@
 # Project status
 
-Date: 2026-10-08. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics, public exploration and private browser XLSX master-file import. Earlier checkpoint sections remain historical records.
+Date: 2026-10-08. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics, private browser XLSX master-file import and the statistical-analysis extension. Earlier checkpoint sections remain historical records.
 
 Repository: https://github.com/eluyz/SeasonLens. Documentation is in English. No release tag has been created.
 
 ## Complete
+
+- Historical risk/stress, completed-year return stability, commodity/FX variance contributions, fixed-model walk-forward comparison and separate fundamental-vintage CSV import; definitions in docs/SCIENCE_SPEC.md.
 
 - Project skeleton, MIT license, documentation, agent instructions and backlog.
 - SL-001: aggregate prepared daily observations into calendar-year/month means and observation counts.
@@ -184,3 +186,12 @@ Limits: Python 3.12/pandas 2.2.3 only; no Windows/macOS/other-Python execution, 
 - Browser verification found and corrected two presentation issues: stale successful-validation text after non-preview settings changes, and a hidden Excel-only formula label overridden by general label styling. After corrections, all 175 local tests passed again in 12.758 s; GitHub builder run 37769764287 passed all 175 in 7.829 s. Source `f9a4167e6ee59baec1951aeb7a13982a01a47f3b` generated candidate `4968675a79a15e9ac8bd50f2971fedf02135c613`, whose complete tree matched the local build exactly.
 - Responsive CSS has local chart/table overflow and phone-size controls. A planned 390px iframe check could not run because this cloud browser blocks file URLs; no attempt was made to bypass that policy. Physical mobile devices and Windows/macOS remain untested. Console inspection showed browser-extension metadata errors, with no application error observed. No private market data, database or automatic collection job was published.
 - Final Pages run 37770020731 successfully deployed candidate `4968675a79a15e9ac8bd50f2971fedf02135c613`. Actual public Chrome verification confirmed that the Excel formula option is invisible for CSV and changing a validated decimal setting hides Add, retains the six samples and displays “Settings changed. Validate again before adding.” A fresh invented-workbook import again added all six private instruments together, giving 12 selections including the six samples. This completes the earlier publication/browser pending checkpoints.
+
+## Statistical extension validation — 2026-10-08
+
+- `PYTHONPATH=src python3 -m unittest discover -s tests -q`: **242 tests passed**, including 67 added risk/common, seasonal, forecast, fundamental and real-core UI lifecycle checks.
+- Independent read-only review verified empirical/fractional-tail calculations, ties and signed losses; original-grid FX intervals, negative/above-100% shares and cancellation; actual monthly closes, fixed calendar splits, leave-one-out and deterministic joint block bootstrap; identical forecast origins and full-history warmup; fundamental publication vintages and strict unit/source handling. No unresolved mathematical blockers were found.
+- Generated both invented examples using `examples/explorer_demo.py` and `examples/build_pages.py`. Verified six synthetic instruments, unique DOM IDs, scientific panels outside the older collapsed seasonal wrapper, complete inline assets, Node syntax and public no-network/no-private-storage guards.
+- Wheel built and installed with `python3 -m pip install --no-deps --no-build-isolation --target /tmp/seasonlens-science-install-20261008 .`; the installed package rendered a dashboard containing all scientific assets from outside the checkout. Existing dependencies were reused, not downloaded or tested on other platforms.
+- Five panels calculate lazily with a bounded cache. Node review benchmark across nine views with 20,000 observations was about 1.39 seconds for core calculations; this is not a browser or mobile performance measurement.
+- Current source checkpoint precedes publication and actual-browser verification; the subsequent publication record identifies verified deployed behavior. Official fundamental adapters, automatic futures feeds, physical mobile QA and predictive-skill validation remain open. Built-in prices, FX and fundamental balances are invented; private files stay in tab memory.

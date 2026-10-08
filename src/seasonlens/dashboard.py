@@ -211,7 +211,11 @@ def _embedded_scripts(template):
     assets = {'@@IMPORT_PANEL@@': 'import_panel.html', '@@MARKET_JS@@': 'market_ui.js',
               '@@BROWSER_JS@@': 'browser_import.js', '@@WORKBOOK_JS@@': 'workbook_import.js',
               '@@WORKBOOK_UI_JS@@': 'workbook_ui.js', '@@UX_JS@@': 'ux_ui.js',
-              '@@PRIVATE_JS@@': 'private_import.js', '@@UX_CSS@@': 'ux.css', '@@XLSX_VENDOR@@': 'vendor/xlsx.mini.min.js'}
+              '@@PRIVATE_JS@@': 'private_import.js', '@@UX_CSS@@': 'ux.css', '@@XLSX_VENDOR@@': 'vendor/xlsx.mini.min.js',
+              '@@SCIENCE_PANEL@@': 'scientific_panel.html', '@@SCIENCE_CSS@@': 'scientific.css',
+              '@@SCIENCE_COMMON_JS@@': 'science_common.js', '@@RISK_JS@@': 'risk_analysis.js',
+              '@@SEASONAL_STATS_JS@@': 'seasonal_stats.js', '@@FORECAST_JS@@': 'forecast_lab.js',
+              '@@FUNDAMENTALS_JS@@': 'fundamentals.js', '@@SCIENCE_UI_JS@@': 'scientific_ui.js'}
     for marker, name in assets.items():
         content = (root/name).read_text(encoding='utf-8')
         if name.endswith('.js'):

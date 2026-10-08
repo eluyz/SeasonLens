@@ -1,5 +1,13 @@
 # Changelog
 
+## Statistical analysis checkpoint — 2026-10-08
+
+- Historical buyer/seller VaR and fractional-tail Expected Shortfall at 95%/99%, observed-step horizons, stress paths and signed benchmark-budget scenarios, with minimum tail coverage.
+- Completed-year monthly-change summaries, fixed early/late splits, leave-one-year-out sensitivity and reproducible joint two-year block-bootstrap intervals when coverage is sufficient.
+- Exact original-interval commodity/FX log-change variance decomposition, retaining negative contributions and explicitly undefined shares.
+- Leakage-free walk-forward MAE/RMSE and naive-baseline skill comparisons for last price, expanding-history drift and trailing-20 mean.
+- Independent stocks-to-use panel with release vintages, invented examples and staged private normalized CSV import. Five panels calculate lazily and do not transmit or persist imported data.
+
 ## Expanded market analysis checkpoint — 2026-10-08
 
 - Add dated market snapshots, one/five-year empirical price positions, exact-date commodity/FX/interaction attribution, common-date index100 comparisons, Wilder RSI14, unannualized20/60-observation log-change volatility, exact-interval return correlations, wheat/corn benchmark spreads, equal-year seasonal quartiles and explicit benchmark scenarios.

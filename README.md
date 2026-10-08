@@ -16,6 +16,10 @@ Browser CSV import requires explicit date/value columns, units, delimiter, decim
 
 See [market analysis methods](docs/METHODS.md) for reference dates, percentile ties, RSI warmup, unannualized volatility, currency attribution, exact-interval correlations and the limits of futures continuation prices.
 
+The **Statistical analysis** section adds historical buyer/seller VaR and Expected Shortfall, benchmark stress paths, completed-year monthly-change stability, commodity/FX variance contributions and walk-forward comparisons of three fixed forecasting baselines. Panels calculate when opened. Sample sizes, evaluation dates, missing-data reasons and assumptions remain visible. These descriptive statistics do not establish predictive power or investment profitability.
+
+Supply-and-demand context is a separate panel with invented examples and private normalized CSV import. It shows dated stocks-to-use estimates and revisions, without automatically joining them to prices. See [fundamental CSV instructions](docs/FUNDAMENTALS.md) and the [statistical definitions](docs/SCIENCE_SPEC.md). No automatic fundamental-data feed is configured.
+
 ## Quick start
 
 Python 3.10+ is declared; this checkpoint was developed with Python 3.12 and pandas 2.2.3. This dependency is pinned for reproducibility.
