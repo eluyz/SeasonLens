@@ -30,3 +30,4 @@
 - Renamed the price matrix Monthly average prices, displayed its monthly prices without decimal places and replaced unavailable numeric table values with —, distinguishing future months from historical gaps.
 - Price-matrix display precision now depends on units: whole commodity prices and three decimals for currency quotes, including the corresponding reference value.
 - Prepared a synthetic-only GitHub Pages explorer with mobile table/chart scrolling, collapsed advanced analysis, local-app guidance, reproducible builder and sample CSV. Hosting activation remains separate from committing the page.
+- Expanded the public synthetic explorer to wheat, corn, rapeseed and EUR/PLN, EUR/USD, derived USD/PLN; all three commodities support exact-date synthetic PLN/t views.

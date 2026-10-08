@@ -1,0 +1,69 @@
+name: Build public demo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-public-demo.yml'
+      - 'examples/explorer_demo.py'
+      - 'examples/build_pages.py'
+      - 'src/**'
+      - 'pyproject.toml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-demo-builder
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.14'
+      - name: Install reproducible build dependencies
+        run: python -m pip install pandas==2.2.3 numpy==2.3.5
+      - name: Run analytical checks
+        run: python -m unittest discover -s tests -q
+      - name: Generate invented sample pages
+        run: |
+          python examples/explorer_demo.py
+          python examples/build_pages.py
+      - name: Verify six synthetic instruments and nine views
+        run: |
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+          expected = {'SYNTHETIC_GRAIN', 'SYNTHETIC_CORN', 'SYNTHETIC_RAPESEED', 'EUR_PLN', 'EUR_USD', 'USD_PLN'}
+          for path in ('docs/index.html', 'examples/explorer_demo.html'):
+              html = Path(path).read_text(encoding='utf-8')
+              data = json.loads(re.search(r'<script id="dataset" type="application/json">(.*?)</script>', html, re.S)[1])
+              assert set(data) == expected, path
+              assert all(entry['source'] == 'SYNTHETIC' for entry in data.values()), path
+              assert sum(len(entry['views']) for entry in data.values()) == 9, path
+              assert all(view['daily'] for entry in data.values() for view in entry['views'].values()), path
+          print('Both pages contain exactly six invented instruments and nine views.')
+          PY
+      - name: Save generated files on a candidate branch
+        run: |
+          if git diff --quiet -- docs/index.html docs/.nojekyll docs/sample_prices.csv examples/explorer_demo.html; then
+            echo 'Generated files already match the committed source.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          candidate="automation/public-demo-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$candidate"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- docs/index.html docs/.nojekyll docs/sample_prices.csv examples/explorer_demo.html
+          git commit -m 'Regenerate public demo from six invented instruments'
+          git push origin "HEAD:refs/heads/$candidate"
+          printf 'Candidate branch: `%s`\n\nGenerated commit: `%s`\n\nPromote this commit with a checked fast-forward through the authorized GitHub connection to trigger Pages. This workflow does not update main or deploy the site.\n' "$candidate" "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"

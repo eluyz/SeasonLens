@@ -8,7 +8,7 @@ The CSV reader prepares one explicitly selected series; the core computes monthl
 
 ## Browser demo
 
-The static browser demo is prepared in `docs/index.html`. It includes invented price and FX observations only. Repository administrators can publish it using GitHub Pages (`main` → `/docs`); see [deployment instructions](docs/PAGES.md). The expected URL after successful activation is https://eluyz.github.io/SeasonLens/. Publishing files alone does not enable hosting.
+The [public browser demo](https://eluyz.github.io/SeasonLens/) is hosted on GitHub Pages from `docs/index.html`. It includes invented wheat, corn, rapeseed, EUR/PLN, EUR/USD and derived USD/PLN observations only. All three commodities support EUR/t and exact-date synthetic PLN/t views. See [deployment instructions](docs/PAGES.md) for publishing source and rebuild details.
 
 The demo supports instrument/unit selection, monthly tables, six-line technical analysis, seasonal views and CSV export without installation. Own-file browser import is not available yet; the local app handles private CSV files. To rebuild the synthetic page, run `PYTHONPATH=src python3 examples/build_pages.py`.
 
