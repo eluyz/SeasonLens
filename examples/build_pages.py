@@ -54,7 +54,7 @@ def build_public_demo():
 @media(max-width:700px){.welcome h2{font-size:24px}.controls{display:grid;grid-template-columns:1fr;gap:12px}.controls label{min-width:0}.controls select{width:100%}.controls button{grid-column:1/-1}.checks{gap:12px}.checks label{padding:5px 0;min-height:44px}#daily svg{min-width:760px}#fiveyear svg{min-width:760px}.table-wrap{margin-bottom:8px}.advanced{padding:14px}.advanced svg{min-width:620px}.advanced section{overflow-x:auto}.demo-nav a{flex:1 1 180px;text-align:center}}
 '''
     html = html.replace('</style>', styles+'</style>', 1)
-    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@')):
+    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@', '@@REPORT_', '@@QUICK_')):
         raise ValueError('Unexpected local import or unexpanded template in public demo.')
     return html, series
 

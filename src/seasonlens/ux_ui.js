@@ -34,7 +34,7 @@
   const builtin=id=>BUILTINS.includes(id)&&getData()[id]?.source==='SYNTHETIC';
   const make=(tag,text,className)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(className)n.className=className;return n};
   const nav=make('nav',null,'ux-navigation');nav.id='seasonlens-navigation';nav.setAttribute('aria-label','Analysis sections');
-  for(const [id,text] of [['market-overview','Overview'],['prices-seasonality','Prices and seasonality'],['technical-analysis','Technical analysis'],['market-comparison','Market comparisons'],['scientific-analysis','Statistical analysis'],['browser-import-panel','Import data']]){
+  for(const [id,text] of [['market-overview','Overview'],['prices-seasonality','Prices and seasonality'],['technical-analysis','Technical analysis'],['market-comparison','Market comparisons'],['scientific-analysis','Statistical analysis'],['browser-import-panel','Import data'],['report-export-panel','Export report']]){
    const a=make('a',text);a.href='#'+id;nav.append(a);
   }
   const top=document.querySelector('.top');if(top)top.after(nav);else document.querySelector('main').prepend(nav);
@@ -75,7 +75,7 @@
   }finally{restoring=false}}
   if(storage){const saved=read(storage);if(saved){previous=saved;restore(saved)}}
   function remember(){if(restoring)return;updateAvailability();previous=capture();if(storage&&!write(storage,previous))status.textContent='View settings could not be saved in this browser. Imported data remains in this tab only.'}
-  const tracked=new Set(['instrument',...Object.keys(VALUES),...CHECKS]);
+  const tracked=new Set(['instrument','quick-instrument','quick-currency',...Object.keys(VALUES),...CHECKS]);
   document.addEventListener('change',event=>{if(tracked.has(event.target.id)||event.target.closest('#comparison-instruments'))remember()});
   for(const id of DETAILS)byId(id)?.addEventListener('toggle',remember);
   reset.addEventListener('click',()=>{try{storage?.removeItem(KEY)}catch(_){}previous=null;restore(defaults);previous=defaults;status.textContent='View settings reset. Imported data in this tab has been retained.'});

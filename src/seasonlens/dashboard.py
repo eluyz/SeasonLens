@@ -215,7 +215,10 @@ def _embedded_scripts(template):
               '@@SCIENCE_PANEL@@': 'scientific_panel.html', '@@SCIENCE_CSS@@': 'scientific.css',
               '@@SCIENCE_COMMON_JS@@': 'science_common.js', '@@RISK_JS@@': 'risk_analysis.js',
               '@@SEASONAL_STATS_JS@@': 'seasonal_stats.js', '@@FORECAST_JS@@': 'forecast_lab.js',
-              '@@FUNDAMENTALS_JS@@': 'fundamentals.js', '@@SCIENCE_UI_JS@@': 'scientific_ui.js'}
+              '@@FUNDAMENTALS_JS@@': 'fundamentals.js', '@@SCIENCE_UI_JS@@': 'scientific_ui.js',
+              '@@REPORT_PANEL@@': 'report_panel.html', '@@REPORT_CSS@@': 'report.css',
+              '@@REPORT_JS@@': 'report_export.js', '@@QUICK_CSS@@': 'quick_controls.css',
+              '@@QUICK_JS@@': 'quick_controls.js'}
     for marker, name in assets.items():
         content = (root/name).read_text(encoding='utf-8')
         if name.endswith('.js'):

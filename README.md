@@ -20,6 +20,8 @@ The **Statistical analysis** section adds historical buyer/seller VaR and Expect
 
 Supply-and-demand context is a separate panel with invented examples and private normalized CSV import. It shows dated stocks-to-use estimates and revisions, without automatically joining them to prices. See [fundamental CSV instructions](docs/FUNDAMENTALS.md) and the [statistical definitions](docs/SCIENCE_SPEC.md). No automatic fundamental-data feed is configured.
 
+**Analysis options** keeps instrument/unit selection and the cutoff accessible while scrolling. **Export report** builds a selected-section snapshot with charts, tables, settings and methods. Preview it, use **Print / Save PDF** through the browser's print dialog, or download a script-free HTML copy. Reports stay local and can contain private results. See [quick controls and report instructions](docs/REPORTS.md).
+
 ## Quick start
 
 Python 3.10+ is declared; this checkpoint was developed with Python 3.12 and pandas 2.2.3. This dependency is pinned for reproducibility.

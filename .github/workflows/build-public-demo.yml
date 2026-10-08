@@ -61,8 +61,9 @@ jobs:
                   assert 'id="browser-upload"' in html and 'id="upload"' not in html
                   assert all(marker not in ''.join(app_scripts) for marker in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'WebSocket', 'indexedDB'))
                   assert ''.join(app_scripts).count('global.localStorage') == 1
-                  assert all('localStorage' not in Path('src/seasonlens/'+name).read_text() for name in ('browser_import.js','workbook_import.js','workbook_ui.js','private_import.js','market_ui.js','science_common.js','risk_analysis.js','seasonal_stats.js','forecast_lab.js','fundamentals.js','scientific_ui.js'))
+                  assert all('localStorage' not in Path('src/seasonlens/'+name).read_text() for name in ('browser_import.js','workbook_import.js','workbook_ui.js','private_import.js','market_ui.js','science_common.js','risk_analysis.js','seasonal_stats.js','forecast_lab.js','fundamentals.js','scientific_ui.js','quick_controls.js','report_export.js'))
                   assert 'id="scientific-analysis"' in html
+                  assert 'id="report-export-panel"' in html and 'initSeasonLensQuickControls' in html
                   assert all('id="science-'+name+'-panel"' in html for name in ('risk','seasonal','fx','forecast','fundamental'))
                   import hashlib
                   assert hashlib.sha256(Path('src/seasonlens/vendor/xlsx.mini.min.js').read_bytes()).hexdigest() == '0cb353f830d7288385492c83d277b058ddeac664ca51cf1393aa1fd3e2b70939'

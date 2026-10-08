@@ -1,5 +1,11 @@
 # Decisions
 
+## Browser-local report snapshots and compact controls — 2026-10-08
+
+Mirror the canonical instrument/unit selectors rather than maintain another data-selection state. Keep the toolbar compact, expandable and in document flow while sticky, with a visible cutoff. Use independent table/chart overflow and native controls.
+
+Reports copy only explicitly selected rendered results, settings, SVG legends and method text; exclude source arrays, application scripts, global comparison matrices and import controls. Prepare requested lazy statistical panels without changing their open state. Validate selection/context stability before freezing the snapshot. Use a strict inert HTML/SVG allowlist, including validated legend colors and omission of inline-hidden year lines. Native browser printing supplies Save PDF where available; a script-free HTML download is the portable fallback. Keep fundamental context explicitly separate and preserve all source labels and unavailable states.
+
 ## Historical statistical analysis — 2026-10-08
 
 Use descriptive historical measures with explicit counts and unavailable states. Empirical Expected Shortfall integrates fractional tail weights and needs five equivalent tail observations. Commodity/FX variance uses returns on each original source grid with matching start and end dates; Euler shares may be negative or exceed 100%. Avoid false precision at numerical cancellation.

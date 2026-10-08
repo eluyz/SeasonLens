@@ -2,6 +2,11 @@
 
 | ID | Scope | Acceptance | Status |
 |---|---|---|---|
+| SL-017 | Compact analysis controls | Canonical instrument/unit synchronization, visible cutoff, focused shortcuts and independent overflow | Implemented and independently reviewed; deployment QA in STATUS.md |
+| SL-018 | Local report export | Selected sections, exact metadata/settings, immutable inert HTML/SVG snapshot, preview and native PDF printing | Implemented and independently reviewed; deployment QA in STATUS.md |
+
+| ID | Scope | Acceptance | Status |
+|---|---|---|---|
 | SL-015 | Historical statistical analysis | Fractional-tail risk, exact-interval variance, completed-year stability, no-leakage fixed-model comparison, release-vintage fundamental imports | Implemented and independently reviewed; publication verification recorded in STATUS.md |
 | SL-016 | Official fundamental adapter | Verified commodity/geography/unit mapping, publication vintages, reproducible source parsing and redistribution conditions | Open; private normalized CSV and invented examples available |
 

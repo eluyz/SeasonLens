@@ -23,4 +23,4 @@ seasonlens-app = "seasonlens.app:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-seasonlens = ["dashboard.html", "*.js", "*.css", "import_panel.html", "scientific_panel.html", "vendor/*.js", "vendor/LICENSE", "vendor/README.md"]
+seasonlens = ["dashboard.html", "*.js", "*.css", "import_panel.html", "scientific_panel.html", "report_panel.html", "vendor/*.js", "vendor/LICENSE", "vendor/README.md"]

@@ -1,0 +1,12 @@
+<section id="report-export-panel" class="report-panel">
+<h2>Export an analysis report</h2>
+<p>Build a snapshot for the selected instrument, display units and analysis cutoff. Choose the sections to include, preview the result, then use your browser’s <strong>Print / Save PDF</strong> or download a self-contained HTML report.</p>
+<div id="report-sections" class="report-section-options" role="group" aria-label="Report sections"></div>
+<p class="muted">Only selected rendered results and method explanations are included. Private analytical results and declared sources remain in the exported file; share only if permitted. The original observation dataset is not embedded. Separate fundamental context requires its own explicit selection.</p>
+<button id="report-build" type="button">Build report preview</button>
+<p id="report-status" role="status" aria-live="polite"></p>
+</section>
+<div id="seasonlens-report-preview" hidden role="region" aria-label="Analysis report preview">
+<div class="report-preview-toolbar report-controls"><strong id="report-snapshot-label"></strong><div class="report-preview-actions"><button id="report-close" type="button" class="secondary">Back to analysis</button><button id="report-print" type="button">Print / Save PDF</button><button id="report-download" type="button" class="secondary">Download HTML</button></div><p>Preview of a fixed snapshot. Go back and rebuild after changing your analysis. The print dialog controls PDF saving and page settings; availability depends on your browser.</p><p id="report-preview-status" role="status" aria-live="polite"></p></div>
+<article id="seasonlens-report-content"></article>
+</div>

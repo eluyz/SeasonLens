@@ -2,6 +2,8 @@
 
 The browser statistical extension is specified separately in [docs/SCIENCE_SPEC.md](docs/SCIENCE_SPEC.md): historical risk, completed-year monthly-change stability, exact-interval FX variance, fixed-model walk-forward comparisons and separate fundamental-release vintages. Existing core contracts below remain in force.
 
+Browser-local selected-section report snapshots and compact mirrored controls are documented in [docs/REPORTS.md](docs/REPORTS.md). Reports retain selected metadata/settings and rendered results, omit the original observation arrays and application scripts, and support preview, native PDF printing and standalone HTML download. They do not publish imported observations. Statistical UI `prepare(names)` accepts only known panel names and renders requested panels without changing their open state. Input validation and calculation contracts remain unchanged.
+
 Status: experimental core implementation specification. Product demand and alternatives research remain open.
 
 API: `aggregate_monthly(frame, *, date_column="date", value_column="value") -> MonthlyResult`.

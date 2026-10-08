@@ -32,6 +32,10 @@ global.SeasonLensForecasts={...actualForecast,evaluate:(...args)=>{forecastCalls
 const initialize=require(path.join(base,'scientific_ui.js'));
 (async()=>{
  const science=initialize(options);assert.equal(initialize(options),science);assert.equal(nodes['science-period'].listeners.change.length,1);assert.match(nodes['science-context'].textContent,/SYNTHETIC/);assert.equal(chartCalls.length,0);
+ // Export prepares only requested statistics without changing the reading layout.
+ science.prepare(['risk']);assert.match(nodes['science-risk-status'].textContent,/valid changes/);assert.equal(chartCalls.length,0);assert.equal(nodes['science-fundamental-status'].textContent,'');
+ for(const name of ['risk','seasonal','fx','forecast','fundamental'])assert.equal(nodes['science-'+name+'-panel'].open,false);
+ assert.throws(()=>science.prepare(['unknown']),/Unknown statistical report section/);
  for(const name of ['risk','seasonal','fx','forecast','fundamental']){nodes['science-'+name+'-panel'].open=true;await nodes['science-'+name+'-panel'].emit('toggle');}
  assert.match(nodes['science-risk-status'].textContent,/valid changes/);assert.match(nodes['science-risk-cards'].innerHTML,/Historical 95% VaR/);assert.match(nodes['science-exposure'].innerHTML,/EUR/);assert.equal(nodes['science-quantity-label'].textContent,'Quantity in tonnes');
  assert.match(nodes['science-seasonal-status'].textContent,/2021–2025/);assert.match(nodes['science-seasonal-table'].innerHTML,/At least 8/);assert.match(nodes['science-seasonal-table'].innerHTML,/Positive years/);assert.match(nodes['science-forecast-table'].innerHTML,/Last observed price/);assert.match(nodes['science-fx-status'].textContent,/exact matching intervals/);assert.match(nodes['science-fundamental-status'].textContent,/SYNTHETIC.*invented/);assert.equal(nodes['science-fundamental-year'].value,'2026/27');assert.doesNotMatch(nodes['science-fundamental-table'].innerHTML,/2026-10-09/);

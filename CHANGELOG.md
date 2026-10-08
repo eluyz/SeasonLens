@@ -1,5 +1,11 @@
 # Changelog
 
+## Quick controls and report export — 2026-10-08
+
+- Compact sticky instrument/unit controls, visible cutoff and five shortcuts, with keyboard-accessible scrollable chart/table frames.
+- Selected-section report preview with metadata, current chart settings, legends, coverage and methods; native Print / Save PDF and offline script-free HTML download.
+- Immutable snapshots, fresh preparation of closed statistical panels, hidden-line fidelity and explicit separate fundamental selection. Private reports are not uploaded or persisted.
+
 ## Statistical analysis checkpoint — 2026-10-08
 
 - Historical buyer/seller VaR and fractional-tail Expected Shortfall at 95%/99%, observed-step horizons, stress paths and signed benchmark-budget scenarios, with minimum tail coverage.
