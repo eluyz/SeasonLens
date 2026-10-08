@@ -1,6 +1,6 @@
 # SeasonLens
 
-An open-source project for auditable seasonality and market analysis of CSV time series. Excel workbook import is planned.
+An open-source project for auditable seasonality and market analysis of CSV time series and Excel master files.
 
 **Current milestone: an interactive public demo, private SQLite persistence, direct ECB reference-rate updates and local CSV analysis (experimental 0.0.1 source checkpoint).** Private browser XLSX master-file import is implemented. Automatic futures continuation closes and a tagged release remain unimplemented.
 
@@ -10,9 +10,9 @@ The CSV reader prepares one explicitly selected series; the core computes monthl
 
 The [public browser demo](https://eluyz.github.io/SeasonLens/) is hosted on GitHub Pages from `docs/index.html`. It includes invented wheat, corn, rapeseed, EUR/PLN, EUR/USD and derived USD/PLN observations only. All three commodities support EUR/t and exact-date synthetic PLN/t views. See [deployment instructions](docs/PAGES.md) for publishing source and rebuild details.
 
-The demo supports instrument/unit selection, monthly tables, six-line technical analysis, market snapshots, historical price positions, commodity/FX attribution, index-100 comparisons, volatility, RSI, correlations, wheat/corn spreads, seasonal distributions and scenario calculations. Open one CSV series directly in the browser without uploading it to a server; imported series stay in tab memory and disappear on reload. The local app additionally maintains an auditable private SQLite history. To rebuild the invented built-in samples, run `PYTHONPATH=src python3 examples/build_pages.py`.
+The demo supports instrument/unit selection, monthly tables, six-line technical analysis, market snapshots, historical price positions, commodity/FX attribution, index-100 comparisons, volatility, RSI, correlations, wheat/corn spreads, seasonal distributions and scenario calculations. Open an XLSX master file or one CSV series directly in the browser without uploading it to a server; imported series stay in tab memory and disappear on reload. The local app additionally maintains an auditable private SQLite history. To rebuild the invented built-in samples, run `PYTHONPATH=src python3 examples/build_pages.py`.
 
-Browser CSV import requires explicit date/value columns, units, delimiter, decimal convention and cutoff. Dates use `YYYY-MM-DD`; blank prices reject unless you explicitly allow their omission. Duplicate dates and invalid numbers always reject, including rows after the cutoff. Browser import does not overwrite built-in samples, impersonate an official data source or save data between visits. XLSX is not supported.
+Browser CSV import requires explicit date/value columns, units, delimiter, decimal convention and cutoff. Dates use `YYYY-MM-DD`; blank prices reject unless you explicitly allow their omission. Duplicate dates and invalid numbers always reject, including rows after the cutoff. Browser import does not overwrite built-in samples, impersonate an official data source or save data between visits. For XLSX worksheet/column mapping and supported Excel dates, see [Private Excel master-file import](#private-excel-master-file-import).
 
 See [market analysis methods](docs/METHODS.md) for reference dates, percentile ties, RSI warmup, unannualized volatility, currency attribution, exact-interval correlations and the limits of futures continuation prices.
 
@@ -89,7 +89,7 @@ Blank values reject import by default. `missing_values="skip"` permits only empt
 
 `CSVImportError.report` explains rejected input with issue codes and source rows. On success, `result.report` describes selected input **before** authorized blank omissions, so `report.has_errors` can still be true when only accepted missing-value issues remain. `result.frame` is the clean chronological series; `source_rows` matches its order. Other-instrument and cutoff omissions are recorded separately. `inspect_series(frame)` is also available for prepared DataFrames and never changes them.
 
-Date formats must specify `%Y`, `%d` and `%m`, `%b` or `%B`; the reader does not supply a missing year. Timezone directives `%z` and `%Z` are unsupported. `skip_rows` explicitly skips physical preamble lines before the CSV header. `max_date=datetime.date(...)` explicitly excludes later observations **after validation**, so a malformed later observation or duplicate still rejects input. No date cutoff is inferred from today's date. Thousands separators and direct XLSX input are not supported yet. Units, quote conventions, price types and data-source permissions remain external metadata; importing does not change them.
+Date formats must specify `%Y`, `%d` and `%m`, `%b` or `%B`; the reader does not supply a missing year. Timezone directives `%z` and `%Z` are unsupported. `skip_rows` explicitly skips physical preamble lines before the CSV header. `max_date=datetime.date(...)` explicitly excludes later observations **after validation**, so a malformed later observation or duplicate still rejects input. No date cutoff is inferred from today's date. Thousands separators and direct XLSX input are unsupported by this Python CSV reader; XLSX browser import is described below. Units, quote conventions, price types and data-source permissions remain external metadata; importing does not change them.
 
 Monthly averages describe historical levels. They do not establish predictive seasonality, remove inflation, or correct futures rolling effects.
 

@@ -31,7 +31,7 @@ function selectMaster(){for(const row of nodes['browser-mappings'].querySelector
  const csvBuffer=()=>new TextEncoder().encode('date,value\n2026-01-01,100\n2026-01-02,120\n2026-01-03,999\n').buffer;
  await readFile('test.csv',csvBuffer());assert.equal(nodes['browser-settings'].hidden,false);
  await nodes['browser-upload'].emit('submit');assert.equal(installed.length,0);assert.equal(nodes['browser-review'].hidden,false);
- await nodes['browser-upload'].emit('input',{target:nodes['browser-asof']});assert.equal(nodes['browser-review'].hidden,true);
+ await nodes['browser-upload'].emit('input',{target:nodes['browser-asof']});assert.equal(nodes['browser-review'].hidden,true);assert.match(nodes['browser-error'].textContent,/Settings changed.*Validate again/);
  await nodes['browser-commit'].emit('click');assert.equal(installed.length,0);
  await nodes['browser-upload'].emit('submit');await nodes['browser-commit'].emit('click');assert.equal(installed.length,1);
  assert.equal(installed[0][0].views.Original.observations,2);assert.equal(installed[0][0].source_format,'CSV');assert.equal(installed[0][0].role,'custom');assert.equal(installed[0][0].import_summary.excluded_future_rows.length,1);

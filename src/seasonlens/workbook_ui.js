@@ -32,9 +32,9 @@ function initialize(){
    const info=SeasonLensBrowser.inspectCSV(loaded.text,byId('browser-delimiter').value);byId('browser-preview').replaceChildren(table(['Physical line',...info.header],info.preview.map(row=>[row.row,...row.cells])));byId('browser-preview-note').textContent=info.dataRows+' CSV data rows · first 10 physical row starts shown. The first row is the header.';
   }
  }
- form.addEventListener('input',event=>{invalidate();if(event.target.id==='browser-file'){loaded=null;byId('browser-settings').hidden=true;status('File changed. Open it to review its rows.')}});
+ form.addEventListener('input',event=>{invalidate();if(event.target.id==='browser-file'){loaded=null;byId('browser-settings').hidden=true;status('File changed. Open it to review its rows.')}else if(loaded)status('Settings changed. Validate again before adding.')});
  form.addEventListener('change',event=>{
-  invalidate();const id=event.target.id;if(['browser-sheet','browser-header-row','browser-start-row','browser-excel-date-column','browser-delimiter'].includes(id)&&loaded){try{refreshPreview();status('Settings changed. Validate again before adding.')}catch(error){byId('browser-preview').replaceChildren();status('Preview rejected: '+error.message)}}
+  invalidate();const id=event.target.id;if(loaded)status('Settings changed. Validate again before adding.');if(['browser-sheet','browser-header-row','browser-start-row','browser-excel-date-column','browser-delimiter'].includes(id)&&loaded){try{refreshPreview()}catch(error){byId('browser-preview').replaceChildren();status('Preview rejected: '+error.message)}}
  });
  byId('browser-read').addEventListener('click',async()=>{
   invalidate();const token=revision,file=byId('browser-file').files[0];loaded=null;byId('browser-settings').hidden=true;busy=true;byId('browser-read').disabled=true;status('Reading selected file locally…');
