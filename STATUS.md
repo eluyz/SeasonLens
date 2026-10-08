@@ -1,8 +1,8 @@
 # Project status
 
-Date: 2026-10-07. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics and local interactive explorer. Earlier checkpoint sections remain historical records.
+Date: 2026-10-08. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics, public exploration and private browser XLSX master-file import. Earlier checkpoint sections remain historical records.
 
-Repository: https://github.com/eluyz/SeasonLens. This source checkpoint is the first code import after the owner's repository initialization. Documentation is in English. No release tag has been created.
+Repository: https://github.com/eluyz/SeasonLens. Documentation is in English. No release tag has been created.
 
 ## Complete
 
@@ -16,6 +16,8 @@ Repository: https://github.com/eluyz/SeasonLens. This source checkpoint is the f
 - Synthetic CSV-to-monthly command-line example.
 - SL-004: exact-window equal-year profiles, contributor/observation counts, monthly-mean extrema and cutoff-limited reference-year comparison.
 - Local standalone HTML/SVG report and synthetic CSV-to-report command-line example (partial SL-005).
+- Public six-instrument explorer with browser-only CSV/XLSX preview, explicit mappings, atomic staged import and exact-date private currency conversions.
+- Navigation, expandable indicator explanations, missing-value reasons and whitelisted view preferences. Imported data is never retained on reload.
 
 ## Earlier monthly-core validation
 
@@ -30,7 +32,7 @@ This is not a clean dependency-download or cross-platform installation test. Pyt
 
 ## Next
 
-Configure a separate private data repository/runner and verify a manual update before enabling unattended execution. Verify a compatible MATIF continuation-close feed and its roll/adjustment rules. Full-browser/mobile QA, automated GitHub checks, XLSX import, alternatives validation and independent user feedback remain open. No hosted job or automatic futures feed is active.
+Configure a separate private data repository/runner and verify a manual update before enabling unattended execution. Verify a compatible MATIF continuation-close feed and its roll/adjustment rules. Physical mobile-device QA, cross-platform installation, broader pull-request CI, alternatives validation and independent user feedback remain open. The public builder runs tests on source changes; browser XLSX import is implemented and desktop Chrome verification is recorded below. No hosted job or automatic futures feed is active.
 
 ## Data-policy update — 2026-10-07
 
@@ -172,3 +174,13 @@ Limits: Python 3.12/pandas 2.2.3 only; no Windows/macOS/other-Python execution, 
 - Bundled official SheetJS CE0.20.3 mini, pinned upstreamcommit8a7cfd47bde8258c0d91df6a737bf0136699cdf8 and SHA2560cb353f830d7288385492c83d277b058ddeac664ca51cf1393aa1fd3e2b70939 with Apache-2.0 license. There are no runtime CDN requests. ZIP checks bound local/central sizes before reader allocation, normalize legal zero descriptor hints on an independent copy, reject ZIP64/macro/external-link/encrypted packages and bound expanded data/cells.
 - PYTHONPATH=src python3 -m unittest discover -s tests -q: **175 tests passed**. Independent review approved20 XLSX hand/archive tests, wizard invalidation/one-shot/race checks,6 privacy/restore/navigation/reset tests and private conversion integration. Public guard accepted exactly six synthetic sources/nine views; actual scripts including vendor passed node --check. Public wizard is outside collapsed details. git diff --check passed.
 - The previously supplied private master file was validated locally: six columns and dateC, header1/start4, all selected histories through2026-10-06. Blank commodity prices required explicit skipping; no raw observations were published. Wheel built/installed with existing dependencies; rendering from /tmp included all XLSX/UX assets with valid scripts. These are not clean external dependency or Windows/macOS checks. Actual browser import/layout and public deployment verification are pending.
+
+## Public XLSX import verification — 2026-10-08
+
+- Published source commit `9edac4d62fc8686291aa2b375656dfd040260b79`; GitHub builder run 37767936855 passed all 175 tests and generated only the two synthetic HTML pages. Checked candidate `fc7898b4edcda245b15139fe2e5851dbbf25c06e` deployed successfully in Pages run 37768715010. Local/remote differences were confined to 20/60-return volatility roundoff below 2e-14; observations, other calculations and non-dataset HTML were identical.
+- Actual desktop Chrome on the public page opened an invented two-sheet master workbook: header row 1, date column C and first data row 4 excluded deliberately invalid live row 3. Blank wheat row 14 rejected the entire selection; the six sample instruments remained unchanged. Explicit blank skipping produced a six-instrument review before the separate Add action installed all six together. Wheat retained 219 observations, the other five retained 220; a valid future row was explicitly excluded from each.
+- Same-workbook private EUR/PLN enabled the three commodity PLN views. Wheat's matched reference was 210.95 EUR/t × 4.219 PLN per EUR = 889.99805 PLN/t. The actual downloaded CSV contained 219 observations and all seven expected columns, with that exact last price, last date 2020-11-03 and no later observation. Scenario controls used these same private reference prices.
+- Reset retained all 12 in-tab instruments. Selecting the sample rapeseed, PLN/t, a 90-day range and hiding SMA200 survived reload; reload removed all six private imports and restored the sample cutoff. Reset then restored default display settings. Navigation opened the technical section and its six-line explanation. A separate 210-observation CSV still imported privately without a sample-FX conversion. Changed configuration invalidated the staged Add action.
+- Browser verification found and corrected two presentation issues: stale successful-validation text after non-preview settings changes, and a hidden Excel-only formula label overridden by general label styling. After corrections, all 175 local tests passed again in 12.758 s; GitHub builder run 37769764287 passed all 175 in 7.829 s. Source `f9a4167e6ee59baec1951aeb7a13982a01a47f3b` generated candidate `4968675a79a15e9ac8bd50f2971fedf02135c613`, whose complete tree matched the local build exactly.
+- Responsive CSS has local chart/table overflow and phone-size controls. A planned 390px iframe check could not run because this cloud browser blocks file URLs; no attempt was made to bypass that policy. Physical mobile devices and Windows/macOS remain untested. Console inspection showed browser-extension metadata errors, with no application error observed. No private market data, database or automatic collection job was published.
+- Final Pages run 37770020731 successfully deployed candidate `4968675a79a15e9ac8bd50f2971fedf02135c613`. Actual public Chrome verification confirmed that the Excel formula option is invisible for CSV and changing a validated decimal setting hides Add, retains the six samples and displays “Settings changed. Validate again before adding.” A fresh invented-workbook import again added all six private instruments together, giving 12 selections including the six samples. This completes the earlier publication/browser pending checkpoints.
