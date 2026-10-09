@@ -85,6 +85,13 @@ for(const args of [{deny:true},{stored:'{"privatePrices":[1]}'},{search:'?lang=i
  assert.equal(t('  Historical average\n','pl'),'  Średnia historyczna\n');
  assert.equal(t('Notebook containing Historical average and Wheat','pl'),'Notebook containing Historical average and Wheat');
  assert.equal(t('Analysis cutoff: named customer','pl'),'Analysis cutoff: named customer');
+ assert.equal(t('Observation: 2026-10-06','pl'),'Data obserwacji: 2026-10-06');
+ assert.equal(t('Reference: unavailable','pl'),'Data odniesienia: niedostępna');
+ assert.equal(t('4.325 PLN per EUR','pl'),'4.325 PLN za EUR');
+ assert.equal(t('262 observations · 2025-10-06–2026-10-06 · min 4.314 / max 4.424','pl'),'262 obserwacji · 2025-10-06–2026-10-06 · min 4.314 / maks. 4.424');
+ assert.equal(t('— analysis report','pl'),'— raport analityczny');
+ assert.equal(t('Mean Jan · EUR/t · USER_FILE — private in this tab · analysis cutoff 2026-10-06 · risk/FX/forecast window 2021-10-06–2026-10-06.','pl'),'Mean Jan · EUR/t · USER_FILE — prywatnie w tej karcie · data graniczna analizy 2026-10-06 · okno ryzyka/walut/prognoz 2021-10-06–2026-10-06.');
+ assert.equal(t('Private same-workbook conversion: Wheat. Jan × Mean. 210 exact-date positive pairs; 0 commodity observations not converted. No quotes carried forward. Future observations excluded: 1','pl'),'Prywatne przeliczenie w ramach jednego skoroszytu: Wheat. Jan × Mean. 210 dodatnich par z identyczną datą; 0 obserwacji surowca nie przeliczono. Kursów nie przenoszono na kolejne dni. Wykluczone przyszłe obserwacje: 1');
  assert.equal(t('14 observations; higher than reference','pl'),'14 obserwacji; powyżej odniesienia');
  assert.equal(t('Import rejected: Customer Mean Wheat','pl'),'Import odrzucony: Customer Mean Wheat');
  assert.equal(t('2 instrument(s) validated through 2026-10-06. Nothing has been added yet.','pl'),'2 instrumentów sprawdzonych do 2026-10-06. Nie dodano jeszcze żadnych danych.');
