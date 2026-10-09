@@ -53,6 +53,7 @@ def package(version):
     dist.mkdir(exist_ok=True)
     archive = dist / f'seasonlens-browser-v{version}.zip'
     files = {'docs/index.html': 'index.html', 'docs/walkthrough.html': 'walkthrough.html',
+             'docs/walkthrough-pl.html': 'walkthrough-pl.html',
              'docs/seasonlens-import-template.xlsx': 'seasonlens-import-template.xlsx',
              'docs/sample_prices.csv': 'sample_prices.csv', 'docs/layout-check.html': 'layout-check.html',
              'LICENSE': 'LICENSE', 'src/seasonlens/vendor/LICENSE': 'SHEETJS-LICENSE.txt'}

@@ -4,7 +4,9 @@ An open-source project for auditable seasonality and market analysis of CSV time
 
 **Version 0.1.0 — first public experimental release.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
 
-[Open the demo](https://eluyz.github.io/SeasonLens/) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.0.md) · [Installation and limits](docs/INSTALLATION.md)
+[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.0.md) · [Installation and limits](docs/INSTALLATION.md)
+
+The current app supports **English and Polish** through two language tiles. Imported names and data keep their supplied form; reports retain the language in which they were built. See [language behavior](docs/LANGUAGES.md).
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 

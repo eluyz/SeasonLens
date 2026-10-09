@@ -66,6 +66,7 @@ jobs:
                   assert 'id="scientific-analysis"' in html
                   assert 'id="report-export-panel"' in html and 'initSeasonLensQuickControls' in html
                   assert 'id="seasonlens-start"' in html and 'initSeasonLensStartGuide' in html
+                  assert 'id="language-en"' in html and 'id="language-pl"' in html and 'SeasonLensLocale.init();' in html
                   assert all('id="science-'+name+'-panel"' in html for name in ('risk','seasonal','fx','forecast','fundamental'))
                   import hashlib
                   assert hashlib.sha256(Path('src/seasonlens/vendor/xlsx.mini.min.js').read_bytes()).hexdigest() == '0cb353f830d7288385492c83d277b058ddeac664ca51cf1393aa1fd3e2b70939'

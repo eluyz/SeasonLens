@@ -7,17 +7,20 @@
 <title>Wheat and EUR/PLN walkthrough · SeasonLens v0.1.0</title>
 <style>
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f3f6fb;color:#18283f;font:16px/1.6 system-ui,sans-serif}main{max-width:880px;margin:auto;padding:28px}h1{font-size:clamp(1.7rem,5vw,2.2rem);line-height:1.2;margin:12px 0}h2{font-size:1.25rem;line-height:1.35;margin:0 0 12px}section{background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:24px;margin:22px 0;scroll-margin-top:16px}a{color:#1d4ed8;text-underline-offset:3px}a:hover{text-decoration-thickness:2px}a:focus-visible,.table-frame:focus-visible{outline:3px solid #2563eb;outline-offset:4px}p,li{overflow-wrap:anywhere}.muted{color:#52647c}.notice,.check{padding:12px 16px;border-left:4px solid #ad7300;background:#fff7e5}.check{border-color:#277043;background:#edf8f0}.actions{display:flex;flex-wrap:wrap;gap:10px}.actions a{display:inline-block;background:#1d4ed8;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none}.actions a.secondary{background:#fff;color:#1d4ed8;border:1px solid #c9d7e8}.steps{display:flex;flex-wrap:wrap;gap:8px 16px;padding-left:0;list-style:none;font-size:.94rem}.table-frame{max-width:100%;overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.94rem}caption{text-align:left;font-weight:600;padding:0 0 8px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #dbe4ef;vertical-align:top}thead{background:#eef3fa}code{font-size:.92em}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eef3fa;padding:14px;border-radius:8px}footer{font-size:.9rem;color:#52647c;margin:24px 0}.skip{position:absolute;left:16px;top:-60px;padding:10px;background:white}.skip:focus{top:8px}@media(max-width:600px){main{padding:16px}section{padding:17px}th,td{padding:8px}table{min-width:400px}.actions a{width:100%;text-align:center}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{body{background:#fff;font-size:11pt}main{max-width:none;padding:0}section{border:0;padding:0;margin:20px 0}.actions,.steps,.skip{display:none}.table-frame{overflow:visible}table{min-width:0}h2{break-after:avoid}tr,pre{break-inside:avoid}a{color:inherit}}
+
+.language-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 24px}.language-tiles a{display:block;padding:14px 18px;border:2px solid #c9d7e8;border-radius:10px;background:#fff;text-align:center;font-weight:650;text-decoration:none}.language-tiles a[aria-current="page"]{background:#eaf1ff;border-color:#1d4ed8}.language-tiles a:hover{background:#eaf1ff}@media print{.language-tiles{display:none}}
 </style>
 </head>
 <body>
 <a class="skip" href="#step-1">Skip to the walkthrough</a>
 <main>
 <header>
+<nav class="language-tiles" aria-label="Guide language"><a href="walkthrough.html" lang="en" hreflang="en" aria-current="page">English</a><a href="walkthrough-pl.html" lang="pl" hreflang="pl">Polski</a></nav>
 <p class="muted">SeasonLens v0.1.0 · practical walkthrough</p>
 <h1>Wheat and EUR/PLN: from a workbook to a report</h1>
 <p>Import only wheat and EUR/PLN from the same workbook, check the PLN-per-tonne conversion, understand the short history and save a report. Allow roughly 5–10 minutes on a desktop; mapping columns can take longer on a phone.</p>
 <p class="notice"><strong>All observations are invented.</strong> They are not MATIF closes, central-bank rates or a forecast. No account or installation is needed.</p>
-<div class="actions"><a href="index.html" target="_blank" rel="noopener">Open demo in a new tab</a><a class="secondary" href="seasonlens-import-template.xlsx" download>Download example XLSX</a></div>
+<div class="actions"><a href="index.html?lang=en" target="_blank" rel="noopener">Open demo in a new tab</a><a class="secondary" href="seasonlens-import-template.xlsx" download>Download example XLSX</a></div>
 <nav aria-label="Walkthrough steps"><ol class="steps"><li><a href="#step-1">1. Open</a></li><li><a href="#step-2">2. Configure</a></li><li><a href="#step-3">3. Validate</a></li><li><a href="#step-4">4. Convert</a></li><li><a href="#step-5">5. Read charts</a></li><li><a href="#step-6">6. Check risk</a></li><li><a href="#step-7">7. Export</a></li></ol></nav>
 </header>
 <section id="step-1" aria-labelledby="heading-1">
@@ -74,7 +77,7 @@
 <h2 id="finish-heading">Finish and known limits</h2>
 <p>Save results before reloading. Reload removes both private imports and restores six built-in samples; browser imports are not stored in SQLite. Display preferences may persist, imported observations do not. Use the local app for persistent private history.</p>
 <p>There is no live-data collection or automatic refresh in this exercise. Its dates are invented weekdays, not a checked exchange calendar. It does not establish predictive skill, five-year coverage or real-market suitability. Wide tables/charts scroll inside their frames; on a keyboard focus the frame and use arrow keys. Mapping is easier on a larger screen. Physical-phone, Safari and native PDF-dialog behavior remain platform checks.</p>
-<p><a href="https://github.com/eluyz/SeasonLens/blob/main/docs/GETTING_STARTED.md">Getting started</a> · <a href="https://github.com/eluyz/SeasonLens/blob/main/docs/WHEAT_FX_WALKTHROUGH.md">Read the same walkthrough on GitHub</a> · <a href="index.html">Return to SeasonLens</a></p>
+<p><a href="https://github.com/eluyz/SeasonLens/blob/main/docs/GETTING_STARTED.md">Getting started</a> · <a href="https://github.com/eluyz/SeasonLens/blob/main/docs/WHEAT_FX_WALKTHROUGH.md">Read the same walkthrough on GitHub</a> · <a href="index.html?lang=en">Return to SeasonLens</a></p>
 </section>
 <footer>SeasonLens · invented example data · fixed analysis cutoff 2026-10-06</footer>
 </main>

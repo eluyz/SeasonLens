@@ -41,7 +41,7 @@
   options.append(fields,provenance,links,hint);host.append(bar,options);main.prepend(host);
   let instrumentSignature=null,currencySignature=null;
   function sync(input,base,previous){
-   const choices=base?[...base.options].map(o=>[o.value,o.textContent]):[];
+   const choices=base?[...base.options].map(o=>{const s=context.data?.[o.value];let text=o.textContent;if(base.id==='instrument'&&s&&s.source!=='USER_FILE')text=s.title;else if(base.id==='currency')text=o.value==='Original'?(context.data?.[byId('instrument')?.value]?.unit||text):o.value;return [o.value,text]}):[];
    const signature=JSON.stringify(choices);
    if(signature!==previous){input.replaceChildren();for(const [value,text]of choices){const option=make('option',text);option.value=value;input.append(option)}}
    input.value=base?.value||'';input.disabled=!choices.length||!!base?.disabled;
@@ -53,7 +53,7 @@
    const selected=context.data?.[baseInstrument?.value];let view;try{view=context.view()}catch(_){}
    if(selected&&view){
     const cutoff=context.cutoff(),unit=view.unit||selected.unit||'Original input units';
-    current.textContent=selected.title+' · '+unit;cutoffLine.textContent='Analysis cutoff: '+cutoff;
+    if(selected.source==='SYNTHETIC')current.removeAttribute('data-no-translate');else current.setAttribute('data-no-translate','');current.textContent=selected.title+' · '+unit;cutoffLine.textContent='Analysis cutoff: '+cutoff;
     provenance.textContent='Source: '+selected.source+' · '+(selected.source==='SYNTHETIC'?'Invented demonstration data.':selected.source==='USER_FILE'?'Private import in this tab only.':'Source declared by the dataset.');
    }else{current.textContent='Select or import data to begin';cutoffLine.textContent='No analysis cutoff selected';provenance.textContent='No selected data view.'}
    for(const frame of doc.querySelectorAll('.table-wrap,.science-table,.market-chart,#daily,#fiveyear,#profiles,#normalized')){

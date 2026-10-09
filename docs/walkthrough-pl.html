@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<title>Przewodnik: pszenica i EUR/PLN · SeasonLens v0.1.0</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f3f6fb;color:#18283f;font:16px/1.6 system-ui,sans-serif}main{max-width:880px;margin:auto;padding:28px}h1{font-size:clamp(1.7rem,5vw,2.2rem);line-height:1.2;margin:12px 0}h2{font-size:1.25rem;line-height:1.35;margin:0 0 12px}section{background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:24px;margin:22px 0;scroll-margin-top:16px}a{color:#1d4ed8;text-underline-offset:3px}a:hover{text-decoration-thickness:2px}a:focus-visible,.table-frame:focus-visible{outline:3px solid #2563eb;outline-offset:4px}p,li{overflow-wrap:anywhere}.muted{color:#52647c}.notice,.check{padding:12px 16px;border-left:4px solid #ad7300;background:#fff7e5}.check{border-color:#277043;background:#edf8f0}.actions{display:flex;flex-wrap:wrap;gap:10px}.actions a{display:inline-block;background:#1d4ed8;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none}.actions a.secondary{background:#fff;color:#1d4ed8;border:1px solid #c9d7e8}.steps{display:flex;flex-wrap:wrap;gap:8px 16px;padding-left:0;list-style:none;font-size:.94rem}.table-frame{max-width:100%;overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.94rem}caption{text-align:left;font-weight:600;padding:0 0 8px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #dbe4ef;vertical-align:top}thead{background:#eef3fa}code{font-size:.92em}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eef3fa;padding:14px;border-radius:8px}footer{font-size:.9rem;color:#52647c;margin:24px 0}.skip{position:absolute;left:16px;top:-60px;padding:10px;background:white}.skip:focus{top:8px}@media(max-width:600px){main{padding:16px}section{padding:17px}th,td{padding:8px}table{min-width:400px}.actions a{width:100%;text-align:center}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{body{background:#fff;font-size:11pt}main{max-width:none;padding:0}section{border:0;padding:0;margin:20px 0}.actions,.steps,.skip{display:none}.table-frame{overflow:visible}table{min-width:0}h2{break-after:avoid}tr,pre{break-inside:avoid}a{color:inherit}}
+
+.language-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 24px}.language-tiles a{display:block;padding:14px 18px;border:2px solid #c9d7e8;border-radius:10px;background:#fff;text-align:center;font-weight:650;text-decoration:none}.language-tiles a[aria-current="page"]{background:#eaf1ff;border-color:#1d4ed8}.language-tiles a:hover{background:#eaf1ff}@media print{.language-tiles{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#step-1">Przejdź do kroków przewodnika</a>
+<main>
+<header>
+<nav class="language-tiles" aria-label="Język przewodnika"><a href="walkthrough.html" lang="en" hreflang="en">English</a><a href="walkthrough-pl.html" lang="pl" hreflang="pl" aria-current="page">Polski</a></nav>
+<p class="muted">SeasonLens v0.1.0 · przewodnik praktyczny</p>
+<h1>Pszenica i EUR/PLN: od skoroszytu do raportu</h1>
+<p class="muted">Nie potrzebujesz konta ani instalacji.</p>
+<p>Skorzystaj z <a href="https://eluyz.github.io/SeasonLens/?lang=pl">publicznego demo po polsku</a> oraz <a href="https://eluyz.github.io/SeasonLens/seasonlens-import-template.xlsx">szablonu XLSX z wymyślonymi danymi</a>. Ten przewodnik jest również dostępny jako <a href="https://eluyz.github.io/SeasonLens/walkthrough-pl.html">strona dostosowana do telefonu</a>. Na komputerze przejście całości zajmuje około 5–10 minut; przypisanie kolumn na telefonie może potrwać dłużej.</p>
+<p class="notice">Celem jest import <strong>wyłącznie pszenicy i EUR/PLN z tego samego skoroszytu</strong>, sprawdzenie przeliczenia na PLN za tonę, zrozumienie ograniczeń krótkiej historii i zapisanie raportu. Wszystkie obserwacje w skoroszycie są wymyślone. Nie są cenami zamknięcia MATIF, kursami banku centralnego ani prognozą.</p>
+<div class="actions"><a href="index.html?lang=pl" target="_blank" rel="noopener">Otwórz demo w nowej karcie</a><a class="secondary" href="seasonlens-import-template.xlsx" download>Pobierz przykładowy XLSX</a></div>
+<nav aria-label="Kroki przewodnika"><ol class="steps"><li><a href="#step-1">1. Otwórz</a></li><li><a href="#step-2">2. Ustaw</a></li><li><a href="#step-3">3. Sprawdź</a></li><li><a href="#step-4">4. Przelicz</a></li><li><a href="#step-5">5. Czytaj wykresy</a></li><li><a href="#step-6">6. Sprawdź ryzyko</a></li><li><a href="#step-7">7. Eksportuj</a></li></ol></nav></header>
+<section id="step-1" aria-labelledby="heading-1"><h2 id="heading-1">1. Otwórz przykładowy plik</h2>
+<p>Zacznij w nowej karcie demo, aby mieć dokładnie sześć wbudowanych instrumentów przykładowych. Rozwiń <strong>Zacznij tutaj — przeglądaj, importuj lub utwórz raport</strong>, a następnie wybierz <strong>Pobierz przykładowy szablon XLSX</strong>. Możesz też użyć linku do szablonu powyżej.</p>
+<p>Wybierz <strong>Otwórz import prywatny</strong>, wskaż <code>seasonlens-import-template.xlsx</code> w polu <strong>Skoroszyt Excel lub plik CSV</strong>, ustaw <strong>Datę graniczną analizy</strong> na <strong>2026-10-06</strong>, a następnie wybierz <strong>Otwórz i podejrzyj plik</strong>. Otwarcie skoroszytu nie oznacza jego zaimportowania.</p>
+</section>
+<section id="step-2" aria-labelledby="heading-2"><h2 id="heading-2">2. Wskaż wiersze i dwa instrumenty</h2>
+<p>Sprawdź te ustawienia, nawet jeśli mają już właściwe wartości:</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Ustawienia importu; w razie potrzeby przewijaj poziomo"><table><caption>Ustawienia importu</caption><thead><tr><th scope="col">Pole</th><th scope="col">Wartość</th></tr></thead><tbody>
+<tr><th scope="row">Arkusz</th><td>Prices</td></tr>
+<tr><th scope="row">Wiersz nagłówków</th><td>1</td></tr>
+<tr><th scope="row">Pierwszy wiersz danych</th><td>4</td></tr>
+<tr><th scope="row">Kolumna daty</th><td>A · Date</td></tr>
+<tr><th scope="row">Data graniczna analizy</th><td>2026-10-06</td></tr>
+<tr><th scope="row">Format dat zapisanych jako tekst</th><td>YYYY-MM-DD</td></tr>
+<tr><th scope="row">Separator dziesiętny cen zapisanych jako tekst</th><td>.</td></tr>
+</tbody></table></div>
+<p>Wiersz 2 określa jednostki. Wiersz 3 zawiera celowo wymyślone wartości przykładu bieżących notowań z datą 2026-10-07; musi pozostać poza wybraną historią. Podgląd nadal pokazuje ten rzeczywisty wiersz arkusza, aby można było go sprawdzić. Komórki liczbowe i daty w tym szablonie nie wymagają parsowania tekstu ani zgody na użycie wyników formuł. Pozostaw niezaznaczone <strong>Jawnie pomijaj puste komórki cen, z liczbą wierszy</strong> oraz <strong>Użyj zapisanych wyników formuł Excela (mogą być nieaktualne)</strong>.</p>
+<p>W sekcji <strong>Wybierz instrumenty z kolumn cen</strong> zaznacz <strong>tylko B i E</strong>. Pozostaw C, D, F i G niezaznaczone. Wprowadź:</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Przypisanie dwóch instrumentów; w razie potrzeby przewijaj poziomo"><table><caption>Przypisanie dwóch instrumentów</caption><thead><tr><th scope="col">Kolumna</th><th scope="col">Nazwa instrumentu</th><th scope="col">Jednostki</th><th scope="col">Rola</th></tr></thead><tbody>
+<tr><th scope="row">B</th><td>Wheat sample</td><td>EUR/t</td><td>Pszenica</td></tr>
+<tr><th scope="row">E</th><td>EUR/PLN sample</td><td>PLN per EUR</td><td>EUR/PLN</td></tr>
+</tbody></table></div>
+<p>Nazwy instrumentów i jednostki w tabeli są dokładnymi wartościami tego przykładu. <code>PLN per EUR</code> oznacza PLN za EUR. Nazwy kolumn nie przypisują ról. Wybranie roli EUR/PLN ustawia sugerowane jednostki; sprawdź jawnie <strong>PLN per EUR</strong>.</p>
+</section>
+<section id="step-3" aria-labelledby="heading-3"><h2 id="heading-3">3. Sprawdź dane, przejrzyj wynik i dopiero potem dodaj</h2>
+<p>Wybierz <strong>Sprawdź wybrane instrumenty</strong>. Podsumowanie powinno pokazać <strong>dwa instrumenty</strong>, każdy z:</p>
+<ul><li><strong>210 obserwacjami</strong>, od <strong>2025-12-17</strong> do <strong>2026-10-06</strong>;</li><li><strong>0 pominiętych pustych wartości</strong> i <strong>0 wykluczonych przyszłych wierszy</strong>;</li><li>brakiem obserwacji z wiersza 3. Wiersz ten znajduje się poza wybranym zakresem rzeczywistych wierszy danych, dlatego nie jest liczony jako pominięty przyszły wiersz.</li></ul>
+<p>Nic nie zostało jeszcze dodane. Wybierz raz <strong>Dodaj sprawdzone instrumenty do tej karty</strong>. Lista instrumentów ma teraz <strong>osiem pozycji</strong>: sześć początkowych przykładów i dwa prywatne importy. Import ma oznaczenie <strong>USER_FILE</strong>, mimo że zawiera wymyślone dane przykładowe. Oznaczenie opisuje sposób dodania danych do aplikacji, a nie oficjalnego dostawcę.</p>
+<p>Zmiana dowolnego ustawienia importu unieważnia sprawdzenie i wymaga ponownej walidacji.</p>
+</section>
+<section id="step-4" aria-labelledby="heading-4"><h2 id="heading-4">4. Sprawdź pszenicę w PLN za tonę</h2>
+<p>Otwórz <strong>Opcje analizy</strong>. W polu <strong>Instrument</strong> wybierz <strong>Wheat sample · prywatny Excel</strong>, a nie wbudowaną pszenicę. W polu <strong>Jednostki wyświetlania</strong> wybierz <strong>PLN/t</strong>.</p>
+<p>Sprawdź <strong>Datę graniczną analizy: 2026-10-06</strong>, <strong>Obserwacje: 210</strong>, <strong>Ostatnią obserwację: 2026-10-06</strong> i informację o przeliczeniu: <strong>210 dodatnich par z dokładnie tą samą datą</strong>, bez nieprzeliczonych obserwacji surowca. Wykorzystywana jest wyłącznie zadeklarowana seria EUR/PLN z tego samego importu; aplikacja nie podstawia przykładowych kursów i nie przenosi kursu z wcześniejszego dnia.</p>
+<p>Ostatni historyczny wiersz skoroszytu, <strong>213</strong>, pozwala niezależnie sprawdzić rachunek:</p>
+<pre><code>213,29 EUR/t × 4,2051 PLN za EUR = 896,905779 PLN/t</code></pre>
+<p>To około <strong>896,91 PLN/t</strong>, czyli <strong>89 690,58 PLN</strong> za 100 ton. Zaokrąglona do pełnej jednostki cena odniesienia przy <strong>Średnich cenach miesięcznych</strong> pokazuje <strong>897</strong>; dotyczy to wyświetlania, a nie utraty dokładności obliczeń. Aby sprawdzić pełną precyzję, wybierz <strong>Eksportuj wybrane obserwacje (CSV)</strong> i sprawdź ostatnie <code>date</code> i <code>value</code>: data <strong>2026-10-06</strong>, wartość około <strong>896.905779</strong> (eksport binarnej liczby zmiennoprzecinkowej może pokazać <code>896.9057789999999</code>). CSV zawiera też kolumny wskaźników technicznych.</p>
+</section>
+<section id="step-5" aria-labelledby="heading-5"><h2 id="heading-5">5. Czytaj wykresy bez uzupełniania luk</h2>
+<p>W sekcji Zacznij tutaj wybierz <strong>Pokaż średnie miesięczne</strong> i <strong>Pokaż ceny z pięciu lat</strong>.</p>
+<p><strong>Średnie ceny miesięczne</strong> są średnimi zaobserwowanych cen dziennych w danym miesiącu. W PLN/t uśredniane są ceny przeliczone osobno dla każdego dnia; aplikacja nie mnoży średniej miesięcznej pszenicy przez średni miesięczny kurs walutowy. Ceny surowców w tabelach są wyświetlane bez miejsc po przecinku, a obliczenia zachowują pełną dokładność. Kolory porównują każdą niezaokrągloną średnią miesięczną z ostatnią ceną dzienną; nie są sygnałami kupna ani sprzedaży.</p>
+<p><strong>Średnie ceny miesięczne — ostatnie pięć lat z bieżącym rokiem</strong> zachowują zakres <strong>2022–2026</strong>, mimo że szablon zaczyna się w grudniu 2025. Dla lat 2022–2024 i stycznia–listopada 2025 nie ma obserwacji. Listopad–grudzień 2026 przypadają po dacie granicznej. Kreski i luki na wykresie są oczekiwane; nie oznaczają zera. Przerywana średnia z okresu nadaje jednakową wagę każdej dostępnej średniej miesięcznej z poszczególnych lat. Październik 2026 jest niepełny i obejmuje cztery obserwacje. Krótka historia nie pozwala ustalić wiarygodnego wzorca sezonowego.</p>
+<p>W <strong>Analizie technicznej — ostatnie 12 miesięcy</strong> pozostaw <strong>Zakres wykresu dziennego: Ostatnie 12 miesięcy</strong> oraz wszystkie sześć pól wyboru linii. Wykres zawiera cenę, SMA20, SMA100, SMA200 i dwie wstęgi Bollingera. Wyświetlana jest tylko dostarczona historia; jest ona krótsza niż 12 miesięcy. Wskaźniki wymagają pełnych okien: pierwsze 19 obserwacji nie ma SMA20 ani wstęg Bollingera, pierwsze 99 nie ma SMA100, a pierwsze 199 nie ma SMA200. Dostępnych jest tylko <strong>11 wartości SMA200</strong>. Są to okna obserwacji, a nie gwarancja liczby dni kalendarzowych lub sesji giełdowych. Wcześniejsza dostarczona historia służy do wyliczenia wskaźników przed wyświetlanym zakresem; brakująca historia nigdy nie jest dopisywana.</p>
+</section>
+<section id="step-6" aria-labelledby="heading-6"><h2 id="heading-6">6. Sprawdź ryzyko historyczne i pokrycie danych</h2>
+<p>W sekcji <strong>Ryzyko historyczne i analiza statystyczna</strong> otwórz <strong>Ryzyko historyczne i epizody stresowe</strong>. Pozostaw:</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Ustawienia ryzyka w przykładzie; w razie potrzeby przewijaj poziomo"><table><caption>Ustawienia ryzyka w przykładzie</caption><thead><tr><th scope="col">Ustawienie</th><th scope="col">Wartość</th></tr></thead><tbody>
+<tr><th scope="row">Okres oceny ryzyka, walut i prognoz</th><td>Ostatnie 5 lat kalendarzowych</td></tr>
+<tr><th scope="row">Perspektywa</th><td>Kupujący — wzrost cen jest niekorzystny</td></tr>
+<tr><th scope="row">Horyzont obserwowanych przedziałów</th><td>1 obserwowany przedział</td></tr>
+<tr><th scope="row">Poziom ufności ogona</th><td>95%</td></tr>
+<tr><th scope="row">Ilość w tonach</th><td>100</td></tr>
+</tbody></table></div>
+<p>Przykład ma <strong>209 zmian między kolejnymi obserwacjami</strong>. Przy 95% równoważna liczebność ogona wynosi <strong>10,45 obserwacji</strong>, co przekracza wymagane przez aplikację minimum pięciu. Zmiana <strong>Poziomu ufności ogona</strong> na <strong>99%</strong> pozostawia tylko <strong>2,09</strong>, dlatego VaR i Expected Shortfall (oczekiwana strata w ogonie) są niedostępne. To zabezpieczenie dotyczące pokrycia danych, a nie błąd. Przed utworzeniem domyślnego raportu wróć do <strong>95%</strong>.</p>
+<p>Kupujący traktuje wzrost cen jako niekorzystny, sprzedający — spadek. Wyświetlany scenariusz budżetowy stosuje historyczne zmiany procentowe do bieżącej ceny odniesienia i ilości. Nie jest zyskiem lub stratą z transakcji ani prognozą. Pięć lat kalendarzowych oznacza wybrany zakres, a nie stwierdzenie, że skoroszyt zawiera pięć lat obserwacji.</p>
+<p>Opcjonalnie otwórz <strong>Udział surowca i waluty w ryzyku ceny w PLN</strong>. Te dwie zaimportowane serie mają <strong>209 dokładnie dopasowanych przedziałów</strong>. Podział wariancji uwzględnia kowariancję i opisuje ten przykład; udziały nie są dowodem przyczynowości ani skuteczności zabezpieczenia. Sezonowość pełnych lat wymaga dłuższej historii: ten szablon nie pozwala wyznaczyć przedziałów niepewności średniej historycznej.</p>
+</section>
+<section id="step-7" aria-labelledby="heading-7"><h2 id="heading-7">7. Utwórz i zapisz raport</h2>
+<p>Sprawdź, czy wybrano prywatną pszenicę w <strong>PLN/t</strong>, datę graniczną <strong>2026-10-06</strong> i powyższe ustawienia ryzyka. W sekcji Zacznij tutaj wybierz <strong>Otwórz kreator raportu</strong>. Pozostaw cztery początkowo zaznaczone sekcje:</p>
+<ul><li><strong>Przegląd rynku i pokrycie danych</strong>;</li><li><strong>Średnie ceny miesięczne i porównanie pięciu lat</strong>;</li><li><strong>Wykres techniczny z wybranymi liniami</strong>;</li><li><strong>Ryzyko historyczne i epizody stresowe</strong>.</li></ul>
+<p>Wybierz <strong>Utwórz podgląd raportu</strong>. Sprawdź <strong>Wheat sample</strong>, <strong>PLN/t</strong>, <strong>2026-10-06</strong> i <strong>USER_FILE</strong> w metadanych. <strong>Pobierz HTML</strong> zapisuje samodzielny raport z wybranymi wynikami i wykresami. <strong>Drukuj / Zapisz PDF</strong> otwiera okno drukowania przeglądarki; wybierz zapis jako PDF, jeśli jest dostępny. Zapisywanie PDF, podział na strony i obsługa telefonu zależą od przeglądarki. Alternatywą jest pobrany HTML. Raport pozostaje niezmienną kopią; po zmianie ustawień wybierz <strong>Powrót do analizy</strong> i utwórz go ponownie.</p>
+<p>Raporty nie zawierają oryginalnych tablic obserwacji ani kodu aplikacji, ale widoczne tabele, ceny i zadeklarowane źródła nadal mogą być prywatne. Udostępnienie raportu oznacza udostępnienie tych wyników.</p>
+</section>
+<section id="finish" aria-labelledby="heading-8"><h2 id="heading-8">Zakończenie i znane ograniczenia</h2>
+<p>Przed odświeżeniem zapisz wszystko, co chcesz zachować. Odświeżenie usuwa oba zaimportowane instrumenty i przywraca sześć wbudowanych przykładów; żaden import w przeglądarce nie jest zapisywany w SQLite. Preferencje wyświetlania mogą zostać zachowane, ale zaimportowane obserwacje nie. Do trwałego przechowywania prywatnej historii użyj aplikacji lokalnej opisanej w <a href="https://github.com/eluyz/SeasonLens/blob/main/docs/GETTING_STARTED.md">przewodniku rozpoczęcia pracy</a> i <a href="https://github.com/eluyz/SeasonLens/blob/main/README.md">README</a>.</p>
+<p>Ćwiczenie nie pobiera danych na żywo ani nie aktualizuje ich automatycznie. Jego 210 dat to wymyślone obserwacje w dni robocze, a nie sprawdzony kalendarz giełdowy. Nie dowodzi zdolności prognostycznej, pięcioletniego pokrycia ani przydatności do analizy rzeczywistego rynku. Na małych ekranach szerokie tabele i wykresy przewijają się we własnych ramkach. Przy obsłudze klawiaturą ustaw fokus na ramce i użyj klawiszy strzałek; przypisanie kolumn jest łatwiejsze na większym ekranie. Zachowanie na fizycznym telefonie, w Safari i w systemowym oknie zapisu PDF nadal wymaga sprawdzenia.</p>
+<p><a href="https://github.com/eluyz/SeasonLens/blob/main/docs/WHEAT_FX_WALKTHROUGH_PL.md">Czytaj ten przewodnik na GitHubie</a> · <a href="index.html?lang=pl">Powrót do SeasonLens</a></p></section>
+<footer>SeasonLens · wymyślone dane przykładowe · stała data graniczna analizy: 2026-10-06</footer>
+</main>
+</body>
+</html>

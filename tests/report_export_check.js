@@ -8,6 +8,7 @@ class Node{
  get textContent(){return this.childNodes.map(child=>child.textContent).join('');}set textContent(value){this.childNodes=[new TextNode(value)];}
  get innerHTML(){return this._html;}set innerHTML(value){this._html=String(value);}
  hasAttribute(name){return this.attributes.some(a=>a.name===name);}
+ setAttribute(name,value){const item=this.attributes.find(a=>a.name===name);if(item)item.value=String(value);else this.attributes.push({name,value:String(value)});}
  closest(tag){for(let node=this;node;node=node.parentElement)if(node.tagName===tag.toUpperCase())return node;return null;}
  addEventListener(name,callback){(this.listeners[name]??=[]).push(callback);}
  async emit(name){for(const callback of this.listeners[name]||[])await callback({target:this,preventDefault(){}});}

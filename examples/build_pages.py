@@ -48,14 +48,14 @@ def build_public_demo():
         raise ValueError('Local importer panel was not found.')
     start = html.index('if(!localImport){')
     html.index('if(Object.keys(data).length){choose()}', start)
-    html = html[:start] + 'choose();\ninitSeasonLensUX({data,view,choose,refresh,drawDaily,toggleProfiles,marketRefresh});\n</script></body></html>\n'
+    html = html[:start] + 'choose();\ninitSeasonLensUX({data,view,choose,refresh,drawDaily,toggleProfiles,marketRefresh});\nSeasonLensLocale.init();\n</script></body></html>\n'
     html = re.sub(r'<footer>.*?</footer>', '<footer>SeasonLens · MIT-licensed open-source software · six built-in series use invented observations. User-imported data stays in this tab and is not published. Statistics describe supplied history, not forecasts or investable futures returns. Counts do not certify complete sessions. Built-in sample cutoff is fixed; this site does not collect live market data.</footer>', html, count=1, flags=re.S)
     styles = '''
 .welcome{background:linear-gradient(120deg,#eff6ff,#fff)}.eyebrow{letter-spacing:.08em;font-size:12px;font-weight:700;color:#1d4ed8}.welcome h2{font-size:28px}.demo-nav{display:flex;gap:10px;flex-wrap:wrap}.demo-nav a{padding:10px 14px;border:1px solid #cbd5e1;border-radius:8px;text-decoration:none;background:#fff}.demo-nav a:first-child{background:#1d4ed8;color:#fff;border-color:#1d4ed8}.advanced{background:#fff;border:1px solid #dde5f0;border-radius:14px;padding:20px;margin:20px 0}.advanced>summary{font-size:18px}.table-wrap{max-width:100%;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}.controls select,.controls button{min-height:44px}section{scroll-margin-top:15px}#daily,#fiveyear{overflow-x:auto}.price-matrix th:first-child{min-width:95px}
 @media(max-width:700px){.welcome h2{font-size:24px}.controls{display:grid;grid-template-columns:1fr;gap:12px}.controls label{min-width:0}.controls select{width:100%}.controls button{grid-column:1/-1}.checks{gap:12px}.checks label{padding:5px 0;min-height:44px}#daily svg{min-width:760px}#fiveyear svg{min-width:760px}.table-wrap{margin-bottom:8px}.advanced{padding:14px}.advanced svg{min-width:620px}.advanced section{overflow-x:auto}.demo-nav a{flex:1 1 180px;text-align:center}}
 '''
     html = html.replace('</style>', styles+'</style>', 1)
-    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@', '@@REPORT_', '@@QUICK_', '@@START_', '@@TEMPLATE_', '@@IMPORT_TEMPLATE_')):
+    if any(marker in html for marker in ('fetch(', "fetch (", '/import', 'id="upload"', '@@DATA@@', '@@LOCAL@@', '@@ASOF@@', '@@BROWSER_JS@@', '@@MARKET_JS@@', '@@WORKBOOK_JS@@', '@@WORKBOOK_UI_JS@@', '@@UX_JS@@', '@@UX_CSS@@', '@@IMPORT_PANEL@@', '@@XLSX_VENDOR@@', '@@PRIVATE_JS@@', '@@SCIENCE_', '@@RISK_JS@@', '@@SEASONAL_STATS_JS@@', '@@FORECAST_JS@@', '@@FUNDAMENTALS_JS@@', '@@REPORT_', '@@QUICK_', '@@START_', '@@TEMPLATE_', '@@IMPORT_TEMPLATE_', '@@LOCALE_')):
         raise ValueError('Unexpected local import or unexpanded template in public demo.')
     return html, series
 

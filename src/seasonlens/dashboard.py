@@ -221,7 +221,7 @@ def _embedded_scripts(template):
               '@@REPORT_JS@@': 'report_export.js', '@@QUICK_CSS@@': 'quick_controls.css',
               '@@QUICK_JS@@': 'quick_controls.js', '@@START_PANEL@@': 'start_panel.html',
               '@@START_CSS@@': 'start.css', '@@START_JS@@': 'start_ui.js',
-              '@@TEMPLATE_JS@@': 'template_download.js'}
+              '@@TEMPLATE_JS@@': 'template_download.js', '@@LOCALE_JS@@': 'locale.js'}
     for marker, name in assets.items():
         content = (root/name).read_text(encoding='utf-8')
         if name.endswith('.js'):

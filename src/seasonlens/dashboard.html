@@ -9,8 +9,10 @@
 @@QUICK_CSS@@
 @@REPORT_CSS@@
 @@START_CSS@@
+.language-picker{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.language-tile{display:flex;align-items:center;justify-content:center;gap:10px;min-width:150px;min-height:64px;padding:12px 22px;border:2px solid #cbd5e1;border-radius:12px;background:#fff;color:#334155;font-weight:650}.language-tile[aria-pressed="true"]{border-color:#1d4ed8;background:#eff6ff;color:#1d4ed8}.language-tile:focus-visible{outline:3px solid #d28a08;outline-offset:3px}.language-code{border:1px solid currentColor;border-radius:5px;padding:2px 6px;font-size:12px}@media(max-width:380px){.language-tile{flex:1;min-width:0;padding:10px}}
 </style></head><body><main>
 <div class="top"><div><h1>@@TITLE@@</h1><p class="muted">Daily prices · seasonal context · currency effects</p></div><span class="tag">Explorer v7 · private local analysis</span></div>
+<div id="language-picker" class="language-picker" role="group" aria-label="Choose language"><button id="language-en" class="language-tile" type="button" aria-pressed="true" lang="en" translate="no"><span class="language-code" aria-hidden="true">EN</span><span>English</span></button><button id="language-pl" class="language-tile" type="button" aria-pressed="false" lang="pl" translate="no"><span class="language-code" aria-hidden="true">PL</span><span>Polski</span></button></div>
 @@START_PANEL@@
 <div class="panel controls"><label>Instrument<select id="instrument"></select></label><label>Display units<select id="currency"></select></label><label>Daily chart range<select id="range"><option value="12m">Last 12 months</option><option value="90">Last 90 days</option><option value="all">All available history</option></select></label><button class="secondary" id="export">Export selected observations (CSV)</button></div>
 <p>Analysis cutoff: <strong id="analysis-cutoff">@@ASOF@@</strong> · <span id="definition"></span></p><p class="notice">Historical observations, not a forecast. Futures continuation series can contain roll effects. FX reference rates are not session closes. Tables use — for unavailable values; future months are after the analysis cutoff.</p>
@@ -45,7 +47,7 @@ Object.entries(data).forEach(([id,s])=>{const o=document.createElement('option')
 function view(){return data[el('instrument').value].views[el('currency').value]}
 function drawDaily(){
  const v=view(), all=v.daily, days=el('range').value, start=v.range_starts[days]===null?-Infinity:Date.parse(v.range_starts[days]+'T00:00:00Z');
- el('technical-analysis').querySelector('h2').textContent='Technical analysis — '+el('range').selectedOptions[0].textContent.toLowerCase();
+ el('technical-analysis').querySelector('h2').textContent='Technical analysis — '+({'12m':'last 12 months','90':'last 90 days','all':'all available history'}[el('range').value]);
  const specs=[['value','price','#2563eb','Daily price'],['sma20','sma20','#c45d11','SMA20'],['sma100','sma100','#7c3aed','SMA100'],['sma200','sma200','#dc2626','SMA200'],['bollinger_upper','bollinger_upper','#0891b2','Bollinger upper (20, +2σ)'],['bollinger_lower','bollinger_lower','#15803d','Bollinger lower (20, −2σ)']];
  const rows=all.filter(r=>Date.parse(r.date+'T00:00:00Z')>=start),lines=specs.filter(a=>el(a[1]).checked);
  const values=rows.flatMap(r=>lines.map(a=>r[a[0]]).filter(x=>x!==null&&Number.isFinite(x)));
@@ -60,7 +62,7 @@ function drawDaily(){
  el('daily').innerHTML=svg+'</svg>';
 }
 function toggleProfiles(){for(const container of ['profiles','normalized']){el(container).querySelectorAll('svg path,svg polygon,svg rect,svg circle').forEach(n=>{if(n.closest('.chart-legend'))return;const color=n.getAttribute('stroke')||n.getAttribute('fill');if(color==='#2563eb')n.style.display=el('baseline').checked?'':'none';if(color==='#c45d11')n.style.display=el('current').checked?'':'none';if(n.getAttribute('fill')==='#dbeafe')n.style.display=el('band').checked?'':'none'})}}
-function refresh(){const s=data[el('instrument').value],v=view();cutoff=v.as_of||defaultCutoff;el('analysis-cutoff').textContent=cutoff;el('definition').textContent=s.semantics+' · Source: '+s.source;el('quality').innerHTML=[['Observations',v.observations],['Last observation',v.last_date],['Calendar age',v.age_days===null?'Missing':v.age_days+' days'],['Missing calendar months',v.missing_months??'Unknown']].map(([a,b])=>`<div class="card"><span class="muted">${esc(a)}</span><strong>${esc(b)}</strong></div>`).join('');el('conversion').textContent=(v.conversion_note||'')+' Future observations excluded: '+v.future_excluded;for(const id of ['price_matrix','fiveyear','profiles','normalized','heatmap','partial'])el(id).innerHTML=v[id];for(const input of el('fiveyear').querySelectorAll('input[data-year-toggle]'))input.id='year-line-'+input.getAttribute('data-year-toggle');drawDaily();toggleProfiles();marketRefresh();scienceAnalysis?.refresh();quickControls?.refresh()}
+function refresh(){const s=data[el('instrument').value],v=view();cutoff=v.as_of||defaultCutoff;el('analysis-cutoff').textContent=cutoff;el('definition').innerHTML='<span'+(s.source==='SYNTHETIC'?'':' data-no-translate')+'>'+esc(s.semantics)+'</span> · Source: <span data-no-translate>'+esc(s.source)+'</span>';el('quality').innerHTML=[['Observations',v.observations],['Last observation',v.last_date],['Calendar age',v.age_days===null?'Missing':v.age_days+' days'],['Missing calendar months',v.missing_months??'Unknown']].map(([a,b])=>`<div class="card"><span class="muted">${esc(a)}</span><strong>${esc(b)}</strong></div>`).join('');el('conversion').textContent=(v.conversion_note||'')+' Future observations excluded: '+v.future_excluded;for(const id of ['price_matrix','fiveyear','profiles','normalized','heatmap','partial'])el(id).innerHTML=v[id];for(const input of el('fiveyear').querySelectorAll('input[data-year-toggle]'))input.id='year-line-'+input.getAttribute('data-year-toggle');drawDaily();toggleProfiles();marketRefresh();scienceAnalysis?.refresh();quickControls?.refresh()}
 function choose(){el('currency').replaceChildren();for(const name of Object.keys(data[el('instrument').value].views)){const o=document.createElement('option');o.value=name;o.textContent=name==='Original'?data[el('instrument').value].unit:name;el('currency').append(o)}refresh()}
 el('fiveyear').addEventListener('change',e=>{const index=e.target.getAttribute('data-year-toggle');if(index!==null)el('fiveyear').querySelectorAll('[data-year-line=\"'+index+'\"]').forEach(n=>n.style.display=e.target.checked?'':'none')});
 el('instrument').addEventListener('change',choose);el('currency').addEventListener('change',refresh);for(const id of ['range','price','sma20','sma100','sma200','bollinger_upper','bollinger_lower'])el(id).addEventListener('change',drawDaily);for(const id of ['baseline','current','band'])el(id).addEventListener('change',toggleProfiles);
@@ -81,6 +83,7 @@ el('export').addEventListener('click',()=>{const keys=['date','value','sma20','s
 @@QUICK_JS@@
 @@START_JS@@
 @@TEMPLATE_JS@@
+@@LOCALE_JS@@
 initSeasonLensStartGuide({downloadTemplate:()=>SeasonLensTemplate.download('@@IMPORT_TEMPLATE_B64@@')});
 marketInitialize();
 SeasonLensImportUI.initialize();
@@ -100,4 +103,5 @@ if(!localImport){el('upload').hidden=true;el('error').textContent='This standalo
 el('upload').addEventListener('submit',async e=>{e.preventDefault();el('error').textContent='Validating…';try{const fields={};for(const id of ['series_id','title','unit','source','semantics','date_column','value_column','date_format','instrument_column','instrument_filter','delimiter','decimal','skip_rows'])fields[id]=el(id).value;fields.skip_missing=el('skip_missing').checked;fields.csv=await el('file').files[0].text();const r=await fetch('/import',{method:'POST',headers:{'Content-Type':'application/json','X-SeasonLens':'local-import'},body:JSON.stringify(fields)});const result=await r.json();if(!r.ok)throw new Error(result.error);location.reload()}catch(e){el('error').textContent=e.message}});
 if(Object.keys(data).length){choose()}else{el('definition').textContent='No series imported yet. Expand the CSV import panel below.';el('import-panel').querySelector('details').open=true;for(const id of ['instrument','currency','range','export','price','sma20','sma100','sma200','bollinger_upper','bollinger_lower'])el(id).disabled=true;}
 initSeasonLensUX({data,view,choose,refresh,drawDaily,toggleProfiles,marketRefresh});
+SeasonLensLocale.init();
 </script></body></html>
