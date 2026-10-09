@@ -1,0 +1,67 @@
+name: Finalize pinned existing draft
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/release-finalization.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seasonlens-release
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.14'
+      - name: Validate reviewed finalization request
+        run: python scripts/finalize_release.py
+      - name: Download and verify unchanged existing draft assets
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')" = "$GITHUB_SHA"
+          test "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" = "$TAG_COMMIT"
+          gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" > "$RUNNER_TEMP/draft.json"
+          python scripts/finalize_release.py --verify "$RUNNER_TEMP/draft.json"
+          mkdir dist
+          python -c "import json; d=json.load(open('.github/release-finalization.json')); print('\n'.join(str(a['id'])+' '+a['name'] for a in d['assets']))" > "$RUNNER_TEMP/assets.txt"
+          while read -r asset_id asset_name; do
+            gh api "repos/$GITHUB_REPOSITORY/releases/assets/$asset_id" -H 'Accept: application/octet-stream' > "dist/$asset_name"
+          done < "$RUNNER_TEMP/assets.txt"
+          python scripts/finalize_release.py --verify "$RUNNER_TEMP/draft.json" --downloaded
+      - name: Verify the downloaded wheel in isolation
+        run: |
+          python -m venv "$RUNNER_TEMP/seasonlens-installed"
+          "$RUNNER_TEMP/seasonlens-installed/bin/python" -m pip install numpy==2.3.5 dist/*.whl
+          git show "$TAG_COMMIT:scripts/check_installed.py" > "$RUNNER_TEMP/check_installed.py"
+          cd "$RUNNER_TEMP"
+          env -u PYTHONPATH "$RUNNER_TEMP/seasonlens-installed/bin/python" "$RUNNER_TEMP/check_installed.py" --expected-version "$RELEASE_VERSION"
+      - name: Publish only the pinned verified draft
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')" = "$GITHUB_SHA"
+          tag_ref=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.type + " " + .object.sha')
+          read -r tag_kind tag_object <<< "$tag_ref"
+          if test "$tag_kind" = tag; then
+            test "$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$tag_object" --jq '.object.type')" = commit
+            tag_object=$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$tag_object" --jq '.object.sha')
+          else
+            test "$tag_kind" = commit
+          fi
+          test "$tag_object" = "$TAG_COMMIT"
+          gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" > "$RUNNER_TEMP/draft-final.json"
+          python scripts/finalize_release.py --verify "$RUNNER_TEMP/draft-final.json" --downloaded
+          gh api --method PATCH "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" -F draft=false --jq '{url: .html_url, draft: .draft, tag: .tag_name}'

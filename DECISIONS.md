@@ -92,3 +92,7 @@ Seasonality uses actual consecutive calendar-month closes and equally weighted c
 ## Excel master-file workflow and private FX isolation — 2026-10-08
 
 Use the pinned, bundled SheetJS0.20.3 mini reader for browser XLSX. Keep import selection, staging and analyses local; accept cached formulas only by explicit user choice and never execute them. Use physical row numbers and default start4 for live-row exclusion. Require explicit instrument roles/units; no ticker guessing. Same-import-group FX enables exact-date conversions and same-group commodity spreads. Restrict persisted view preferences to whitelisted built-in IDs and display controls, with a reset action. No raw data, private labels or scenario inputs are persisted.
+
+## Existing draft finalization after the v0.1.0 publication interruption
+
+The release-by-tag API returned404 for an unpublished draft after successful tag/build/upload. Use draft IDs for metadata. Recovery is narrower than rebuilding or moving the existing tag: a request-only commit pins the original source SHA, existing draft ID and four asset identities/digests. Verify downloaded bytes/checksums, browser contents against that unchanged tag and isolated wheel installation, then recheck current main/tag/draft immediately before publishing the same draft. Never retag or replace existing recovery assets.

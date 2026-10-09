@@ -80,8 +80,10 @@ jobs:
           else
             gh release create "$RELEASE_TAG" dist/* --draft --verify-tag --title "SeasonLens $RELEASE_VERSION" --notes-file "docs/releases/$RELEASE_TAG.md"
           fi
-          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" > "$RUNNER_TEMP/release-assets.json"
+          release_id=$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq ".[] | select(.tag_name == \"$RELEASE_TAG\") | .id")
+          [[ "$release_id" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/releases/$release_id" > "$RUNNER_TEMP/release-assets.json"
           python scripts/prepare_release.py --verify-assets "$RUNNER_TEMP/release-assets.json"
           test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')" = "$GITHUB_SHA"
-          gh release edit "$RELEASE_TAG" --draft=false
+          gh api --method PATCH "repos/$GITHUB_REPOSITORY/releases/$release_id" -F draft=false > /dev/null
           gh release view "$RELEASE_TAG" --json url,tagName,isDraft,isPrerelease,assets
