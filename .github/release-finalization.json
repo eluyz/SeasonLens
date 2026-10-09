@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0",
+  "expected_parent": "3e9dd13440fd60952a8d615a8c28703020c2de15",
+  "tag_commit": "88c1c8fd038c2e4f81998bfb7935d40b72866db8",
+  "release_id": 408041219,
+  "assets": [
+    {
+      "name": "seasonlens-0.1.0-py3-none-any.whl",
+      "id": 625338916,
+      "size": 251896,
+      "digest": "sha256:ab3a925756ca32e80f542f525af9467363fed1ac573c86603153cd3bc3c79abc"
+    },
+    {
+      "name": "seasonlens-0.1.0.tar.gz",
+      "id": 625338917,
+      "size": 403000,
+      "digest": "sha256:a566c9c789e5a7bd2883ce858723ed94e816708d09340203e69d485b7f0a0959"
+    },
+    {
+      "name": "seasonlens-browser-v0.1.0.zip",
+      "id": 625338912,
+      "size": 3084902,
+      "digest": "sha256:db29d82b3978565d5991a4a70c920e9f934cde7a954699b5a636b45f35d2ae4c"
+    },
+    {
+      "name": "SHA256SUMS",
+      "id": 625338915,
+      "size": 286,
+      "digest": "sha256:3bd9b27641ace18b03a9e91e420a670dc48cc2c94aaafe1fedf29527f4bb31a5"
+    }
+  ]
+}
