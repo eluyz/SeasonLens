@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0 — 2026-10-09
+
+- First public experimental package version, with explicit installation paths and known limits.
+- End-to-end invented wheat + same-workbook EUR/PLN walkthrough, from two-column XLSX import to full-precision conversion and a selected report.
+- Source distribution includes development examples, documentation and browser-module fixtures; wheel includes application assets and both software licenses.
+- Linux Python 3.10/3.12 test and isolated wheel-installation checks; explicit reviewed release requests with immutable tag targets, draft asset verification and SHA256SUMS.
+- No new analytical definitions, data feeds or enabled nightly jobs.
+
 ## First-visit guide and narrow-screen usability — 2026-10-08
 
 - Optional Start here guide with example exploration, private import and report paths.

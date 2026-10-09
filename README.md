@@ -2,13 +2,15 @@
 
 An open-source project for auditable seasonality and market analysis of CSV time series and Excel master files.
 
-**Current milestone: an interactive public demo, private SQLite persistence, direct ECB reference-rate updates and local CSV analysis (experimental 0.0.1 source checkpoint).** Private browser XLSX master-file import is implemented. Automatic futures continuation closes and a tagged release remain unimplemented.
+**Version 0.1.0 — first public experimental release.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
+
+[Open the demo](https://eluyz.github.io/SeasonLens/) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.0.md) · [Installation and limits](docs/INSTALLATION.md)
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 
 ## Browser demo
 
-For a first visit, expand **Start here**: explore examples, download the invented six-series XLSX template, privately import a file or create a report. See the [step-by-step browser guide](docs/GETTING_STARTED.md). Wide tables and charts scroll inside their frames on small screens.
+For a first visit, expand **Start here**: explore examples, download the invented six-series XLSX template, privately import a file or create a report. See the [step-by-step browser guide](docs/GETTING_STARTED.md) or follow the [wheat + EUR/PLN example](docs/WHEAT_FX_WALKTHROUGH.md). Wide tables and charts scroll inside their frames on small screens.
 
 The [public browser demo](https://eluyz.github.io/SeasonLens/) is hosted on GitHub Pages from `docs/index.html`. It includes invented wheat, corn, rapeseed, EUR/PLN, EUR/USD and derived USD/PLN observations only. All three commodities support EUR/t and exact-date synthetic PLN/t views. See [deployment instructions](docs/PAGES.md) for publishing source and rebuild details.
 
@@ -26,46 +28,24 @@ Supply-and-demand context is a separate panel with invented examples and private
 
 ## Quick start
 
-Python 3.10+ is declared; this checkpoint was developed with Python 3.12 and pandas 2.2.3. This dependency is pinned for reproducibility.
+**No installation:** open the [demo](https://eluyz.github.io/SeasonLens/) and follow the [wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html). Built-in examples and the downloadable workbook are invented. No account, API key or market-data subscription is required.
 
-Clone the repository and enter the project directory:
+**Optional Python installation:** use Python 3.10+ and create a virtual environment. See [installation instructions](docs/INSTALLATION.md) for Windows PowerShell and macOS/Linux commands, version checks and the distinction between tab-memory import and persistent local CSV import.
 
 ```bash
-git clone https://github.com/eluyz/SeasonLens.git
+git clone --branch v0.1.0 --depth 1 https://github.com/eluyz/SeasonLens.git
 cd SeasonLens
-```
-
-Create a virtual environment:
-
-```bash
 python -m venv .venv
 ```
 
-Activate the environment on macOS/Linux:
+After activating the environment, install and generate the standalone invented explorer:
 
 ```bash
-source .venv/bin/activate
+python -m pip install .
+python examples/explorer_demo.py
 ```
 
-Or on Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Then install and run the synthetic example:
-
-```bash
-python -m pip install -e .
-python examples/monthly_demo.py
-python examples/csv_demo.py examples/data/synthetic_prices.csv --instrument SYNTHETIC_A --skip-missing
-python examples/seasonal_demo.py examples/data/synthetic_seasonal_prices.csv --instrument SYNTHETIC_GRAIN --as-of 2026-10-06 --skip-missing --unit "Synthetic units"
-python -m unittest discover -s tests -v
-```
-
-Open `outputs/seasonal_report.html` in your browser to see the two charts and tables. A pre-generated synthetic example is also included as [examples/seasonal_demo.html](examples/seasonal_demo.html): download/open the file locally; GitHub displays its source. The command refuses to overwrite an existing report; use `--output outputs/another_report.html` for another run.
-
-All example values are invented, not real market prices. There is no API key or market-data subscription requirement.
+Open `examples/explorer_demo.html`. Browser XLSX/CSV imports stay in that tab; they do not update a database. To retain auditable private history, use the local app described below. Version 0.1 does not promise a stable Python API; limitations and validation evidence are recorded in [STATUS.md](STATUS.md).
 
 ## Method
 
@@ -140,7 +120,7 @@ Generate an entirely invented, self-contained demo and open it locally:
 python examples/explorer_demo.py
 ```
 
-Open `examples/explorer_demo.html`. Every observation, including FX, is invented. The standalone explorer works without a server; CSV import requires the local app. It contains:
+Open `examples/explorer_demo.html`. Every observation, including FX, is invented. The standalone explorer works without a server and supports private browser CSV/XLSX import. Persisting a CSV history to SQLite requires the separate local app. It contains:
 
 - Six-line technical chart: daily price, full-window SMA20/SMA100/SMA200 and Bollinger upper/lower (20 observations, ±2 population standard deviations), with toggles and 90-day/12-calendar-month/full-history ranges.
 - Monthly average prices for exactly five calendar years including the cutoff year, plus their equal-year monthly mean.
@@ -149,7 +129,7 @@ Open `examples/explorer_demo.html`. Every observation, including FX, is invented
 - Matched partial-month comparisons through the same calendar day of preceding years.
 - EUR/t to PLN/t using exact-date ECB EUR/PLN matches (synthetic FX only in the invented demo).
 - Observation count, last date, age against the cutoff and missing calendar months.
-- CSV export of selected observations/SMA; graphical CSV import into a private database.
+- CSV export of selected observations/indicators and browser-only CSV/XLSX import; the local app separately supports graphical CSV import into a private database.
 
 Create data **outside this public source checkout**:
 

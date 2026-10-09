@@ -1,0 +1,87 @@
+name: Publish reviewed release
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/release-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seasonlens-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.14'
+      - name: Validate explicit release request
+        run: python scripts/prepare_release.py
+      - name: Install pinned build and test dependencies
+        run: python -m pip install pandas==2.2.3 numpy==2.3.5 setuptools==80.9.0 wheel==0.45.1 build==1.3.0
+      - name: Run tests
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -q
+      - name: Check generated public pages match the reviewed source
+        env:
+          PYTHONPATH: src
+        run: |
+          python examples/explorer_demo.py
+          python examples/build_pages.py
+          git diff --exit-code -- docs/index.html examples/explorer_demo.html docs/layout-check.html docs/seasonlens-import-template.xlsx
+      - name: Build Python distributions
+        run: python -m build --no-isolation
+      - name: Check isolated wheel installation
+        run: |
+          python -m venv "$RUNNER_TEMP/seasonlens-installed"
+          "$RUNNER_TEMP/seasonlens-installed/bin/python" -m pip install numpy==2.3.5 dist/*.whl
+          cd "$RUNNER_TEMP"
+          env -u PYTHONPATH "$RUNNER_TEMP/seasonlens-installed/bin/python" "$GITHUB_WORKSPACE/scripts/check_installed.py" --expected-version "$RELEASE_VERSION"
+      - name: Package invented browser files and checksums
+        run: python scripts/prepare_release.py --package
+      - name: Publish tag and release with verified assets
+        run: |
+          set -euo pipefail
+          current=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')
+          test "$current" = "$GITHUB_SHA"
+          if tag_ref=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.type + " " + .object.sha' 2>/dev/null); then
+            read -r tag_kind tag_object <<< "$tag_ref"
+            if test "$tag_kind" = tag; then
+              test "$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$tag_object" --jq '.object.type')" = commit
+              tag_commit=$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$tag_object" --jq '.object.sha')
+            else
+              test "$tag_kind" = commit
+              tag_commit="$tag_object"
+            fi
+            test "$tag_commit" = "$GITHUB_SHA"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git tag -a "$RELEASE_TAG" "$GITHUB_SHA" -m "SeasonLens $RELEASE_VERSION"
+            git push origin "refs/tags/$RELEASE_TAG"
+          fi
+          if draft=$(gh release view "$RELEASE_TAG" --json isDraft --jq '.isDraft' 2>/dev/null); then
+            test "$draft" = true || { echo 'Published releases are never modified. Use a new version.' >&2; exit 1; }
+            gh release upload "$RELEASE_TAG" dist/* --clobber
+            gh release edit "$RELEASE_TAG" --title "SeasonLens $RELEASE_VERSION" --notes-file "docs/releases/$RELEASE_TAG.md"
+          else
+            gh release create "$RELEASE_TAG" dist/* --draft --verify-tag --title "SeasonLens $RELEASE_VERSION" --notes-file "docs/releases/$RELEASE_TAG.md"
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" > "$RUNNER_TEMP/release-assets.json"
+          python scripts/prepare_release.py --verify-assets "$RUNNER_TEMP/release-assets.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')" = "$GITHUB_SHA"
+          gh release edit "$RELEASE_TAG" --draft=false
+          gh release view "$RELEASE_TAG" --json url,tagName,isDraft,isPrerelease,assets

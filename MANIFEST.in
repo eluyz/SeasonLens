@@ -1,0 +1,9 @@
+include LICENSE README.md pyproject.toml AGENTS.md BACKLOG.md CHANGELOG.md CONTRIBUTING.md DATA_POLICY.md DECISIONS.md SPEC.md STATUS.md
+recursive-include src/seasonlens *.py *.html *.js *.css *.b64 LICENSE README.md
+recursive-include tests *.py *.js
+recursive-include docs *.md
+include docs/walkthrough.html docs/seasonlens-import-template.xlsx
+recursive-include examples *.py *.mjs
+include examples/responsive_check.html
+recursive-include examples/data *.csv *.json
+recursive-include scripts *.py

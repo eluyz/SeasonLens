@@ -2,6 +2,8 @@
 
 Open the [public demo](https://eluyz.github.io/SeasonLens/). No installation or account is needed. Expand **Start here** near the top of the page to choose a path.
 
+For one complete workflow, follow the [wheat + EUR/PLN walkthrough](WHEAT_FX_WALKTHROUGH.md): import only two columns, verify the PLN conversion and export a report. The [web version](https://eluyz.github.io/SeasonLens/walkthrough.html) stays open beside the demo.
+
 ## Explore an example
 
 1. Open **Analysis options** and choose an instrument and display units.

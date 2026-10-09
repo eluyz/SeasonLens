@@ -1,5 +1,9 @@
 # Decisions
 
+## First public experimental release — 2026-10-09
+
+Use 0.1.0 for the first tagged package, keeping existing statistical contracts and explicit limitations. Provide one two-column wheat/EUR-PLN tutorial rather than more indicators. A separate release request commit names a reviewed parent and changes only its request file; publication rechecks source, installed assets and current head. A matching tag can recover an unpublished draft, but published versions are never overwritten. The four public assets contain code/invented examples only, with both licenses and SHA256SUMS. Existing temporary GitHub Actions credentials handle publication; no new account token, hosted collector or package-index publication is introduced.
+
 ## First-visit guide and import template — 2026-10-08
 
 Keep the three-path guide optional and collapsed. Embed one fixed invented XLSX as base64 in standalone builds so its download needs no network or account. Imported files retain USER_FILE identity and require explicit roles; template column names never auto-select instruments. The exported workbook's content-type declarations are normalized for the existing strict reader without editing worksheet content or weakening validation. Check narrow CSS viewports with a separate same-origin demo iframe; never call that physical phone or Safari testing.

@@ -19,14 +19,14 @@
 |---|---|---|---|
 | SL-000 | Alternatives and need validation | Identify existing tools and a concrete justified use case | Open |
 | SL-001 | Monthly aggregation core | Hand-calculated means/counts, retained gaps, no input mutation, strict preconditions | Complete for experimental checkpoint |
-| SL-001A | Automated GitHub checks | Run relevant tests on pushes and pull requests; verify a successful run | Public builder source-push checks verified; broader PR CI remains open |
+| SL-001A | Automated GitHub checks | Run relevant tests on pushes and pull requests; verify a successful run | Read-only Python 3.10/3.12 tests and isolated wheel CI configured; publication verification in STATUS.md |
 | SL-002 | Quality-report layer | Explain invalid data and require explicit handling choices | Complete for experimental checkpoint |
 | SL-003 | CSV import | Explicit column mapping, separator, decimal and date format | Complete for experimental checkpoint |
 | SL-004 | 5/10-year profiles | Equal-year weighting, exact calendar window, actual year count, min/max | Complete for experimental checkpoint |
 | SL-005 | CSV/HTML export | Same values and metadata as calculation output | Complete for experimental checkpoint: local HTML, observation CSV and private DB export |
 | SL-006 | XLSX import | Explicit worksheet/physical rows/columns/units, cached-formula consent, atomic validation and no transmission | Published; 175 tests and actual six-instrument desktop Chrome import/export verified |
 | SL-007 | Local interface | Complete file-to-result workflow with readable errors | Local app implemented; public browser flow verified; physical mobile-device QA open |
-| SL-008 | Public v0.1 | Tested install, docs, examples, license, public repository | Planned |
+| SL-008 | Public v0.1 | Tested install, docs, examples, license, public repository | Prepared 0.1.0; remote verification and publication in STATUS.md |
 | SL-009 | Pilot | Real independent feedback and documented corrections | Planned |
 
 | SL-010 | Private persistence and direct ECB updater | Atomic unique-date revisions, auditable sources, no silent mixing, explicit backup/recovery | Implemented; hosted schedule and live transport unverified |

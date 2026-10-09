@@ -1,5 +1,7 @@
 # Core contract — SL-001
 
+Version 0.1.0 packages the existing experimental contracts without changing analytical definitions. The worked wheat/FX example and installation boundaries are specified in [docs/WHEAT_FX_WALKTHROUGH.md](docs/WHEAT_FX_WALKTHROUGH.md) and [docs/INSTALLATION.md](docs/INSTALLATION.md); publication follows [docs/RELEASING.md](docs/RELEASING.md).
+
 First-visit navigation and the packaged invented XLSX are documented in [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md). Downloading the static template does not access observations, fetch a provider or add instruments. Import still requires explicit rows, dates, units, roles, validation and a separate Add action. Narrow-screen analysis and report frames keep horizontal overflow local; printed reports remove screen-only minimum widths. The isolated responsive-check page renders only the same public invented demo in one fixed same-origin iframe.
 
 The browser statistical extension is specified separately in [docs/SCIENCE_SPEC.md](docs/SCIENCE_SPEC.md): historical risk, completed-year monthly-change stability, exact-interval FX variance, fixed-model walk-forward comparisons and separate fundamental-release vintages. Existing core contracts below remain in force.

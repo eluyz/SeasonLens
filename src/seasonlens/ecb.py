@@ -83,7 +83,7 @@ def fetch_ecb_rates(*, history: bool = False, timeout: float = 20) -> dict[str, 
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("timeout must be a positive finite number.")
     # A rolling 90-day refresh catches missed nightly runs and recent revisions.
-    request = Request(HISTORY_URL if history else RECENT_URL, headers={"User-Agent": "SeasonLens/0.0.1"})
+    request = Request(HISTORY_URL if history else RECENT_URL, headers={"User-Agent": "SeasonLens/0.1.0"})
     with urlopen(request, timeout=timeout) as response:
         content = response.read(MAX_BYTES + 1)
     return parse_ecb_xml(content)

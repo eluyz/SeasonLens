@@ -8,9 +8,9 @@
 - Built and installed the wheel with existing dependencies into `/tmp/seasonlens-onboarding-install-20261008`; rendering outside the checkout included the guide, template and inline assets with no unresolved placeholders. This is not a fresh external dependency or Windows/macOS check.
 - Added bounded narrow-screen menus, native-control font sizes and local table/chart report scroll frames; print styles reset screen minimum widths. The isolated responsive check page loads only the same public invented demo in a fixed same-origin iframe. Publication and actual browser CSS-viewport verification are pending below; no physical phone or Safari claim is made.
 
-Date: 2026-10-08. Current checkpoint: experimental 0.0.1 with private SQLite, direct ECB updater, extended analytics, private browser XLSX master-file import and the statistical-analysis extension. Earlier checkpoint sections remain historical records.
+Date: 2026-10-09. Current package version: experimental 0.1.0, prepared for the first public release. Earlier checkpoint sections remain historical records; publication is recorded separately below.
 
-Repository: https://github.com/eluyz/SeasonLens. Documentation is in English. No release tag has been created.
+Repository: https://github.com/eluyz/SeasonLens. Documentation is in English. The release state is recorded in the dated validation/publication sections below; a version bump alone does not establish publication.
 
 ## Complete
 
@@ -240,3 +240,12 @@ Limits: Python 3.12/pandas 2.2.3 only; no Windows/macOS/other-Python execution, 
 - Checked iframe frame widths320/390/430px. Actual content client widths were303/373/413px after borders and browser scrollbars. Whole-document scroll widths equaled those client widths in the report; each report table/chart scrolled locally. At the390px frame width, mapping width319px contained744px of content; report table width295px contained680px. Keyboard ArrowRight moved the first report table to scrollLeft40px. The expanded quick menu stayed398px high; all four tested risk inputs/selects used16px text and293px widths. EUR/PLN historical-risk controls calculated successfully. These are Chrome CSS-viewport checks, not touch/physical-device/Safari verification.
 - Reloading the helper cleared all six private imports and restored exactly six samples. Actual main-page HTML download contained53,384bytes and three SVG charts, with no script, input, select, button, iframe, form, original dataset or workbook template; responsive and print CSS were present. The iframe download button reported success, but its browser automation download-event wait timed out; the main-page download returned a concrete file and was inspected. No new native PDF-dialog test was claimed.
 - Saved a screenshot of the deployed three-path guide. No private market observations, hosted database or automatic collection job were published. Physical devices and other browsers remain the next usability checks.
+
+
+## Version 0.1.0 release source validation — 2026-10-09
+
+- Updated package metadata and ECB User-Agent to0.1.0, corrected obsolete README import/install statements, documented optional Python installation separately from browser tab-memory import, and added a two-column invented wheat/EUR-PLN worked example in Markdown and a standalone web guide. No analytical definition changed.
+- Installed pinned build/runtime dependencies into a newly created virtual environment through the package index, built wheel/source distributions and installed the wheel. Running scripts/check_installed.py from /tmp with PYTHONPATH unset passed installed-version/assets, hand-computed110 monthly mean/gaps, both CLI entry points and empty private loopback database/UI checks. Python3.12.14/pandas2.2.3/numpy2.3.5; this is isolated Linux dependency installation, not Windows/macOS verification.
+- Final application source suite:251 tests passed in25.153s. Independent read-only review approved packaging/licenses/tutorial and seven adversarial publication probes: extra-source request commits, wrong parents, incorrect digests, extra draft assets and published-release mutation all reject.
+- Independent template check confirmed210 dates,2025-12-17 through2026-10-06, final213.29EUR/t ×4.2051PLN per EUR =896.905779PLN/t;11 SMA200 points and209 observed changes. The tutorial uses only B/E columns and makes short-history missingness and 95%/99% tail coverage explicit.
+- Added read-only Linux Python3.10/3.12 checks and isolated wheel installation to pushes/PRs. A separate explicit request-only release commit, fixed reviewed parent, current-head checks and same-commit draft recovery protect publication. Only code/invented examples are packaged; no private inputs, external personal token or automatic data feed are added. Actual remote CI, deployed walkthrough and release publication remain pending below.

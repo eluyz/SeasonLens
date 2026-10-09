@@ -16,6 +16,8 @@ Install the project following README.md. Run:
 python -m unittest discover -s tests -v
 ```
 
+Browser-module tests require Node.js on PATH. Python installation instructions and isolated wheel checks are in [docs/INSTALLATION.md](docs/INSTALLATION.md). The read-only Linux CI matrix runs on code pushes and pull requests; see [docs/RELEASING.md](docs/RELEASING.md) for the separate explicit publication workflow.
+
 For mathematical changes, include a small independently calculated expected result. Preserve zero/negative values, missing months and intervening years. Do not silently interpolate, discard duplicates or change calendar-year windows.
 
 Documentation, comments, commit messages and contributions should use English. Contributions are made under the project's MIT license.

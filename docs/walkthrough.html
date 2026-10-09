@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<title>Wheat and EUR/PLN walkthrough · SeasonLens v0.1.0</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f3f6fb;color:#18283f;font:16px/1.6 system-ui,sans-serif}main{max-width:880px;margin:auto;padding:28px}h1{font-size:clamp(1.7rem,5vw,2.2rem);line-height:1.2;margin:12px 0}h2{font-size:1.25rem;line-height:1.35;margin:0 0 12px}section{background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:24px;margin:22px 0;scroll-margin-top:16px}a{color:#1d4ed8;text-underline-offset:3px}a:hover{text-decoration-thickness:2px}a:focus-visible,.table-frame:focus-visible{outline:3px solid #2563eb;outline-offset:4px}p,li{overflow-wrap:anywhere}.muted{color:#52647c}.notice,.check{padding:12px 16px;border-left:4px solid #ad7300;background:#fff7e5}.check{border-color:#277043;background:#edf8f0}.actions{display:flex;flex-wrap:wrap;gap:10px}.actions a{display:inline-block;background:#1d4ed8;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none}.actions a.secondary{background:#fff;color:#1d4ed8;border:1px solid #c9d7e8}.steps{display:flex;flex-wrap:wrap;gap:8px 16px;padding-left:0;list-style:none;font-size:.94rem}.table-frame{max-width:100%;overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.94rem}caption{text-align:left;font-weight:600;padding:0 0 8px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #dbe4ef;vertical-align:top}thead{background:#eef3fa}code{font-size:.92em}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eef3fa;padding:14px;border-radius:8px}footer{font-size:.9rem;color:#52647c;margin:24px 0}.skip{position:absolute;left:16px;top:-60px;padding:10px;background:white}.skip:focus{top:8px}@media(max-width:600px){main{padding:16px}section{padding:17px}th,td{padding:8px}table{min-width:400px}.actions a{width:100%;text-align:center}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{body{background:#fff;font-size:11pt}main{max-width:none;padding:0}section{border:0;padding:0;margin:20px 0}.actions,.steps,.skip{display:none}.table-frame{overflow:visible}table{min-width:0}h2{break-after:avoid}tr,pre{break-inside:avoid}a{color:inherit}}
+</style>
+</head>
+<body>
+<a class="skip" href="#step-1">Skip to the walkthrough</a>
+<main>
+<header>
+<p class="muted">SeasonLens v0.1.0 · practical walkthrough</p>
+<h1>Wheat and EUR/PLN: from a workbook to a report</h1>
+<p>Import only wheat and EUR/PLN from the same workbook, check the PLN-per-tonne conversion, understand the short history and save a report. Allow roughly 5–10 minutes on a desktop; mapping columns can take longer on a phone.</p>
+<p class="notice"><strong>All observations are invented.</strong> They are not MATIF closes, central-bank rates or a forecast. No account or installation is needed.</p>
+<div class="actions"><a href="index.html" target="_blank" rel="noopener">Open demo in a new tab</a><a class="secondary" href="seasonlens-import-template.xlsx" download>Download example XLSX</a></div>
+<nav aria-label="Walkthrough steps"><ol class="steps"><li><a href="#step-1">1. Open</a></li><li><a href="#step-2">2. Configure</a></li><li><a href="#step-3">3. Validate</a></li><li><a href="#step-4">4. Convert</a></li><li><a href="#step-5">5. Read charts</a></li><li><a href="#step-6">6. Check risk</a></li><li><a href="#step-7">7. Export</a></li></ol></nav>
+</header>
+<section id="step-1" aria-labelledby="heading-1">
+<h2 id="heading-1">1. Open the example file</h2>
+<p>Start in a fresh demo tab with six built-in samples. Expand <strong>Start here — explore, import or create a report</strong> and choose <strong>Download example XLSX template</strong>, or use the download above.</p>
+<p>Choose <strong>Open private import</strong>. Select <code>seasonlens-import-template.xlsx</code> under <strong>Excel workbook or CSV file</strong>, set <strong>Analysis cutoff</strong> to <strong>2026-10-06</strong>, then choose <strong>Open and preview file</strong>. Opening the file does not import it.</p>
+</section>
+<section id="step-2" aria-labelledby="heading-2">
+<h2 id="heading-2">2. Declare rows and two instruments</h2>
+<div class="table-frame" tabindex="0" role="region" aria-label="Import settings; scroll horizontally if needed"><table><caption>Check every setting</caption><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody><tr><th scope="row">Worksheet</th><td>Prices</td></tr><tr><th scope="row">Header row</th><td>1</td></tr><tr><th scope="row">First data row</th><td>4</td></tr><tr><th scope="row">Date column</th><td>A · Date</td></tr><tr><th scope="row">Analysis cutoff</th><td>2026-10-06</td></tr><tr><th scope="row">Text date format</th><td>YYYY-MM-DD</td></tr><tr><th scope="row">Decimal separator for text prices</th><td>.</td></tr></tbody></table></div>
+<p>Row 2 declares units. Row 3 is an invented live example dated 2026-10-07; keep it outside the history. The physical-row preview still shows it for checking. Leave <strong>Explicitly skip empty price cells, with row counts</strong> and <strong>Use stored results of Excel formulas (may be stale)</strong> unchecked. The template uses date/numeric cells and has no formulas.</p>
+<p>In <strong>Choose instruments from price columns</strong>, check <strong>only B and E</strong>. Leave C, D, F and G unchecked. Declare these titles, units and roles:</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Two selected columns; scroll horizontally if needed"><table><caption>Explicit column mapping</caption><thead><tr><th scope="col">Column</th><th scope="col">Instrument title</th><th scope="col">Units</th><th scope="col">Role</th></tr></thead><tbody><tr><th scope="row">B</th><td>Wheat sample</td><td>EUR/t</td><td>Wheat</td></tr><tr><th scope="row">E</th><td>EUR/PLN sample</td><td>PLN per EUR</td><td>EUR/PLN</td></tr></tbody></table></div>
+<p>Names do not assign roles. The EUR/PLN role suggests units automatically; verify <strong>PLN per EUR</strong>.</p>
+</section>
+<section id="step-3" aria-labelledby="heading-3">
+<h2 id="heading-3">3. Validate, review, then add</h2>
+<p>Choose <strong>Validate selected instruments</strong>. Check two instruments, each with <strong>210 observations</strong>, first date <strong>2025-12-17</strong>, last date <strong>2026-10-06</strong>, <strong>0 blank values skipped</strong> and <strong>0 future rows excluded</strong>.</p>
+<p>Row 3 is outside the physical data range, so it is not counted as a future-row omission. Nothing has been added yet.</p>
+<p>Choose <strong>Add validated instruments to this tab</strong> once. There should now be <strong>eight instrument entries</strong>: six built-in samples and two private imports. Imported examples have <strong>USER_FILE</strong> provenance; this describes the import, not an official data provider. Changing an import setting requires validation again.</p>
+</section>
+<section id="step-4" aria-labelledby="heading-4">
+<h2 id="heading-4">4. Check wheat in PLN per tonne</h2>
+<p>Open <strong>Analysis options</strong>. Choose <strong>Wheat sample · private Excel</strong> under <strong>Instrument</strong>, then <strong>PLN/t</strong> under <strong>Display units</strong>. Select the private import, not built-in wheat.</p>
+<p class="check"><strong>Checkpoint:</strong> cutoff 2026-10-06; 210 observations; last observation 2026-10-06; conversion note shows 210 exact-date positive pairs and no unconverted commodity observations.</p>
+<p>Only the declared EUR/PLN column from this import is used. No sample FX is substituted and no rate is carried forward. The last historical workbook row, <strong>213</strong>, gives this independent check:</p>
+<pre><code>213.29 EUR/t × 4.2051 PLN per EUR
+= 896.905779 PLN/t ≈ 896.91 PLN/t</code></pre>
+<p>For 100 tonnes that is <strong>89,690.58 PLN</strong>. The whole-unit daily reference beside <strong>Monthly average prices</strong> displays <strong>897</strong>. For full precision choose <strong>Export selected observations (CSV)</strong>; its final <code>date</code> is <strong>2026-10-06</strong> and <code>value</code> is approximately <strong>896.905779</strong> (binary floating-point export can show <code>896.9057789999999</code>). Technical indicator columns are also included.</p>
+</section>
+<section id="step-5" aria-labelledby="heading-5">
+<h2 id="heading-5">5. Read the charts without filling the gaps</h2>
+<p>Use <strong>View monthly averages</strong> and <strong>View five-year prices</strong> in Start here. Monthly averages in PLN/t average the daily converted products; they do not multiply separate monthly wheat and FX averages. Commodity tables show whole units while calculations keep their precision. Colors compare unrounded monthly means with the last daily price; they are not trading signals.</p>
+<p><strong>Monthly average prices — last five years including this year</strong> keeps <strong>2022–2026</strong>. Years 2022–2024 and January–November 2025 lack observations; November–December 2026 are after the cutoff. Dashes and gaps mean unavailable data, not zero. The dashed period average weights available yearly monthly means equally. October 2026 is partial with four observations. This short history cannot establish a reliable seasonal pattern.</p>
+<p>For <strong>Technical analysis — last 12 months</strong>, retain <strong>Daily chart range: Last 12 months</strong> and all six checkboxes: price, SMA20, SMA100, SMA200 and two Bollinger bands. The supplied history is shorter than 12 months. The first 19 observations lack SMA20/Bollinger, the first 99 lack SMA100 and the first 199 lack SMA200: only <strong>11 SMA200 values</strong> exist. Indicators require full observation windows, not calendar-day or exchange-session guarantees. Earlier supplied history warms them before the displayed range; missing history is never fabricated.</p>
+</section>
+<section id="step-6" aria-labelledby="heading-6">
+<h2 id="heading-6">6. Check historical risk and coverage</h2>
+<p>Under <strong>Historical risk and statistical analysis</strong>, open <strong>Historical risk and stress episodes</strong>. Keep these settings:</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Risk settings; scroll horizontally if needed"><table><caption>Risk settings for this example</caption><thead><tr><th scope="col">Control</th><th scope="col">Value</th></tr></thead><tbody><tr><th scope="row">Risk, FX and forecast evaluation period</th><td>Last 5 calendar years</td></tr><tr><th scope="row">Perspective</th><td>Buyer — rising prices are adverse</td></tr><tr><th scope="row">Observed-interval horizon</th><td>1 observed interval</td></tr><tr><th scope="row">Tail confidence</th><td>95%</td></tr><tr><th scope="row">Quantity in tonnes</th><td>100</td></tr></tbody></table></div>
+<p>The history has <strong>209 one-interval changes</strong>. At 95%, the equivalent tail size is <strong>10.45 observations</strong>, above the minimum of five. Change <strong>Tail confidence</strong> to <strong>99%</strong>: only <strong>2.09</strong> tail observations remain and VaR/Expected Shortfall become unavailable. This is a coverage safeguard. Switch back to <strong>95%</strong> before the report.</p>
+<p>A buyer treats rises as adverse; a seller treats falls as adverse. The budget scenario applies historical percentage changes to the current benchmark and quantity. It is not transaction profit/loss or a prediction. The five-year setting requests a window; it does not make this short workbook a five-year dataset.</p>
+<p>Optionally open <strong>Commodity and FX contributions to PLN price risk</strong>: there are <strong>209 exact matching intervals</strong>. Its variance shares include covariance and are not proof of causation or hedge effectiveness. Completed-year seasonality requires more history; this template cannot support its historical-mean uncertainty intervals.</p>
+</section>
+<section id="step-7" aria-labelledby="heading-7">
+<h2 id="heading-7">7. Build and save the report</h2>
+<p>Keep the private wheat, <strong>PLN/t</strong>, cutoff <strong>2026-10-06</strong> and the risk settings above. Choose <strong>Open report builder</strong> in Start here. Retain the four initially checked sections:</p>
+<ul><li><strong>Market snapshot and data coverage</strong></li><li><strong>Monthly average prices and five-year comparison</strong></li><li><strong>Technical chart with selected lines</strong></li><li><strong>Historical risk and stress episodes</strong></li></ul>
+<p>Choose <strong>Build report preview</strong>. Check <strong>Wheat sample</strong>, <strong>PLN/t</strong>, <strong>2026-10-06</strong> and <strong>USER_FILE</strong> in the metadata.</p>
+<p><strong>Download HTML</strong> saves a standalone report with selected results and charts. <strong>Print / Save PDF</strong> uses your browser's print dialog; choose Save as PDF if offered. PDF saving, pagination and mobile support depend on the browser; HTML is the fallback. The snapshot stays fixed. Choose <strong>Back to analysis</strong> and rebuild after changing settings.</p>
+<p>Reports omit the original observation arrays and application code. Visible tables, prices and declared sources can still be private; sharing a report shares those results.</p>
+</section>
+<section aria-labelledby="finish-heading">
+<h2 id="finish-heading">Finish and known limits</h2>
+<p>Save results before reloading. Reload removes both private imports and restores six built-in samples; browser imports are not stored in SQLite. Display preferences may persist, imported observations do not. Use the local app for persistent private history.</p>
+<p>There is no live-data collection or automatic refresh in this exercise. Its dates are invented weekdays, not a checked exchange calendar. It does not establish predictive skill, five-year coverage or real-market suitability. Wide tables/charts scroll inside their frames; on a keyboard focus the frame and use arrow keys. Mapping is easier on a larger screen. Physical-phone, Safari and native PDF-dialog behavior remain platform checks.</p>
+<p><a href="https://github.com/eluyz/SeasonLens/blob/main/docs/GETTING_STARTED.md">Getting started</a> · <a href="https://github.com/eluyz/SeasonLens/blob/main/docs/WHEAT_FX_WALKTHROUGH.md">Read the same walkthrough on GitHub</a> · <a href="index.html">Return to SeasonLens</a></p>
+</section>
+<footer>SeasonLens · invented example data · fixed analysis cutoff 2026-10-06</footer>
+</main>
+</body>
+</html>
