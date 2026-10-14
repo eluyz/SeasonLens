@@ -26,7 +26,7 @@ def main():
     assert sys.prefix != sys.base_prefix, 'Use an isolated virtual environment.'
     assert Path(seasonlens.__file__).resolve().is_relative_to(Path(sys.prefix).resolve()), 'Imported source instead of installed wheel.'
     assets = resources.files('seasonlens')
-    for name in ('dashboard.html', 'start_panel.html', 'start_ui.js', 'report_export.js',
+    for name in ('dashboard.html', 'locale.js', 'start_panel.html', 'start_ui.js', 'report_export.js',
                  'scientific_panel.html', 'workbook_import.js', 'template_download.js',
                  'quick_controls.css', 'report.css', 'vendor/xlsx.mini.min.js', 'vendor/LICENSE'):
         assert assets.joinpath(name).read_bytes(), name
@@ -38,6 +38,8 @@ def main():
     html = seasonlens.render_dashboard({'INSTALL_SAMPLE': {'frame': frame, 'title': 'Invented install check', 'unit': 'EUR/t', 'source': 'SYNTHETIC', 'quote_semantics': 'Invented observations'}}, as_of=date(2026, 10, 6))
     assert 'id="seasonlens-start"' in html and 'initSeasonLensStartGuide' in html
     assert 'id="report-export-panel"' in html and '@@' not in html
+    assert 'id="language-en"' in html and 'id="language-pl"' in html
+    assert 'SeasonLensLocale.init();' in html
     script_dir = Path(sysconfig.get_path('scripts'))
     suffix = '.exe' if os.name == 'nt' else ''
     data_command = script_dir / ('seasonlens-data' + suffix)

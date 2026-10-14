@@ -95,8 +95,8 @@ Opcjonalnie otwórz **Udział surowca i waluty w ryzyku ceny w PLN**. Te dwie za
 
 Sprawdź, czy wybrano prywatną pszenicę w **PLN/t**, datę graniczną **2026-10-06** i powyższe ustawienia ryzyka. W sekcji Zacznij tutaj wybierz **Otwórz kreator raportu**. Pozostaw cztery początkowo zaznaczone sekcje:
 
-- **Przegląd rynku i pokrycie danych**;
-- **Średnie ceny miesięczne i porównanie pięciu lat**;
+- **Przegląd rynku i dostępność danych**;
+- **Średnie ceny miesięczne i porównanie pięcioletnie**;
 - **Wykres techniczny z wybranymi liniami**;
 - **Ryzyko historyczne i epizody stresowe**.
 

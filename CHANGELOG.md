@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 — 2026-10-14
+
+- English/Polish language tiles, reversible dynamic interface translations and localized immutable reports; language-only preference with denied-storage handling.
+- Polish wheat/EUR-PLN walkthrough and both languages in the frozen browser bundle.
+- Bilingual pilot instructions, three reproducible invented-workbook tasks, expected coverage/results and optional feedback worksheets.
+- Public GitHub pilot-feedback forms, with no automatic analytics or transmission of imported observations.
+- Installed-wheel checks now explicitly verify localization assets and language controls. No analytical formula, live-data feed or private persistence changes.
+
 ## 0.1.0 — 2026-10-09
 
 - First public experimental package version, with explicit installation paths and known limits.

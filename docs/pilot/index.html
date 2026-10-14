@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'none'; script-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>SeasonLens — pilotaż / pilot</title>
+  <style>
+    :root{color-scheme:light;--ink:#172b4d;--muted:#42556d;--blue:#123c81;--border:#becbdd;--surface:#f4f7fc}
+    *{box-sizing:border-box}html{scroll-padding-top:1rem}body{margin:0;background:var(--surface);color:var(--ink);font:17px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:980px;margin:auto;padding:24px 20px 48px}h1,h2,h3{line-height:1.25;overflow-wrap:anywhere}h1{font-size:clamp(1.9rem,6vw,2.7rem)}h2{font-size:1.8rem;margin-top:0}h3{font-size:1.3rem}a{color:var(--blue);text-underline-offset:.18em}a:hover{text-decoration-thickness:2px}a:focus-visible,[tabindex]:focus-visible{outline:3px solid #9b5200;outline-offset:4px}p,li{overflow-wrap:anywhere}code{font-size:.92em;white-space:normal;overflow-wrap:anywhere;background:#edf1f7;padding:.1em .3em;border-radius:4px}nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}nav a{display:block;text-decoration:none;background:white;border:2px solid var(--blue);padding:14px;border-radius:12px;font-weight:700;text-align:center;min-height:56px}.guide{background:white;border:1px solid var(--border);border-radius:16px;padding:28px;margin:28px 0}.intro{color:var(--muted);max-width:75ch}.links{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.links a{padding:10px 14px;border:1px solid var(--border);border-radius:8px;min-height:46px;display:inline-flex;align-items:center}.notice,.check{padding:14px 18px;border-radius:8px;background:#eef4ff;border-left:4px solid var(--blue)}.check{background:#f0f7f1;border-color:#28613d}.table-wrap{max-width:100%;overflow:auto;border:1px solid var(--border);border-radius:8px;margin:16px 0}table{border-collapse:collapse;min-width:500px;width:100%;font-size:.96em}caption{font-weight:700;text-align:left;padding:12px;background:#f2f5fa}th,td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{background:#f2f5fa}li{margin:10px 0}details{margin:18px 0;border:1px solid var(--border);padding:12px;border-radius:8px}summary{font-weight:700;cursor:pointer;min-height:44px;display:list-item}footer{color:var(--muted);font-size:.95rem}.back{display:inline-block;padding:10px 0}
+    @media(max-width:560px){main{padding:16px 12px 32px}.guide{padding:18px 14px}nav{gap:8px}.links a{width:100%;justify-content:center}h2{font-size:1.55rem}}
+    @media print{body{background:white;font-size:11pt}main{max-width:none;padding:0}.guide{border:0;padding:0;break-before:page}.guide:first-of-type{break-before:auto}nav,.links,.back{display:none}.table-wrap{overflow:visible;border:0}table{min-width:0}a{color:inherit}h3{break-after:avoid}.notice,.check{break-inside:avoid}}
+  </style>
+</head>
+<body>
+<main id="top">
+  <h1>SeasonLens</h1>
+  <p class="intro">Pilotaż w 15–25 minut · <span lang="en">A 15–25-minute pilot</span></p>
+  <nav aria-label="Wybierz instrukcję / Choose instructions">
+    <a href="#pl" lang="pl">Polski</a>
+    <a href="#en" lang="en">English</a>
+  </nav>
+
+  <section class="guide" id="pl" lang="pl" aria-labelledby="pl-title">
+    <h2 id="pl-title">Sprawdź trzy zadania</h2>
+    <p>Celem jest sprawdzenie, czy samodzielnie wczytasz skoroszyt, zrozumiesz porównanie miesięczne i zapiszesz raport. Nie potrzebujesz programowania, Pythona ani konta. Udział i przekazanie opinii są dobrowolne. Zapisz czas każdego zadania i pierwszą przeszkodę; nieukończone zadanie też jest przydatnym wynikiem. <strong>Samodzielnie</strong> obejmuje korzystanie z tych trzech instrukcji. <strong>Z pomocą</strong> oznacza dodatkowy pełny przewodnik lub pomoc innej osoby.</p>
+    <p class="notice"><strong>Użyj wyłącznie wymyślonego szablonu.</strong> Nie wczytuj plików firmowych, danych klientów ani rzeczywistych notowań w tym pilotażu. Przykład nie testuje prognoz ani wyników inwestycyjnych.</p>
+    <div class="links">
+      <a href="https://eluyz.github.io/SeasonLens/?lang=pl" target="_blank" rel="noopener">Otwórz publiczne demo ↗</a>
+      <a href="../index.html?lang=pl" target="_blank" rel="noopener">Otwórz aplikację z tego pakietu ↗</a>
+      <a href="../seasonlens-import-template.xlsx" download>Pobierz wymyślony szablon XLSX</a>
+    </div>
+    <p>W pobranym archiwum najpierw rozpakuj cały katalog; aplikację otwórz z tego pakietu. Instrukcję i aplikację trzymaj w osobnych kartach. Odśwież kartę aplikacji na początku, sprawdź <strong>sześć wbudowanych przykładów</strong> i wybierz kafelek <strong>Polski</strong>. Nie odświeżaj jej ponownie do czasu zapisania raportu: importy pozostają tylko w pamięci karty. Na telefonie tabele przewijają się we własnych ramkach, a przypisanie kolumn może zająć więcej czasu.</p>
+
+    <h3>1. Import i przeliczenie · 6–10 minut</h3>
+    <ol>
+      <li>Rozwiń <strong>Zacznij tutaj — przeglądaj, importuj lub utwórz raport</strong> i wybierz <strong>Otwórz import prywatny</strong>. W polu <strong>Skoroszyt Excel lub plik CSV</strong> wskaż <code>seasonlens-import-template.xlsx</code>. Ustaw <strong>Datę graniczną analizy</strong> na <code>2026-10-06</code> i wybierz <strong>Otwórz i podejrzyj plik</strong>.</li>
+      <li>Sprawdź ustawienia z tabeli. Wiersz 2 określa jednostki; wiersz 3 zawiera wymyślony przykład bieżących notowań z datą 2026-10-07. Historia musi zaczynać się od wiersza 4.</li>
+    </ol>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Ustawienia importu; tabela przewijana">
+      <table><caption>Ustawienia importu</caption><thead><tr><th scope="col">Pole</th><th scope="col">Wartość</th></tr></thead><tbody>
+        <tr><th scope="row">Arkusz</th><td>Prices</td></tr><tr><th scope="row">Wiersz nagłówków</th><td>1</td></tr><tr><th scope="row">Pierwszy wiersz danych</th><td>4</td></tr><tr><th scope="row">Kolumna daty</th><td>A · Date</td></tr><tr><th scope="row">Data graniczna analizy</th><td>2026-10-06</td></tr><tr><th scope="row">Format dat zapisanych jako tekst</th><td>YYYY-MM-DD</td></tr><tr><th scope="row">Separator dziesiętny cen zapisanych jako tekst</th><td>.</td></tr>
+      </tbody></table>
+    </div>
+    <p>W <strong>Wybierz instrumenty z kolumn cen</strong> zaznacz <strong>tylko B i E</strong>, wyłącz C, D, F i G. Zadeklaruj dokładnie:</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Nazwy, jednostki i role; tabela przewijana">
+      <table><caption>Dwa instrumenty z tego samego skoroszytu</caption><thead><tr><th scope="col">Kolumna</th><th scope="col">Nazwa</th><th scope="col">Jednostki</th><th scope="col">Rola</th></tr></thead><tbody><tr><th scope="row">B</th><td>Wheat sample</td><td>EUR/t</td><td>Pszenica</td></tr><tr><th scope="row">E</th><td>EUR/PLN sample</td><td>PLN za EUR</td><td>EUR/PLN</td></tr></tbody></table>
+    </div>
+    <p>W polskim polu jednostek wybierz <strong>PLN za EUR</strong>; wewnętrzna wartość tego wyboru to <code>PLN per EUR</code>. Nazwy instrumentów pozostają takie, jak wpisano. Pozostaw wyłączone <strong>Jawnie pomijaj puste komórki cen, z liczbą wierszy</strong> i <strong>Użyj zapisanych wyników formuł Excela (mogą być nieaktualne)</strong>.</p>
+    <ol start="3">
+      <li>Wybierz <strong>Sprawdź wybrane instrumenty</strong>. Każdy z dwóch instrumentów ma mieć <strong>210 obserwacji</strong>, od <strong>2025-12-17</strong> do <strong>2026-10-06</strong>, zero pominiętych pustych wartości i zero wykluczonych przyszłych wierszy. Wiersz 3 jest poza wybranym zakresem wierszy i nie jest liczony jako przyszły wiersz.</li>
+      <li>Dopiero teraz wybierz raz <strong>Dodaj sprawdzone instrumenty do tej karty</strong>. Oczekiwane <strong>osiem instrumentów</strong>: sześć przykładów i dwa importy. Zmiana ustawień unieważnia sprawdzenie.</li>
+      <li>W <strong>Opcjach analizy</strong> wybierz <strong>Wheat sample · prywatny Excel</strong> oraz <strong>Jednostki wyświetlania: PLN/t</strong>. Sprawdź 210 par z dokładnie tą samą datą, ostatnią obserwację <code>2026-10-06</code> i cenę odniesienia <strong>897</strong> przy <strong>Średnich cenach miesięcznych</strong>.</li>
+    </ol>
+    <p class="check"><strong>Kontrola:</strong> 213,29 EUR/t × 4,2051 PLN za EUR = <strong>896,905779 PLN/t</strong>, wyświetlane jako 897 po zaokrągleniu. Używany jest kurs z tego samego importu i dokładnie tego samego dnia, bez uzupełniania luk. <code>USER_FILE</code> opisuje sposób importu, nie oficjalnego dostawcę.</p>
+
+    <h3>2. Porównanie i pokrycie · 4–6 minut</h3>
+    <ol>
+      <li>Pozostań przy prywatnej pszenicy w PLN/t. W sekcji Zacznij tutaj wybierz <strong>Pokaż średnie miesięczne</strong> i <strong>Pokaż ceny z pięciu lat</strong>.</li>
+      <li>Znajdź zakres <strong>2022–2026</strong>. Odpowiedz własnymi słowami: dlaczego 2022–2024 mają luki, co oznaczają kreski i czy tabela dowodzi pełnej pięcioletniej historii?</li>
+      <li>Szablon zaczyna się <strong>2025-12-17</strong>: styczeń–listopad 2025 nie mają danych. Listopad–grudzień 2026 są po dacie granicznej. Październik 2026 jest <strong>niepełny, z czterema obserwacjami</strong>.</li>
+      <li>Otwórz <strong>Analizę techniczną — ostatnie 12 miesięcy</strong>, zostaw wszystkie sześć linii. Z 210 obserwacji jest <strong>11 wartości SMA200</strong>: pierwsze 199 nie mają pełnego okna. Okno liczy obserwacje, nie gwarantowane dni kalendarzowe.</li>
+    </ol>
+    <p class="check"><strong>Kontrola:</strong> kreska to brak wartości, nie zero. Zakres pięciu lat nie tworzy brakującej historii. Przerywana średnia nadaje jednakową wagę dostępnym średnim miesięcznym z poszczególnych lat. W PLN/t uśredniane są dzienne iloczyny ceny i kursu. Krótki szablon nie wystarcza do ustalenia wiarygodnej sezonowości; kolory nie są sygnałami transakcyjnymi.</p>
+
+    <h3>3. Raport HTML · 4–6 minut</h3>
+    <ol>
+      <li>Zachowaj prywatną pszenicę, PLN/t, <code>2026-10-06</code> i język polski. Wybierz <strong>Otwórz kreator raportu</strong>.</li>
+      <li>Zaznacz <strong>tylko trzy sekcje</strong>: <strong>Przegląd rynku i dostępność danych</strong>, <strong>Średnie ceny miesięczne i porównanie pięcioletnie</strong>, <strong>Wykres techniczny z wybranymi liniami</strong>. Wyłącz pozostałe, w tym ryzyko historyczne.</li>
+      <li>Wybierz <strong>Utwórz podgląd raportu</strong>. Sprawdź trzy sekcje, polskie etykiety oraz metadane <strong>Wheat sample · PLN/t · 2026-10-06 · USER_FILE</strong>.</li>
+      <li>Wybierz <strong>Pobierz HTML</strong>, znajdź pobrany plik i otwórz go w przeglądarce. Ma działać samodzielnie i zachować wybrane sekcje, metadane i język. Nazwa instrumentu pozostaje po angielsku. Zapis PDF jest opcjonalny i zależy od przeglądarki.</li>
+      <li>Dopiero po zapisaniu raportu odśwież kartę aplikacji. Oba importy znikają i pozostaje <strong>sześć przykładów</strong>. Język może zostać zapamiętany; import nie trafia do SQLite.</li>
+    </ol>
+    <p class="check"><strong>Kontrola:</strong> pobrany raport jest stałą kopią. Zmiana języka lub ustawień aplikacji nie zmienia pliku; nowy raport wymaga nowego podglądu. Opcjonalnie w źródle pobranego HTML sprawdź <code>&lt;html lang="pl"&gt;</code>. Raport pomija oryginalne tablice obserwacji, ale widoczne ceny i wyniki nadal mogą być prywatne przy użyciu rzeczywistych danych.</p>
+
+    <h3>Przekaż opinię · 2–3 minuty</h3>
+    <p>Skopiuj <a href="FEEDBACK_PL.md">polski formularz opinii</a> i uzupełnij: wynik każdego zadania (samodzielnie / z pomocą / nie ukończono / nie podjęto), czas, przeszkodę, zrozumienie luk, konkretny cel użycia i chęć ponownego użycia. Możesz przekazać odpowiedź w prywatnej wiadomości osobie, która zaprosiła Cię do testu, bez publikowania na GitHubie. Nie musisz podawać danych osobowych.</p>
+    <p>Opcjonalnie <a href="https://github.com/eluyz/SeasonLens/issues/new/choose">utwórz zgłoszenie GitHub</a>. <strong>Zgłoszenie, Twoje konto i załączniki są publiczne.</strong> Publikuj tylko po świadomym wyborze. Nie podawaj danych klientów, cen rzeczywistych, nazw firmowych plików ani prywatnych raportów. Opisz błąd na wymyślonym szablonie. Ta strona nie zawiera formularza, śledzenia ani automatycznego wysyłania opinii.</p>
+    <details><summary>Pomoc i ograniczenia</summary><p>Jeśli utkniesz, użyj <a href="README_PL.md">szczegółowej instrukcji PL</a> lub <a href="../walkthrough-pl.html">pełnego przewodnika</a> i zaznacz pomoc w opinii. Pilotaż nie potwierdza przydatności rynkowej ani niezależnej adopcji. Nie ma pobierania danych na żywo. Zachowanie na fizycznych telefonach i w oknie zapisu PDF zależy od platformy; zgłoś to, co sam zaobserwujesz.</p></details>
+    <a class="back" href="#top">Wróć do wyboru języka ↑</a>
+  </section>
+
+  <section class="guide" id="en" lang="en" aria-labelledby="en-title">
+    <h2 id="en-title">Try three tasks</h2>
+    <p>The goal is to find out whether you can import a workbook, understand a monthly comparison and save a report without help. No programming, Python or account is needed. Participation and feedback are voluntary. Record each task's time and first obstacle; an incomplete task is useful evidence too. <strong>Independent</strong> includes using these three task instructions. <strong>With help</strong> means also using the full walkthrough or another person's assistance.</p>
+    <p class="notice"><strong>Use only the invented template.</strong> Do not import company files, client data or actual market observations in this pilot. It does not test forecasts or investment performance.</p>
+    <div class="links">
+      <a href="https://eluyz.github.io/SeasonLens/?lang=en" target="_blank" rel="noopener">Open public demo ↗</a>
+      <a href="../index.html?lang=en" target="_blank" rel="noopener">Open the app in this bundle ↗</a>
+      <a href="../seasonlens-import-template.xlsx" download>Download invented XLSX template</a>
+    </div>
+    <p>Extract the whole downloaded archive before opening the bundled app. Keep the instructions and app in separate tabs. Reload the app at the start, check <strong>six built-in samples</strong> and choose the <strong>English</strong> tile. Do not reload again before saving your report: imports live only in tab memory. Wide tables scroll in their own frames on a phone; column mapping can take longer.</p>
+
+    <h3>1. Import and conversion · 6–10 minutes</h3>
+    <ol>
+      <li>Expand <strong>Start here — explore, import or create a report</strong> and choose <strong>Open private import</strong>. Select <code>seasonlens-import-template.xlsx</code> under <strong>Excel workbook or CSV file</strong>. Set <strong>Analysis cutoff</strong> to <code>2026-10-06</code>, then choose <strong>Open and preview file</strong>.</li>
+      <li>Check the settings below. Row 2 declares units; row 3 contains an invented live example dated 2026-10-07. History must start at row 4.</li>
+    </ol>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Import settings; scrollable table">
+      <table><caption>Import settings</caption><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody>
+        <tr><th scope="row">Worksheet</th><td>Prices</td></tr><tr><th scope="row">Header row</th><td>1</td></tr><tr><th scope="row">First data row</th><td>4</td></tr><tr><th scope="row">Date column</th><td>A · Date</td></tr><tr><th scope="row">Analysis cutoff</th><td>2026-10-06</td></tr><tr><th scope="row">Text date format</th><td>YYYY-MM-DD</td></tr><tr><th scope="row">Decimal separator for text prices</th><td>.</td></tr>
+      </tbody></table>
+    </div>
+    <p>In <strong>Choose instruments from price columns</strong>, select <strong>only B and E</strong>; uncheck C, D, F and G. Declare exactly:</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Titles, units and roles; scrollable table">
+      <table><caption>Two instruments from the same workbook</caption><thead><tr><th scope="col">Column</th><th scope="col">Title</th><th scope="col">Units</th><th scope="col">Role</th></tr></thead><tbody><tr><th scope="row">B</th><td>Wheat sample</td><td>EUR/t</td><td>Wheat</td></tr><tr><th scope="row">E</th><td>EUR/PLN sample</td><td>PLN per EUR</td><td>EUR/PLN</td></tr></tbody></table>
+    </div>
+    <p>Instrument titles keep their supplied text. Leave <strong>Explicitly skip empty price cells, with row counts</strong> and <strong>Use stored results of Excel formulas (may be stale)</strong> unchecked.</p>
+    <ol start="3">
+      <li>Choose <strong>Validate selected instruments</strong>. Each instrument should have <strong>210 observations</strong>, <strong>2025-12-17</strong> through <strong>2026-10-06</strong>, zero blank values skipped and zero future rows excluded. Row 3 is outside the chosen physical data range and does not count as a future-row omission.</li>
+      <li>Only now choose <strong>Add validated instruments to this tab</strong> once. Expect <strong>eight instruments</strong>: six samples and two imports. Changing import settings invalidates validation.</li>
+      <li>In <strong>Analysis options</strong>, choose <strong>Wheat sample · private Excel</strong> and <strong>Display units: PLN/t</strong>. Check 210 exact-date pairs, last observation <code>2026-10-06</code> and reference <strong>897</strong> beside <strong>Monthly average prices</strong>.</li>
+    </ol>
+    <p class="check"><strong>Check:</strong> 213.29 EUR/t × 4.2051 PLN per EUR = <strong>896.905779 PLN/t</strong>, displayed as 897 after rounding. FX comes from the same import on exact matching dates, without filling gaps. <code>USER_FILE</code> describes the import path, not an official provider.</p>
+
+    <h3>2. Comparison and coverage · 4–6 minutes</h3>
+    <ol>
+      <li>Keep private wheat in PLN/t. Choose <strong>View monthly averages</strong> and <strong>View five-year prices</strong> in Start here.</li>
+      <li>Find the <strong>2022–2026</strong> window. Answer in your own words: why do 2022–2024 have gaps, what do dashes mean, and does the table demonstrate a full five-year history?</li>
+      <li>The template starts on <strong>2025-12-17</strong>: January–November 2025 have no data. November–December 2026 are after the cutoff. October 2026 is <strong>partial, with four observations</strong>.</li>
+      <li>Open <strong>Technical analysis — last 12 months</strong> and keep all six lines enabled. With 210 observations there are <strong>11 SMA200 values</strong>: the first 199 lack a full window. These windows count observations, not guaranteed calendar days.</li>
+    </ol>
+    <p class="check"><strong>Check:</strong> a dash means unavailable, not zero. Selecting five years does not create the missing history. The dashed average weights available yearly monthly averages equally. PLN/t averages daily price × FX products. This short template cannot establish reliable seasonality; colors are not trading signals.</p>
+
+    <h3>3. HTML report · 4–6 minutes</h3>
+    <ol>
+      <li>Keep private wheat, PLN/t, <code>2026-10-06</code> and English. Choose <strong>Open report builder</strong>.</li>
+      <li>Select <strong>only three sections</strong>: <strong>Market snapshot and data coverage</strong>, <strong>Monthly average prices and five-year comparison</strong>, <strong>Technical chart with selected lines</strong>. Uncheck all others, including historical risk.</li>
+      <li>Choose <strong>Build report preview</strong>. Check three sections, English labels and metadata <strong>Wheat sample · PLN/t · 2026-10-06 · USER_FILE</strong>.</li>
+      <li>Choose <strong>Download HTML</strong>, find the saved file and open it in a browser. It should work independently and retain the selected sections, metadata and language. The supplied title remains unchanged. PDF saving is optional and depends on the browser.</li>
+      <li>Only after saving the report, reload the app tab. Both imports disappear, leaving <strong>six samples</strong>. Language may be remembered; imports are not saved to SQLite.</li>
+    </ol>
+    <p class="check"><strong>Check:</strong> the downloaded report is a fixed snapshot. Changing app language or settings does not change the file; a new report needs a new preview. Optionally inspect the downloaded page source for <code>&lt;html lang="en"&gt;</code>. Reports omit original observation arrays, but visible prices and results can still be private when actual data are used.</p>
+
+    <h3>Return feedback · 2–3 minutes</h3>
+    <p>Copy the <a href="FEEDBACK_EN.md">English feedback template</a> and fill in each task's outcome (independent / with help / incomplete / not attempted), time, obstacle, understanding of gaps, a specific use case and willingness to return. You can send it privately to the person who invited you to the test, without publishing on GitHub. No personal details are required.</p>
+    <p>Optionally <a href="https://github.com/eluyz/SeasonLens/issues/new/choose">open a GitHub issue</a>. <strong>The issue, your account and attachments are public.</strong> Publish only by deliberate choice. Do not include client data, actual prices, company filenames or private reports. Reproduce the problem on the invented template. This page has no form, tracking or automatic feedback submission.</p>
+    <details><summary>Help and limitations</summary><p>If you get stuck, use the <a href="README_EN.md">detailed English instructions</a> or <a href="../walkthrough.html">full walkthrough</a>, and record the help in your feedback. This pilot does not establish market suitability or independent adoption. There is no live-data collection. Physical-phone and native PDF-dialog behavior depend on the platform; report what you actually observe.</p></details>
+    <a class="back" href="#top">Back to language choice ↑</a>
+  </section>
+  <footer>SeasonLens · <a href="https://github.com/eluyz/SeasonLens">Open-source repository</a> · <span lang="en">Invented observations only · Manual, voluntary feedback</span></footer>
+</main>
+</body>
+</html>

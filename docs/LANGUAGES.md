@@ -8,7 +8,7 @@ Localization covers interface labels, explanations, table headings, chart legend
 
 An exported report retains the language selected when it was built. Changing the interface language does not rewrite an existing report snapshot: rebuild it to obtain a report in the other language. HTML exports remain script-free.
 
-The walkthrough is available in [English](WHEAT_FX_WALKTHROUGH.md) and [Polish](WHEAT_FX_WALKTHROUGH_PL.md), with public pages at `walkthrough.html` and `walkthrough-pl.html`. The historical v0.1.0 download remains the frozen original release; the current website contains subsequent updates.
+The walkthrough is available in [English](WHEAT_FX_WALKTHROUGH.md) and [Polish](WHEAT_FX_WALKTHROUGH_PL.md), with public pages at `walkthrough.html` and `walkthrough-pl.html`. The historical v0.1.0 download remains the frozen original release; version 0.1.1 includes both languages in its browser bundle.
 
 ## Maintaining translations
 

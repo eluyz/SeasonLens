@@ -27,7 +27,7 @@
 | SL-006 | XLSX import | Explicit worksheet/physical rows/columns/units, cached-formula consent, atomic validation and no transmission | Published; 175 tests and actual six-instrument desktop Chrome import/export verified |
 | SL-007 | Local interface | Complete file-to-result workflow with readable errors | Local app implemented; public browser flow verified; physical mobile-device QA open |
 | SL-008 | Public v0.1 | Tested install, docs, examples, license, public repository | Complete: v0.1.0 public release and four verified assets; walkthrough deployed; details in STATUS.md |
-| SL-009 | Pilot | Real independent feedback and documented corrections | Planned |
+| SL-009 | Pilot | Real independent feedback and documented corrections | Test package prepared; independent participant outcomes remain uncollected |
 
 | SL-010 | Private persistence and direct ECB updater | Atomic unique-date revisions, auditable sources, no silent mixing, explicit backup/recovery | Implemented; hosted schedule and live transport unverified |
 | SL-011 | Extended exploration | Daily/SMA/Bollinger, recent five-year prices, returns, matched partial months, normalized index, exact-date PLN conversion, coverage | Implemented; six-line technical and current-inclusive five-year views |
@@ -42,3 +42,5 @@ SL-001 is a reversible technical spike while SL-000 remains open; implementation
 | SL-014 | Browser-only CSV exploration | Explicit columns/dialect/cutoff, strict rejection before omissions, separate user IDs, no network or persistent storage, actual control and export verification | Published; actual Chrome private import, cutoff, source isolation, CSV export and reload cleanup verified |
 
 | SL-021 | English and Polish | Two language tiles, reversible dynamic labels/legends/methods, language-only preference, protected private names and immutable localized report | Published; 253 tests, independent review and actual public Chrome import/report/switching checks passed; see STATUS.md |
+
+| SL-022 | Bilingual pilot package | Three invented-workbook tasks, exact expected outcomes, private/public feedback boundaries, online guide and frozen offline bundle | Prepared; publication and release verification pending in STATUS.md |

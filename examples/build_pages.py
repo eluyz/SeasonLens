@@ -26,7 +26,7 @@ def build_public_demo():
 <h2>Your prices. Clear seasonal context.</h2>
 <p>Compare seasonal prices, inspect market changes and separate commodity and currency effects. Choose a sample instrument below, or open your own Excel or CSV in this browser.</p>
 <p class="notice"><strong>All six built-in price and currency samples are invented.</strong> These are not live market quotes. Your imported file is labelled separately and stays in this browser tab.</p>
-<nav class="demo-nav" aria-label="Explore SeasonLens"><a href="#market-overview">Explore market analysis</a><a href="#browser-import-panel">Open Excel or CSV</a><a href="https://github.com/eluyz/SeasonLens">Source code</a></nav>
+<nav class="demo-nav" aria-label="Explore SeasonLens"><a href="#market-overview">Explore market analysis</a><a href="#browser-import-panel">Open Excel or CSV</a><a href="pilot/index.html">Take the pilot test</a><a href="https://github.com/eluyz/SeasonLens">Source code</a></nav>
 <p class="muted">On a phone, swipe wide tables and charts horizontally. No installation is needed to explore this sample.</p>
 </section>'''
     guide = '<section id="seasonlens-start"'

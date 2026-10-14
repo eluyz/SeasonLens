@@ -1,0 +1,79 @@
+name: Pilotaż — opinia po polsku
+description: Wynik trzech zadań i przeszkody w korzystaniu z SeasonLens.
+title: "[Pilot PL]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Dziękujemy za test. Ten formularz tworzy PUBLICZNE zgłoszenie powiązane z Twoim kontem GitHub.
+        Używaj wyłącznie wymyślonego przykładu. Nie wklejaj cen firmowych, danych klientów, nazw prywatnych plików, oryginalnych arkuszy ani prywatnych raportów.
+        Nie musisz podawać imienia, e-maila ani firmy. Możesz też przekazać odpowiedzi prywatnie osobie, która zaprosiła Cię do testu.
+        Instrukcja: https://eluyz.github.io/SeasonLens/pilot/#pl
+  - type: input
+    id: environment
+    attributes:
+      label: Wersja / urządzenie / przeglądarka
+      placeholder: "0.1.1 lub demo online; komputer/telefon; Chrome/Safari/Firefox"
+    validations:
+      required: true
+  - type: dropdown
+    id: import
+    attributes:
+      label: "Zadanie 1 — import pszenicy i EUR/PLN"
+      options:
+        - Wykonane samodzielnie
+        - Wykonane z pomocą
+        - Niewykonane
+        - Niepróbowane
+    validations:
+      required: true
+  - type: dropdown
+    id: comparison
+    attributes:
+      label: "Zadanie 2 — porównanie cen i dostępności historii"
+      options:
+        - Wykonane samodzielnie
+        - Wykonane z pomocą
+        - Niewykonane
+        - Niepróbowane
+    validations:
+      required: true
+  - type: dropdown
+    id: report
+    attributes:
+      label: "Zadanie 3 — zapis raportu HTML"
+      options:
+        - Wykonane samodzielnie
+        - Wykonane z pomocą
+        - Niewykonane
+        - Niepróbowane
+    validations:
+      required: true
+  - type: textarea
+    id: observations
+    attributes:
+      label: Co było niejasne lub nie zadziałało?
+      description: Podaj zadanie, oczekiwane zachowanie, wynik i ewentualny przybliżony czas. Opis wystarczy; załączniki nie są potrzebne.
+      placeholder: "Zadanie 2: nie wiedziałem, dlaczego w poprzednich latach jest —. Zajęło mi to około 5 minut."
+  - type: dropdown
+    id: return
+    attributes:
+      label: Czy użył(a)byś aplikacji ponownie do własnego zadania?
+      options:
+        - Tak
+        - Być może
+        - Nie
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Do jakiego zadania? Co trzeba poprawić w pierwszej kolejności?
+      description: Opisz ogólnie, bez danych pracodawcy lub klientów. Możesz wpisać „nie wiem”.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Przed wysłaniem
+      options:
+        - label: Rozumiem, że zgłoszenie jest publiczne. Usunąłem/usunęłam prywatne dane i używam wyłącznie wymyślonego przykładu.
+          required: true

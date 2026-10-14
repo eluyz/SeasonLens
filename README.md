@@ -2,13 +2,17 @@
 
 An open-source project for auditable seasonality and market analysis of CSV time series and Excel master files.
 
-**Version 0.1.0 — first public experimental release.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
+**Version 0.1.1 — experimental pilot build.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
 
-[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.0.md) · [Installation and limits](docs/INSTALLATION.md)
+[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.1.md) · [Installation and limits](docs/INSTALLATION.md)
 
 The current app supports **English and Polish** through two language tiles. Imported names and data keep their supplied form; reports retain the language in which they were built. See [language behavior](docs/LANGUAGES.md).
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
+
+## Pilot
+
+Try the [English/Polish pilot](https://eluyz.github.io/SeasonLens/pilot/): three tasks using the invented workbook, expected outcomes and optional feedback. Use the browser link or the frozen browser ZIP; no installation is required. Public GitHub feedback requires an account. Do not submit private market data.
 
 ## Browser demo
 
@@ -35,7 +39,7 @@ Supply-and-demand context is a separate panel with invented examples and private
 **Optional Python installation:** use Python 3.10+ and create a virtual environment. See [installation instructions](docs/INSTALLATION.md) for Windows PowerShell and macOS/Linux commands, version checks and the distinction between tab-memory import and persistent local CSV import.
 
 ```bash
-git clone --branch v0.1.0 --depth 1 https://github.com/eluyz/SeasonLens.git
+git clone --branch v0.1.1 --depth 1 https://github.com/eluyz/SeasonLens.git
 cd SeasonLens
 python -m venv .venv
 ```

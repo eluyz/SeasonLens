@@ -92,7 +92,7 @@ entries([
 const patterns=[];
 function pattern(re,replace){patterns.push([re,replace]);}
 const date='\\d{4}-\\d{2}-\\d{2}', number='[+-]?(?:\\d+(?:[.,]\\d+)?|—)';
-entries([['Explore SeasonLens','Poznaj SeasonLens'],['20-return daily volatility, 60-return daily volatility','Zmienność dzienna z 20 zmian, zmienność dzienna z 60 zmian']]);
+entries([['Explore SeasonLens','Poznaj SeasonLens'],['Take the pilot test','Weź udział w pilotażu'],['20-return daily volatility, 60-return daily volatility','Zmienność dzienna z 20 zmian, zmienność dzienna z 60 zmian']]);
 entries([['— analysis report','— raport analityczny'],['— SeasonLens report','— raport SeasonLens'],['Private CSV and invented sample histories can be displayed together; their sources and quote times may differ.','Historie z prywatnego CSV i wymyślonych przykładów można wyświetlać razem; ich źródła i momenty notowań mogą się różnić.']]);
 pattern(/^(\d+) exact-date pairs · last difference ([+−-]?[\d.,]+|—) · historical percentile ([+−-]?[\d.,]+)% \(current included; ties receive half weight\)\.$/,(_,n,v,p)=>n+' par z identyczną datą · ostatnia różnica '+v+' · percentyl historyczny '+p+'% (bieżąca wartość uwzględniona; równe wartości otrzymują połowę wagi).');
 pattern(/^([\s\S]+)\. (\d+) exact matching intervals(?: · (\d{4}-\d{2}-\d{2})–(\d{4}-\d{2}-\d{2}))?; original positive-endpoint intervals: commodity (\d+), FX (\d+)\. Nonpositive-endpoint exclusions: (\d+) \/ (\d+)\. ([\s\S]+)$/,(_,prefix,n,a,b,c,f,ce,fe,reason)=>translate(prefix,'pl')+'. '+n+' przedziałów z identycznymi datami'+(a?' · '+a+'–'+b:'')+'; oryginalne przedziały z dodatnimi końcami: surowiec '+c+', waluta '+f+'. Wykluczenia niedodatnich końców: '+ce+' / '+fe+'. '+translate(reason,'pl'));

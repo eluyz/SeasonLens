@@ -1,0 +1,79 @@
+name: Pilot — feedback in English
+description: Results of the three pilot tasks and obstacles to using SeasonLens.
+title: "[Pilot EN]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing. This form creates a PUBLIC issue linked to your GitHub account.
+        Use only the invented example. Do not include company prices, client information, private filenames, original workbooks or private reports.
+        No name, email or employer is requested. You can also send your answers privately to the person who invited you.
+        Instructions: https://eluyz.github.io/SeasonLens/pilot/#en
+  - type: input
+    id: environment
+    attributes:
+      label: Version / device / browser
+      placeholder: "0.1.1 or online demo; computer/phone; Chrome/Safari/Firefox"
+    validations:
+      required: true
+  - type: dropdown
+    id: import
+    attributes:
+      label: "Task 1 — import wheat and EUR/PLN"
+      options:
+        - Completed independently
+        - Completed with help
+        - Not completed
+        - Not attempted
+    validations:
+      required: true
+  - type: dropdown
+    id: comparison
+    attributes:
+      label: "Task 2 — compare prices and historical coverage"
+      options:
+        - Completed independently
+        - Completed with help
+        - Not completed
+        - Not attempted
+    validations:
+      required: true
+  - type: dropdown
+    id: report
+    attributes:
+      label: "Task 3 — save an HTML report"
+      options:
+        - Completed independently
+        - Completed with help
+        - Not completed
+        - Not attempted
+    validations:
+      required: true
+  - type: textarea
+    id: observations
+    attributes:
+      label: What was unclear or did not work?
+      description: Include the task, expected behaviour, observed result and optionally approximate time. Text is sufficient; attachments are not needed.
+      placeholder: "Task 2: I did not understand the — values in earlier years. This took about 5 minutes."
+  - type: dropdown
+    id: return
+    attributes:
+      label: Would you use the app again for a task of your own?
+      options:
+        - "Yes"
+        - Maybe
+        - "No"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: For which task? What should be improved first?
+      description: Describe the purpose generally, without employer or client data. “Unsure” is a valid answer.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I understand that this issue is public. I removed private information and used only the invented example.
+          required: true

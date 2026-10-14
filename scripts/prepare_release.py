@@ -54,13 +54,19 @@ def package(version):
     archive = dist / f'seasonlens-browser-v{version}.zip'
     files = {'docs/index.html': 'index.html', 'docs/walkthrough.html': 'walkthrough.html',
              'docs/walkthrough-pl.html': 'walkthrough-pl.html',
+             'docs/pilot/index.html': 'pilot/index.html',
+             'docs/pilot/README_PL.md': 'pilot/README_PL.md',
+             'docs/pilot/README_EN.md': 'pilot/README_EN.md',
+             'docs/pilot/FEEDBACK_PL.md': 'pilot/FEEDBACK_PL.md',
+             'docs/pilot/FEEDBACK_EN.md': 'pilot/FEEDBACK_EN.md',
+             'docs/PILOT_OPERATIONS.md': 'pilot/OPERATIONS.md',
              'docs/seasonlens-import-template.xlsx': 'seasonlens-import-template.xlsx',
              'docs/sample_prices.csv': 'sample_prices.csv', 'docs/layout-check.html': 'layout-check.html',
              'LICENSE': 'LICENSE', 'src/seasonlens/vendor/LICENSE': 'SHEETJS-LICENSE.txt'}
     with zipfile.ZipFile(archive, 'x', compression=zipfile.ZIP_DEFLATED) as bundle:
         for source, target in files.items():
             bundle.write(source, target)
-        bundle.writestr('README-browser.txt', f'SeasonLens {version}\nExtract this complete folder, then open index.html. Open walkthrough.html for the wheat + EUR/PLN example. All built-in observations and the workbook are invented. Browser imports disappear on reload. Report HTML download saves visible selected results; PDF saving depends on the browser. This package includes no data collector or running server. Code/examples: MIT; bundled SheetJS: Apache-2.0.\n')
+        bundle.writestr('README-browser.txt', f'SeasonLens {version}\nExtract this complete folder, then open pilot/index.html for the English/Polish pilot instructions, or index.html for the application. Open walkthrough.html or walkthrough-pl.html for the wheat + EUR/PLN example. All built-in observations and the workbook are invented. Browser imports disappear on reload. Report HTML download saves visible selected results; PDF saving depends on the browser. The app supports English and Polish. Feedback is optional; GitHub Issues requires an account and is public. This package includes no data collector, telemetry or running server. Code/examples: MIT; bundled SheetJS: Apache-2.0.\n')
     wheel = dist / f'seasonlens-{version}-py3-none-any.whl'
     source = dist / f'seasonlens-{version}.tar.gz'
     for path in (wheel, source):
