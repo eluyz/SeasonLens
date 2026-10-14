@@ -43,4 +43,4 @@ SL-001 is a reversible technical spike while SL-000 remains open; implementation
 
 | SL-021 | English and Polish | Two language tiles, reversible dynamic labels/legends/methods, language-only preference, protected private names and immutable localized report | Published; 253 tests, independent review and actual public Chrome import/report/switching checks passed; see STATUS.md |
 
-| SL-022 | Bilingual pilot package | Three invented-workbook tasks, exact expected outcomes, private/public feedback boundaries, online guide and frozen offline bundle | Prepared; publication and release verification pending in STATUS.md |
+| SL-022 | Bilingual pilot package | Three invented-workbook tasks, exact expected outcomes, private/public feedback boundaries, online guide and frozen offline bundle | Online guide published; Linux CI and browser checks passed; frozen v0.1.1 release pending in STATUS.md |
