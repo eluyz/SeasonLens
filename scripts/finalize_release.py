@@ -1,5 +1,6 @@
 """Finalize only an explicitly pinned existing draft; never create or move a tag."""
 import argparse
+import ast
 import hashlib
 import json
 import os
@@ -14,6 +15,47 @@ def git(*args):
     return subprocess.check_output(['git', *args])
 
 
+def browser_mapping(version):
+    """Frozen inventories are explicit; future formats require a fresh review."""
+    legacy = {'index.html': 'docs/index.html', 'walkthrough.html': 'docs/walkthrough.html',
+              'seasonlens-import-template.xlsx': 'docs/seasonlens-import-template.xlsx',
+              'sample_prices.csv': 'docs/sample_prices.csv', 'layout-check.html': 'docs/layout-check.html',
+              'LICENSE': 'LICENSE', 'SHEETJS-LICENSE.txt': 'src/seasonlens/vendor/LICENSE'}
+    if version == '0.1.0':
+        return legacy
+    if version not in {'0.1.1', '0.1.2', '0.1.3'}:
+        raise ValueError('Unsupported frozen browser inventory version.')
+    return {**legacy, 'walkthrough-pl.html': 'docs/walkthrough-pl.html',
+            'pilot/index.html': 'docs/pilot/index.html',
+            'pilot/README_PL.md': 'docs/pilot/README_PL.md',
+            'pilot/README_EN.md': 'docs/pilot/README_EN.md',
+            'pilot/FEEDBACK_PL.md': 'docs/pilot/FEEDBACK_PL.md',
+            'pilot/FEEDBACK_EN.md': 'docs/pilot/FEEDBACK_EN.md',
+            'pilot/OPERATIONS.md': 'docs/PILOT_OPERATIONS.md'}
+
+
+def frozen_browser_readme(target, version):
+    """Read a restricted literal template without executing any tagged code."""
+    source = ast.parse(git('show', target + ':scripts/prepare_release.py').decode())
+    matches = [node for node in ast.walk(source)
+               if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+               and isinstance(node.func.value, ast.Name) and node.func.value.id == 'bundle'
+               and node.func.attr == 'writestr' and len(node.args) == 2 and not node.keywords
+               and isinstance(node.args[0], ast.Constant) and node.args[0].value == 'README-browser.txt']
+    if len(matches) != 1 or not isinstance(matches[0].args[1], ast.JoinedStr):
+        raise ValueError('Unsupported frozen browser README template.')
+    parts = []
+    for part in matches[0].args[1].values:
+        if isinstance(part, ast.Constant) and isinstance(part.value, str):
+            parts.append(part.value)
+        elif (isinstance(part, ast.FormattedValue) and isinstance(part.value, ast.Name)
+              and part.value.id == 'version' and part.conversion == -1 and part.format_spec is None):
+            parts.append(version)
+        else:
+            raise ValueError('Unsupported frozen browser README interpolation.')
+    return ''.join(parts).encode('utf-8')
+
+
 def request():
     data = json.loads(Path('.github/release-finalization.json').read_text())
     if set(data) != {'version', 'expected_parent', 'tag_commit', 'release_id', 'assets'}:
@@ -21,6 +63,7 @@ def request():
     version = data['version']
     if not isinstance(version, str) or not re.fullmatch(r'0\.[0-9]+\.[0-9]+', version):
         raise ValueError('Invalid experimental version.')
+    browser_mapping(version)
     for field in ('expected_parent', 'tag_commit'):
         if not isinstance(data[field], str) or not re.fullmatch(r'[0-9a-f]{40}', data[field]):
             raise ValueError('Use full reviewed commit identities.')
@@ -60,6 +103,7 @@ def request():
 
 
 def verify(data, result_path, downloaded):
+    mapping = browser_mapping(data['version'])
     remote = json.loads(Path(result_path).read_text())
     if remote.get('id') != data['release_id'] or remote.get('tag_name') != 'v' + data['version'] or remote.get('draft') is not True:
         raise ValueError('Only the pinned unpublished draft may be finalized.')
@@ -83,16 +127,14 @@ def verify(data, result_path, downloaded):
     wanted = {a['digest'][7:] + '  ' + a['name'] for a in data['assets'] if a['name'] != 'SHA256SUMS'}
     if len(lines) != 3 or set(lines) != wanted:
         raise ValueError('Checksum manifest differs from downloaded assets.')
-    mapping = {'index.html': 'docs/index.html', 'walkthrough.html': 'docs/walkthrough.html',
-               'seasonlens-import-template.xlsx': 'docs/seasonlens-import-template.xlsx',
-               'sample_prices.csv': 'docs/sample_prices.csv', 'layout-check.html': 'docs/layout-check.html',
-               'LICENSE': 'LICENSE', 'SHEETJS-LICENSE.txt': 'src/seasonlens/vendor/LICENSE'}
     with zipfile.ZipFile(Path('dist') / f'seasonlens-browser-v{data["version"]}.zip') as bundle:
-        if len(bundle.namelist()) != 8 or set(bundle.namelist()) != set(mapping) | {'README-browser.txt'}:
+        if len(bundle.namelist()) != len(mapping) + 1 or set(bundle.namelist()) != set(mapping) | {'README-browser.txt'}:
             raise ValueError('Browser archive has unexpected files.')
         for name, source in mapping.items():
             if bundle.read(name) != git('show', data['tag_commit'] + ':' + source):
                 raise ValueError('Frozen browser bytes differ from the unchanged tag.')
+        if bundle.read('README-browser.txt') != frozen_browser_readme(data['tag_commit'], data['version']):
+            raise ValueError('Frozen browser README differs from the unchanged tag.')
     print('Pinned draft IDs, downloaded bytes, checksums and frozen tagged browser verified.')
 
 
