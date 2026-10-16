@@ -4,6 +4,112 @@
 const KEY='seasonlens.language.v1';
 const catalog=Object.create(null);
 function entries(pairs){for(const [en,pl] of pairs)catalog[en]=pl;}
+entries([
+ [
+  "Excel import profiles",
+  "Profile importu Excela"
+ ],
+ [
+  "Reuse worksheet, row, column, title, unit and role settings with another copy of the same workbook layout. Profiles contain header names and declared names, but no observations. Keep them private if those names are sensitive. Loading checks the layout and still requires preview, validation and a separate Add action.",
+  "Użyj ponownie ustawień arkusza, wierszy, kolumn, nazw, jednostek i ról w kolejnym pliku o tym samym układzie. Profile zawierają nagłówki i zadeklarowane nazwy, ale nie zawierają obserwacji. Zachowaj je prywatnie, jeśli te nazwy są poufne. Wczytanie sprawdza układ; nadal wymagane są podgląd, walidacja i osobne dodanie danych."
+ ],
+ [
+  "Import profile JSON file",
+  "Plik JSON profilu importu"
+ ],
+ [
+  "Load import profile",
+  "Wczytaj profil importu"
+ ],
+ [
+  "Save import profile",
+  "Zapisz profil importu"
+ ],
+ [
+  "Save becomes available after successful Excel validation.",
+  "Zapis będzie dostępny po pomyślnym sprawdzeniu importu Excela."
+ ],
+ [
+  "Current Excel settings validated. You can save their profile before or after adding.",
+  "Bieżące ustawienia importu Excela zostały sprawdzone. Możesz zapisać ich profil przed dodaniem danych lub po nim."
+ ],
+ [
+  "Open an Excel workbook before loading a profile.",
+  "Przed wczytaniem profilu otwórz skoroszyt Excela."
+ ],
+ [
+  "Select an import profile JSON file.",
+  "Wybierz plik JSON profilu importu."
+ ],
+ [
+  "Import profile exceeds the 64 KiB limit.",
+  "Profil importu przekracza limit 64 KiB."
+ ],
+ [
+  "Profile loaded. Review the preview and analysis cutoff, choose any required blank/formula permissions, then validate. No observations have been added.",
+  "Profil wczytany. Sprawdź podgląd i datę graniczną analizy, zaznacz ewentualne zgody dotyczące pustych cen i formuł, a następnie sprawdź import. Nie dodano żadnych obserwacji."
+ ],
+ [
+  "Validate the current Excel settings before saving a profile.",
+  "Przed zapisaniem profilu sprawdź bieżące ustawienia importu Excela."
+ ],
+ [
+  "Import profile downloaded. It contains settings and declared names, but no observations. Keep it private if those names are sensitive.",
+  "Profil importu pobrany. Zawiera ustawienia i zadeklarowane nazwy, bez obserwacji. Zachowaj go prywatnie, jeśli te nazwy są poufne."
+ ],
+ [
+  "Import profile has missing or unsupported fields.",
+  "Profil importu ma brakujące lub nieobsługiwane pola."
+ ],
+ [
+  "Import profile contains invalid text fields.",
+  "Profil importu zawiera niepoprawne pola tekstowe."
+ ],
+ [
+  "Import profile contains an invalid column letter.",
+  "Profil importu zawiera niepoprawną literę kolumny."
+ ],
+ [
+  "Unsupported import profile format or version.",
+  "Nieobsługiwany format lub wersja profilu importu."
+ ],
+ [
+  "Import profile contains invalid physical row numbers.",
+  "Profil importu zawiera niepoprawne numery wierszy arkusza."
+ ],
+ [
+  "Import profile contains unsupported number or date formats.",
+  "Profil importu zawiera nieobsługiwany format liczb lub dat."
+ ],
+ [
+  "Import profile must select between 1 and 20 price columns.",
+  "Profil importu musi wskazywać od 1 do 20 kolumn cen."
+ ],
+ [
+  "Import profile contains repeated columns or titles.",
+  "Profil importu zawiera powtarzające się kolumny lub nazwy."
+ ],
+ [
+  "Import profile contains incompatible units or repeated roles.",
+  "Profil importu zawiera niezgodne jednostki lub powtarzające się role."
+ ],
+ [
+  "Import profile must be a JSON text file.",
+  "Profil importu musi być plikiem tekstowym JSON."
+ ],
+ [
+  "Import profile is not valid JSON.",
+  "Profil importu nie jest poprawnym plikiem JSON."
+ ],
+ [
+  "Profile worksheet is unavailable. Choose the correct workbook or configure the import manually.",
+  "Arkusz wskazany w profilu jest niedostępny. Wybierz właściwy skoroszyt lub ustaw import ręcznie."
+ ],
+ [
+  "Profile columns or headers have changed. Review the worksheet and configure the import manually.",
+  "Kolumny lub nagłówki wskazane w profilu zmieniły się. Sprawdź arkusz i ustaw import ręcznie."
+ ]
+]);
 // Exact source strings; no dictionary word substitutions inside arbitrary user text.
 entries([
 ['English','English'],['Polski','Polski'],['Language','Język'],['Choose language','Wybierz język'],
@@ -152,7 +258,7 @@ pattern(/^Matched reference (\d{4}-\d{2}-\d{2}): ([\d.,]+) EUR\/t × ([\d.,]+) P
 pattern(/^Source: (SYNTHETIC|USER_FILE) · (Invented demonstration data\.|Private import in this tab only\.)$/,(_,s,n)=>'Źródło: '+s+' · '+translate(n,'pl'));
 // Error details may contain a private column/sheet name. Translate only known
 // complete diagnostics after the application prefix; leave unknown tails intact.
-pattern(/^(Preview rejected|File rejected|Import rejected|Could not add validated instruments|Download could not start|This panel is unavailable): ([\s\S]+)$/,(_,p,d)=>({ 'Preview rejected':'Podgląd odrzucony','File rejected':'Plik odrzucony','Import rejected':'Import odrzucony','Could not add validated instruments':'Nie udało się dodać sprawdzonych instrumentów','Download could not start':'Nie udało się rozpocząć pobierania','This panel is unavailable':'Ten panel jest niedostępny'}[p])+': '+(catalog[d]||d));
+pattern(/^(Profile rejected|Profile download failed|Profile cannot be saved|Preview rejected|File rejected|Import rejected|Could not add validated instruments|Download could not start|This panel is unavailable): ([\s\S]+)$/,(_,p,d)=>({ 'Profile rejected':'Profil odrzucony','Profile download failed':'Nie udało się pobrać profilu','Profile cannot be saved':'Nie można zapisać profilu','Preview rejected':'Podgląd odrzucony','File rejected':'Plik odrzucony','Import rejected':'Import odrzucony','Could not add validated instruments':'Nie udało się dodać sprawdzonych instrumentów','Download could not start':'Nie udało się rozpocząć pobierania','This panel is unavailable':'Ten panel jest niedostępny'}[p])+': '+(catalog[d]||d));
 pattern(/^Unavailable: ([\s\S]+)$/,(_,d)=>'Niedostępne: '+(catalog[d]||d));
 pattern(/^(\d+) valid changes from (\d+) observations(?: · (\d{4}-\d{2}-\d{2})–(\d{4}-\d{2}-\d{2}))? · (\d+) nonpositive-endpoint intervals excluded · tail mass ([\d.,]+)\. ([\s\S]+?)( Multi-interval changes overlap and are dependent\.)?$/,(_,n,o,a,b,e,t,r,overlap)=>n+' poprawnych zmian z '+o+' obserwacji'+(a?' · '+a+'–'+b:'')+' · '+e+' przedziałów z niedodatnimi punktami końcowymi wykluczono · masa ogona '+t+'. '+translate(r,'pl')+(overlap?' Zmiany wielookresowe nakładają się i są zależne.':''));
 pattern(/^(\d{4})–(\d{4}) declared completed years\. Current year excluded \((\d+) observations\)\. Fixed early\/late split: (\d{4})–(\d{4}) \/ (\d{4})–(\d{4})\. Missing current months: (\d+); missing previous months: (\d+); nonpositive month endpoints: (\d+)\. Dashed limits are approximate intervals of the historical mean, not future-price ranges\.$/,(_,a,b,c,d,e,f,g,h,i,j)=>a+'–'+b+' zadeklarowane zakończone lata. Rok bieżący wykluczony ('+c+' obserwacji). Stały podział wcześniejsze/późniejsze: '+d+'–'+e+' / '+f+'–'+g+'. Brakujące miesiące bieżące: '+h+'; brakujące miesiące poprzednie: '+i+'; niedodatnie końce miesiąca: '+j+'. Przerywane granice to przybliżone przedziały średniej historycznej, nie zakresy przyszłych cen.');

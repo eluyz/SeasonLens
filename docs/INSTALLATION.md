@@ -1,17 +1,17 @@
-# Install SeasonLens 0.1.1
+# Install SeasonLens 0.1.2
 
 ## Browser: no installation
 
-Open the [public demo](https://eluyz.github.io/SeasonLens/) or follow the [wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html). No account or API key is needed. Built-in prices and the workbook are invented. Files imported here remain in tab memory and disappear on reload.
+Open the [public demo](https://eluyz.github.io/SeasonLens/) or follow the [wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html). No account or API key is needed. Built-in prices and the workbook are invented. Files imported here remain in tab memory and disappear on reload. You can explicitly download an XLSX configuration profile for repeat imports; it contains settings and private names, not observations. See [profile reuse](GETTING_STARTED.md#reuse-an-xlsx-import-profile). Profiles are not saved automatically.
 
-The [v0.1.1 release](https://github.com/eluyz/SeasonLens/releases/tag/v0.1.1) also provides a frozen browser ZIP. Extract it into one folder and open `index.html`; keep `walkthrough.html` and the example workbook alongside it. This is optional and does not install a server or save private histories. The live demo can change after this release.
+The [v0.1.2 release](https://github.com/eluyz/SeasonLens/releases/tag/v0.1.2) also provides a frozen browser ZIP. Extract it into one folder and open `index.html`; keep `walkthrough.html` and the example workbook alongside it. This is optional and does not install a server or save private histories. The live demo can change after this release.
 
 ## Optional Python app
 
 Use Python 3.10 or newer. Start with a versioned checkout:
 
 ```bash
-git clone --branch v0.1.1 --depth 1 https://github.com/eluyz/SeasonLens.git
+git clone --branch v0.1.2 --depth 1 https://github.com/eluyz/SeasonLens.git
 cd SeasonLens
 python -m venv .venv
 ```
@@ -39,9 +39,9 @@ seasonlens-data --help
 seasonlens-app --help
 ```
 
-Expected package version: **0.1.1**. Installation downloads declared dependencies from the Python package index. SeasonLens is distributed through this GitHub release; do not assume an unrelated package-index listing is this project.
+Expected package version: **0.1.2**. Installation downloads declared dependencies from the Python package index. SeasonLens is distributed through this GitHub release; do not assume an unrelated package-index listing is this project.
 
-Alternatively, download `seasonlens-0.1.1-py3-none-any.whl` from that release and run `python -m pip install /path/to/seasonlens-0.1.1-py3-none-any.whl` inside the activated environment. Wheels do not include the repository's development tests or example scripts; use the source checkout or source distribution for those.
+Alternatively, download `seasonlens-0.1.2-py3-none-any.whl` from that release and run `python -m pip install /path/to/seasonlens-0.1.2-py3-none-any.whl` inside the activated environment. Wheels do not include the repository's development tests or example scripts; use the source checkout or source distribution for those.
 
 ## First local example
 
@@ -78,8 +78,9 @@ Browser-module tests also require Node.js on PATH. Node is not required to use t
 
 ## Limits
 
-- Version 0.1.1 is experimental. The Python API may change before 1.0.
+- Version 0.1.2 is experimental. The Python API may change before 1.0.
 - Browser imports: XLSX/CSV up to 12 MiB; strict dates, units, roles, duplicates and numeric validation. Old XLS/XLSM and external workbook links are unsupported. Formula caches require explicit consent and are not recalculated.
+- Downloaded XLSX profiles can contain private worksheet names, headers and instrument titles. Keep them private; they do not include observations or grant data redistribution rights. Opening a current workbook and loading a profile still requires validation and a separate Add action.
 - Private imports and reports can contain restricted information. MIT covers code and invented examples; it does not grant rights to redistribute your market data.
 - There is no automatic MATIF/CBOT/ICE close collector, hosted database or fundamental-data feed.
 - Sample history has a fixed cutoff. Short histories retain absent months/years and insufficient-statistic messages.

@@ -96,4 +96,5 @@ for(const args of [{deny:true},{stored:'{"privatePrices":[1]}'},{search:'?lang=i
  assert.equal(t('Import rejected: Customer Mean Wheat','pl'),'Import odrzucony: Customer Mean Wheat');
  assert.equal(t('2 instrument(s) validated through 2026-10-06. Nothing has been added yet.','pl'),'2 instrumentów sprawdzonych do 2026-10-06. Nie dodano jeszcze żadnych danych.');
 }
+{const t=environment().api.translate;assert.equal(t('Save import profile','pl'),'Zapisz profil importu');assert.equal(t('Profile rejected: Import profile is not valid JSON.','pl'),'Profil odrzucony: Profil importu nie jest poprawnym plikiem JSON.');assert.equal(t('Profile rejected: Customer Wheat sheet','pl'),'Profil odrzucony: Customer Wheat sheet');}
 console.log('PASS: reversible locale, bounded updates, private strings and denied storage');

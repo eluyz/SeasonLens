@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 — 2026-10-16
+
+- Explicit local JSON download of successfully validated XLSX import settings and loading against a newly opened workbook.
+- Exact worksheet and selected column/header compatibility checks; corrupt or mismatched profiles reject without partially changing the configuration. Every new workbook still requires preview, validation and a separate Add action.
+- Profiles retain mappings and parsing conventions, with no observations, workbook filename, cutoff or blank/formula consent. Loading preserves the current cutoff and clears those permissions. Private names may remain in a profile; no automatic saving, synchronization or transmission is added.
+- English/Polish profile controls and messages, repeat-import guidance and malformed/changed-workbook checks. Analytical definitions, feeds and database persistence are unchanged.
+
 ## 0.1.1 — 2026-10-14
 
 - English/Polish language tiles, reversible dynamic interface translations and localized immutable reports; language-only preference with denied-storage handling.

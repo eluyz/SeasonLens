@@ -2,9 +2,9 @@
 
 An open-source project for auditable seasonality and market analysis of CSV time series and Excel master files.
 
-**Version 0.1.1 — experimental pilot build.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
+**Version 0.1.2 — experimental import-profile build.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
 
-[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.1.md) · [Installation and limits](docs/INSTALLATION.md)
+[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.2.md) · [Installation and limits](docs/INSTALLATION.md)
 
 The current app supports **English and Polish** through two language tiles. Imported names and data keep their supplied form; reports retain the language in which they were built. See [language behavior](docs/LANGUAGES.md).
 
@@ -39,7 +39,7 @@ Supply-and-demand context is a separate panel with invented examples and private
 **Optional Python installation:** use Python 3.10+ and create a virtual environment. See [installation instructions](docs/INSTALLATION.md) for Windows PowerShell and macOS/Linux commands, version checks and the distinction between tab-memory import and persistent local CSV import.
 
 ```bash
-git clone --branch v0.1.1 --depth 1 https://github.com/eluyz/SeasonLens.git
+git clone --branch v0.1.2 --depth 1 https://github.com/eluyz/SeasonLens.git
 cd SeasonLens
 python -m venv .venv
 ```
@@ -187,4 +187,8 @@ Excel day numbers follow the workbook's 1900/1904 date system. Text dates use ex
 
 Declaring EUR/PLN with units PLN per EUR in the same import group enables positive, exact-date EUR/t to PLN/t conversion, attribution and scenarios for that group's commodities. No sample FX or another private file is substituted. Explicit wheat/corn roles support same-group spreads in identical units. Missing quotes are never filled. Reload clears imported data; selected-series CSV export preserves observations and indicators.
 
-Navigation links locate the main sections. Expandable explanations describe indicators and missing values. Only a strict list of view settings, built-in sample selections and line visibility is remembered in this browser. Imported observations, workbook details, private titles/IDs, cutoffs and scenario inputs are never persisted. Reset view settings clears the preferences without deleting in-memory imports. The bundled SheetJS reader is separately Apache-2.0 licensed; see src/seasonlens/vendor/README.md and LICENSE.
+After successful XLSX validation, you can explicitly download a local JSON import profile and reuse it with the next workbook. It stores the worksheet, physical header/start rows, date column, selected price columns and their headers, declared titles/units/roles, decimal convention and text-date format. Open and preview the new workbook first, then load the profile. The worksheet and selected column/header identities must match exactly; a mismatch or malformed profile rejects without partially applying settings. Inspect the preview, validate again and use the separate Add action. New observations are never added automatically. See [repeated-import instructions](docs/GETTING_STARTED.md#reuse-an-xlsx-import-profile).
+
+Profiles contain no observations, workbook filename, analysis cutoff or blank/formula permissions. The current cutoff remains unchanged; loading a profile clears blank-skipping and formula-cache consent, which must be given explicitly when needed. A profile can still contain private worksheet/header names and instrument titles, so keep it private. There is no automatic profile saving, cloud synchronization or profile browser-storage entry; only the file you explicitly download is retained.
+
+Navigation links locate the main sections. Expandable explanations describe indicators and missing values. Only a strict list of view settings, built-in sample selections and line visibility is remembered automatically in this browser. Imported observations, workbook details, private titles/IDs, cutoffs and scenario inputs are not placed in browser storage. Reset view settings clears the preferences without deleting in-memory imports or a previously downloaded profile. The bundled SheetJS reader is separately Apache-2.0 licensed; see src/seasonlens/vendor/README.md and LICENSE.

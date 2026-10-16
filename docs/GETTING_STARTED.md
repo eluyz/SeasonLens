@@ -33,6 +33,19 @@ To use your own history, replace every example observation from row 4 onwards. K
 
 Same-workbook EUR/PLN can support an exact-date PLN view for the three EUR/t commodities. Private imports never substitute invented built-in FX. Imports stay in current-tab memory, disappear on reload and are not saved to SQLite. Export before leaving if you need a result to keep. Use the local app for persistent private history.
 
+## Reuse an XLSX import profile
+
+A profile avoids repeating the worksheet and column mapping for the next version of the same master workbook. It is a configuration file, not a saved history or an automatic update.
+
+1. Open an XLSX workbook, set its rows, date column and selected instrument mappings, then validate successfully as above.
+2. Choose **Save import profile** to save the JSON settings file locally. Keep it private: worksheet/header names and your instrument titles can reveal information even though observations are omitted. Download the profile before changing the validated settings.
+3. Next time, select the updated XLSX workbook and choose **Open and preview file**. Choose your current analysis cutoff explicitly.
+4. Select your JSON file under **Import profile JSON file** and choose **Load import profile**. It restores the worksheet, rows, date/value columns, titles, units, roles and number/text-date conventions only when the worksheet and selected column/header identities match exactly. A corrupt profile or changed selected layout rejects without partially replacing your settings. Correct the mapping manually and validate before downloading a replacement profile.
+5. Check the preview. Loading retains your current cutoff and clears permission to skip blank prices or use cached formula values. Enable either permission again only if appropriate for this workbook.
+6. Choose **Validate selected instruments**, review dates, counts and omissions, then choose **Add validated instruments to this tab**. Loading a profile alone never adds observations.
+
+The profile excludes observations, workbook filename, cutoff and blank/formula permissions. It is not uploaded, synchronized or remembered automatically by the app. Imported prices still disappear on reload; a saved profile does not recover them. This feature supports XLSX only; CSV files retain their explicit manual settings.
+
 ## Create a report
 
 1. Select your instrument, units and settings.

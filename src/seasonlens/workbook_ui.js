@@ -11,9 +11,9 @@ function table(headers,rows){const t=element('table'),head=element('thead'),tr=e
 function omission(rows){return rows.length?rows.length+' (rows '+rows.slice(0,12).join(', ')+(rows.length>12?', …':'')+')':'0'}
 function initialize(){
  const form=byId('browser-upload');if(!form||form.dataset.wizardInitialized)return;form.dataset.wizardInitialized='true';
- let revision=0,loaded=null,staged=null,busy=false;
+ let revision=0,loaded=null,staged=null,savedProfile=null,busy=false;
  const status=text=>{byId('browser-error').textContent=text};
- function invalidate(){revision++;staged=null;byId('browser-review').hidden=true;byId('browser-commit').disabled=true}
+ function invalidate(){revision++;staged=null;savedProfile=null;byId('browser-review').hidden=true;byId('browser-commit').disabled=true;byId('browser-profile-save').disabled=true;byId('browser-profile-note').textContent='Save becomes available after successful Excel validation.'}
  function config(){return {headerRow:Number(byId('browser-header-row').value),startRow:Number(byId('browser-start-row').value)}}
  function mappings(){return [...byId('browser-mappings').querySelectorAll('tr[data-column]')].filter(row=>row.querySelector('[data-field="selected"]').checked).map(row=>({column:row.dataset.column,title:row.querySelector('[data-field="title"]').value.trim(),unit:row.querySelector('[data-field="unit"]').value.trim(),role:row.querySelector('[data-field="role"]').value}))}
  function fillMappings(columns){
@@ -37,12 +37,33 @@ function initialize(){
  form.addEventListener('change',event=>{
   invalidate();const id=event.target.id;if(loaded)status('Settings changed. Validate again before adding.');if(['browser-sheet','browser-header-row','browser-start-row','browser-excel-date-column','browser-delimiter'].includes(id)&&loaded){try{refreshPreview()}catch(error){byId('browser-preview').replaceChildren();status('Preview rejected: '+error.message)}}
  });
+ byId('browser-profile-load').addEventListener('click',async()=>{
+  if(busy)return;invalidate();const token=revision;busy=true;byId('browser-read').disabled=true;byId('browser-validate').disabled=true;byId('browser-profile-load').disabled=true;
+  try{
+   if(loaded?.kind!=='XLSX')throw Error('Open an Excel workbook before loading a profile.');
+   const file=byId('browser-profile-file').files[0];if(!file)throw Error('Select an import profile JSON file.');
+   if(file.size>SeasonLensImportProfiles.MAX_BYTES)throw Error('Import profile exceeds the 64 KiB limit.');
+   const bytes=await file.arrayBuffer();if(token!==revision)return;
+   const profile=SeasonLensImportProfiles.checkCompatibility(loaded.workbook,SeasonLensImportProfiles.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes)));
+   // Preflight is complete. Only compatible configurations can replace controls.
+   byId('browser-sheet').value=profile.worksheet;byId('browser-header-row').value=String(profile.headerRow);byId('browser-start-row').value=String(profile.startRow);byId('browser-decimal').value=profile.decimal;byId('browser-date-format').value=profile.dateFormat;
+   byId('browser-mappings').replaceChildren();byId('browser-excel-date-column').replaceChildren();appendOption(byId('browser-excel-date-column'),profile.date.column,profile.date.column);refreshPreview();
+   const selected=new Map(profile.mappings.map(item=>[item.column,item]));
+   for(const row of byId('browser-mappings').querySelectorAll('tr[data-column]')){const item=selected.get(row.dataset.column);row.querySelector('[data-field="selected"]').checked=!!item;if(item)for(const field of ['title','unit','role'])row.querySelector('[data-field="'+field+'"]').value=item[field]}
+   byId('browser-skip-blank').checked=false;byId('browser-allow-formulas').checked=false;
+   status('Profile loaded. Review the preview and analysis cutoff, choose any required blank/formula permissions, then validate. No observations have been added.');
+  }catch(error){if(token===revision)status('Profile rejected: '+error.message)}finally{busy=false;byId('browser-read').disabled=false;byId('browser-validate').disabled=false;byId('browser-profile-load').disabled=false}
+ });
+ byId('browser-profile-save').addEventListener('click',()=>{
+  if(!savedProfile||savedProfile.token!==revision){status('Validate the current Excel settings before saving a profile.');return}
+  let url=null;try{const json=SeasonLensImportProfiles.serialize(savedProfile.profile);url=URL.createObjectURL(new Blob([json],{type:'application/json;charset=utf-8'}));const anchor=element('a');anchor.href=url;anchor.download='seasonlens-import-profile.json';document.body.append(anchor);try{anchor.click()}finally{anchor.remove()}setTimeout(()=>URL.revokeObjectURL(url),1000);status('Import profile downloaded. It contains settings and declared names, but no observations. Keep it private if those names are sensitive.');}catch(error){if(url)URL.revokeObjectURL(url);status('Profile download failed: '+error.message)}
+ });
  byId('browser-read').addEventListener('click',async()=>{
   invalidate();const token=revision,file=byId('browser-file').files[0];loaded=null;byId('browser-settings').hidden=true;busy=true;byId('browser-read').disabled=true;status('Reading selected file locally…');
   try{if(!file)throw Error('Select an .xlsx or .csv file.');if(file.size>SeasonLensBrowser.MAX_BYTES)throw Error('File exceeds the 12 MiB browser import limit.');const extension=file.name.split('.').at(-1).toLowerCase();if(!['xlsx','csv'].includes(extension))throw Error('Choose an .xlsx or .csv file. Old .xls and .xlsm files are unsupported.');const buffer=await file.arrayBuffer();if(token!==revision)return;
    if(extension==='xlsx'){const workbook=await SeasonLensWorkbook.readWorkbook(buffer);if(token!==revision)return;loaded={kind:'XLSX',workbook};byId('browser-sheet').replaceChildren();for(const name of workbook.SheetNames)appendOption(byId('browser-sheet'),name,name);if(!workbook.SheetNames.length)throw Error('Workbook has no worksheets.');byId('browser-mappings').replaceChildren();byId('browser-excel-date-column').replaceChildren();}
    else{loaded={kind:'CSV',text:new TextDecoder('utf-8',{fatal:true}).decode(buffer)};if(!byId('browser-title').value.trim())byId('browser-title').value=file.name.replace(/\.csv$/i,'')}
-   byId('browser-excel-settings').hidden=loaded.kind!=='XLSX';byId('browser-csv-settings').hidden=loaded.kind!=='CSV';byId('browser-formula-option').hidden=loaded.kind!=='XLSX';byId('browser-mapping-panel').hidden=loaded.kind!=='XLSX';byId('browser-settings').hidden=false;refreshPreview();status('Preview ready. Choose columns and rows, then validate. No observations have been added.');
+   byId('browser-excel-settings').hidden=loaded.kind!=='XLSX';byId('browser-profile-panel').hidden=loaded.kind!=='XLSX';byId('browser-csv-settings').hidden=loaded.kind!=='CSV';byId('browser-formula-option').hidden=loaded.kind!=='XLSX';byId('browser-mapping-panel').hidden=loaded.kind!=='XLSX';byId('browser-settings').hidden=false;refreshPreview();status('Preview ready. Choose columns and rows, then validate. No observations have been added.');
   }catch(error){if(token===revision){loaded=null;byId('browser-settings').hidden=true;status('File rejected: '+error.message)}}finally{busy=false;byId('browser-read').disabled=false}
  });
  form.addEventListener('submit',async event=>{
@@ -54,7 +75,9 @@ function initialize(){
    if(loaded.kind==='XLSX')validated=SeasonLensWorkbook.validateSheet(loaded.workbook,byId('browser-sheet').value,{...config(),dateColumn:byId('browser-excel-date-column').value,mappings:mappings(),asOf,skipBlankRows,allowCachedFormulas:byId('browser-allow-formulas').checked,decimal:byId('browser-decimal').value,dateFormat:byId('browser-date-format').value});
    else{const parsed=SeasonLensBrowser.parseCSV(loaded.text,{dateColumn:byId('browser-date-column').value,valueColumn:byId('browser-value-column').value,delimiter:byId('browser-delimiter').value,decimal:byId('browser-decimal').value,skipBlankRows,asOf});validated={series:[{...parsed,title:byId('browser-title').value.trim(),unit:byId('browser-unit').value,role:'custom'}],summary:{sheetName:'CSV',seriesCount:1,cachedFormulaCells:0}}}
    const entries=validated.series.map(series=>{const entry=SeasonLensBrowser.buildEntry(series.records,{...series,asOf,semantics:'User-declared daily observations; quote and roll rules unverified'});entry.import_group=group;entry.role=series.role;entry.source_format=loaded.kind;entry.sheet_name=validated.summary.sheetName;entry.views.Original.market=SeasonLensMarketMath.buildMarket(entry.views.Original.daily,asOf);return entry});if(token!==revision)return;
-   if(!entries.length)throw Error('Select at least one instrument column.');staged={token,entries};byId('browser-summary').replaceChildren(table(['Instrument / units','Role','Observations','First date','Last date','Blank values skipped','Future rows excluded'],validated.series.map(s=>[s.title+' · '+s.unit,roles.find(([key])=>key===s.role)?.[1]||s.role,s.records.length,s.records[0].date,s.records.at(-1).date,omission(s.skippedBlankRows),omission(s.skippedFutureRows)])));
+   if(!entries.length)throw Error('Select at least one instrument column.');staged={token,entries};
+   if(loaded.kind==='XLSX')try{savedProfile={token,profile:SeasonLensImportProfiles.capture(loaded.workbook,byId('browser-sheet').value,{...config(),dateColumn:byId('browser-excel-date-column').value,mappings:mappings(),decimal:byId('browser-decimal').value,dateFormat:byId('browser-date-format').value})};byId('browser-profile-save').disabled=false;byId('browser-profile-note').textContent='Current Excel settings validated. You can save their profile before or after adding.';}catch(error){byId('browser-profile-note').textContent='Profile cannot be saved: '+error.message}
+   byId('browser-summary').replaceChildren(table(['Instrument / units','Role','Observations','First date','Last date','Blank values skipped','Future rows excluded'],validated.series.map(s=>[s.title+' · '+s.unit,roles.find(([key])=>key===s.role)?.[1]||s.role,s.records.length,s.records[0].date,s.records.at(-1).date,omission(s.skippedBlankRows),omission(s.skippedFutureRows)])));
    for(const node of byId('browser-summary').querySelectorAll('tbody th'))node.setAttribute('data-no-translate','');
    byId('browser-review-note').textContent=entries.length+' instrument(s) validated through '+asOf+'. '+(validated.summary.ignoredTrailingRows?validated.summary.ignoredTrailingRows+' empty trailing worksheet row(s) ignored. ':'')+(validated.summary.cachedFormulaCells?validated.summary.cachedFormulaCells+' cached formula result(s) accepted explicitly; these may be stale. ':'')+'Nothing has been added yet.';byId('browser-review').hidden=false;byId('browser-commit').disabled=false;status('Validation passed. Review observation dates and omitted rows, then add the instruments.');
   }catch(error){if(token===revision){staged=null;byId('browser-review').hidden=true;status('Import rejected: '+error.message)}}finally{busy=false;byId('browser-validate').disabled=false}
