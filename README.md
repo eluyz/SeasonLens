@@ -2,9 +2,9 @@
 
 An open-source project for auditable seasonality and market analysis of CSV time series and Excel master files.
 
-**Version 0.1.2 — experimental import-profile build.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
+**Version 0.1.3 — experimental workbook-comparison build.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
 
-[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.2.md) · [Installation and limits](docs/INSTALLATION.md)
+[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.3.md) · [Installation and limits](docs/INSTALLATION.md)
 
 The current app supports **English and Polish** through two language tiles. Imported names and data keep their supplied form; reports retain the language in which they were built. See [language behavior](docs/LANGUAGES.md).
 
@@ -39,7 +39,7 @@ Supply-and-demand context is a separate panel with invented examples and private
 **Optional Python installation:** use Python 3.10+ and create a virtual environment. See [installation instructions](docs/INSTALLATION.md) for Windows PowerShell and macOS/Linux commands, version checks and the distinction between tab-memory import and persistent local CSV import.
 
 ```bash
-git clone --branch v0.1.2 --depth 1 https://github.com/eluyz/SeasonLens.git
+git clone --branch v0.1.3 --depth 1 https://github.com/eluyz/SeasonLens.git
 cd SeasonLens
 python -m venv .venv
 ```
@@ -190,5 +190,13 @@ Declaring EUR/PLN with units PLN per EUR in the same import group enables positi
 After successful XLSX validation, you can explicitly download a local JSON import profile and reuse it with the next workbook. It stores the worksheet, physical header/start rows, date column, selected price columns and their headers, declared titles/units/roles, decimal convention and text-date format. Open and preview the new workbook first, then load the profile. The worksheet and selected column/header identities must match exactly; a mismatch or malformed profile rejects without partially applying settings. Inspect the preview, validate again and use the separate Add action. New observations are never added automatically. See [repeated-import instructions](docs/GETTING_STARTED.md#reuse-an-xlsx-import-profile).
 
 Profiles contain no observations, workbook filename, analysis cutoff or blank/formula permissions. The current cutoff remains unchanged; loading a profile clears blank-skipping and formula-cache consent, which must be given explicitly when needed. A profile can still contain private worksheet/header names and instrument titles, so keep it private. There is no automatic profile saving, cloud synchronization or profile browser-storage entry; only the file you explicitly download is retained.
+
+### Compare two versions of a workbook
+
+Open the **newer** XLSX as the current import file and configure it manually or load an import profile. Under **Compare two Excel versions**, select **Older Excel workbook** and choose **Compare with older workbook**. Both workbooks must have the exact selected worksheet and date/value column headers at the same physical positions. The same rows, mappings, declared units/roles, parsing conventions, explicit cutoff and blank/formula permissions validate both files. Invalid input in either file rejects the comparison; malformed or duplicate future rows remain errors. Each selected series must retain at least one included observation in each file.
+
+The result shows each selected instrument's older/newer observation counts and date ranges, new dates, corrected values, dates absent from the newer validated records and unchanged values. Paginated detail makes every changed date accessible, with older/newer parsed values and a signed difference in declared units (newer minus older). Comparisons use unrounded parsed values rather than displayed commodity/FX rounding. Blank and future omissions remain separate from those categories. An absent date is not proof that a quote was deleted or a market was closed. See [comparison steps and a worked example](docs/GETTING_STARTED.md#compare-two-xlsx-versions).
+
+This is a read-only comparison in tab memory. It does not merge histories, change the opened newer workbook, install instruments, save to SQLite or transmit data. To analyze the newer file, validate it and use the existing separate Add action. XLSX only; comparison export is not included.
 
 Navigation links locate the main sections. Expandable explanations describe indicators and missing values. Only a strict list of view settings, built-in sample selections and line visibility is remembered automatically in this browser. Imported observations, workbook details, private titles/IDs, cutoffs and scenario inputs are not placed in browser storage. Reset view settings clears the preferences without deleting in-memory imports or a previously downloaded profile. The bundled SheetJS reader is separately Apache-2.0 licensed; see src/seasonlens/vendor/README.md and LICENSE.

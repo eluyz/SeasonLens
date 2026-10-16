@@ -96,3 +96,8 @@ Use the pinned, bundled SheetJS0.20.3 mini reader for browser XLSX. Keep import 
 ## Existing draft finalization after the v0.1.0 publication interruption
 
 The release-by-tag API returned404 for an unpublished draft after successful tag/build/upload. Use draft IDs for metadata. Recovery is narrower than rebuilding or moving the existing tag: a request-only commit pins the original source SHA, existing draft ID and four asset identities/digests. Verify downloaded bytes/checksums, browser contents against that unchanged tag and isolated wheel installation, then recheck current main/tag/draft immediately before publishing the same draft. Never retag or replace existing recovery assets.
+
+
+## Explicit comparison of XLSX revisions — 2026-10-16
+
+The currently opened workbook is the user-declared newer file. An optional older XLSX must match the exact selected worksheet/column headers and is validated with the same explicit configuration and cutoff. Compare parsed numeric values exactly; display detail without analytical-table rounding so small corrections remain inspectable. Missing dates are absence in selected validated records, not proof of deletion or a missing trading session; expose blank/future omissions for both files. Keep comparison in memory, paginate all changes and never merge or install from it. A later explicit Validate and Add applies only to the opened newer workbook. This comparison does not replace SQLite revision logging or update a private database.

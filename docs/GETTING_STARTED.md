@@ -46,6 +46,23 @@ A profile avoids repeating the worksheet and column mapping for the next version
 
 The profile excludes observations, workbook filename, cutoff and blank/formula permissions. It is not uploaded, synchronized or remembered automatically by the app. Imported prices still disappear on reload; a saved profile does not recover them. This feature supports XLSX only; CSV files retain their explicit manual settings.
 
+## Compare two XLSX versions
+
+Use this before an update when you want to see which dates or historical values changed. The app does not decide which file is newer: you choose that order.
+
+1. Select the **newer** XLSX as the normal import file and choose **Open and preview file**. Set the worksheet, header/start rows, date column, selected instruments, declared units/roles, parsing conventions and current cutoff; a saved import profile can restore the layout.
+2. Inspect the preview and set blank-skipping or cached-formula permissions explicitly if appropriate. The exact same configuration and permissions will validate both workbooks. Formula caches are not recalculated and may be stale. Every selected instrument needs at least one included observation in each file; an empty selected series rejects the comparison.
+3. Under **Compare two Excel versions**, select the **older** XLSX using **Older Excel workbook**, then choose **Compare with older workbook**. Its selected worksheet name and date/value headers must match at the same physical columns. A mismatch requires manual correction; it is not silently remapped. Invalid selected input in either file rejects the result, including duplicates or malformed rows after the cutoff.
+4. Review the per-instrument older/newer counts and first/last dates. **New** means a date only in the newer validated records; **corrected** means a shared date with a different parsed value; **absent in newer** means a date only in the older validated records; **unchanged** means a shared date with the same value.
+5. Use **Previous changes** and **Next changes** (100 changed observations per page) to inspect every changed date, its older/newer values and difference in declared units (**newer minus older**, not percent). Missing sides have no difference. Equality uses unrounded parsed values, so a small correction can count even if ordinary commodity or FX tables would round both values alike. Blank and future omissions are reported separately.
+6. If you want to analyze the newer workbook, choose **Validate selected instruments**, inspect its import review and then **Add validated instruments to this tab**. Comparing alone never adds observations. Changing the file, mapping or comparison selection invalidates the old comparison.
+
+For example, older dates Jan1=100, Jan2=110, Jan4=130 and newer dates Jan1=105, Jan3=120, Jan4=130 yield one correction (+5 on Jan1), one new date (Jan3), one absent date (Jan2) and one unchanged date (Jan4). Each file has three selected observations. These are invented values.
+
+An absent date is not proof that somebody deleted a quote or that a market was closed. It can reflect shorter coverage or explicit blank/cutoff omissions. Check the counts, ranges, omissions and selected configuration before interpreting the result. A comparison does not verify source rights, settlement definitions or contract continuation rules.
+
+Both files and the comparison stay in tab memory and disappear on reload. Nothing is uploaded, merged, written to SQLite or saved automatically. Comparison export and CSV comparison are not provided. Existing selected-series and report exports remain separate features and are not a saved comparison.
+
 ## Create a report
 
 1. Select your instrument, units and settings.

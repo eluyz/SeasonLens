@@ -44,3 +44,6 @@ SL-001 is a reversible technical spike while SL-000 remains open; implementation
 | SL-021 | English and Polish | Two language tiles, reversible dynamic labels/legends/methods, language-only preference, protected private names and immutable localized report | Published; 253 tests, independent review and actual public Chrome import/report/switching checks passed; see STATUS.md |
 
 | SL-022 | Bilingual pilot package | Three invented-workbook tasks, exact expected outcomes, private/public feedback boundaries, online guide and frozen offline bundle | Complete: online guide and v0.1.1 ZIP published; actual public download bytes/contents verified; participant testing remains SL-009 |
+
+| SL-023 | Private XLSX import profiles | Explicit settings-only JSON, strict layout compatibility, consent reset, revalidation and separate Add | Complete: v0.1.2 public app/release and real download/profile round trip verified in STATUS.md |
+| SL-024 | Local workbook revision comparison | Shared explicit mapping/cutoff, strict validation of both files, new/corrected/absent/unchanged counts, all changes accessible, no automatic merge or import | In progress: v0.1.3 |

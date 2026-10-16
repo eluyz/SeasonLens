@@ -110,6 +110,168 @@ entries([
   "Kolumny lub nagłówki wskazane w profilu zmieniły się. Sprawdź arkusz i ustaw import ręcznie."
  ]
 ]);
+entries([
+ [
+  "Compare two Excel versions",
+  "Porównaj dwie wersje Excela"
+ ],
+ [
+  "The currently opened workbook is the newer version. Select its older version below. Both files use the current worksheet, rows, columns, cutoff and explicit blank/formula permissions. Comparison only reviews changes; validate and Add the newer file separately.",
+  "Obecnie otwarty skoroszyt jest nowszą wersją. Poniżej wybierz jego starszą wersję. Oba pliki korzystają z bieżących ustawień arkusza, wierszy, kolumn, daty granicznej i jawnych zgód dotyczących pustych cen oraz formuł. Porównanie służy do przeglądu zmian; nowszy plik sprawdź i dodaj osobno."
+ ],
+ [
+  "Older Excel workbook",
+  "Starszy skoroszyt Excela"
+ ],
+ [
+  "Compare with older workbook",
+  "Porównaj ze starszym skoroszytem"
+ ],
+ [
+  "Validated observations by instrument",
+  "Sprawdzone obserwacje według instrumentów"
+ ],
+ [
+  "Workbook comparison summary",
+  "Podsumowanie porównania skoroszytów"
+ ],
+ [
+  "Absent in newer file means absent from the selected validated observations, including explicitly skipped blank prices. It does not establish deletion or missing trading sessions. Valid future rows are excluded with the same cutoff in both files. Prices and differences below retain their original numeric precision; no display rounding is used to classify changes.",
+  "Brak w nowszym pliku oznacza brak w wybranych, sprawdzonych obserwacjach, także wskutek jawnego pominięcia pustych cen. Nie potwierdza usunięcia danych ani brakujących sesji giełdowych. Poprawne przyszłe wiersze są wykluczane według tej samej daty granicznej w obu plikach. Poniższe ceny i różnice zachowują oryginalną precyzję liczbową; klasyfikacja zmian nie korzysta z zaokrągleń prezentacji."
+ ],
+ [
+  "Changed observations",
+  "Zmienione obserwacje"
+ ],
+ [
+  "Changed observation details",
+  "Szczegóły zmienionych obserwacji"
+ ],
+ [
+  "Previous changes",
+  "Poprzednie zmiany"
+ ],
+ [
+  "Next changes",
+  "Następne zmiany"
+ ],
+ [
+  "New observation",
+  "Nowa obserwacja"
+ ],
+ [
+  "Corrected price",
+  "Skorygowana cena"
+ ],
+ [
+  "Absent in newer file",
+  "Brak w nowszym pliku"
+ ],
+ [
+  "Date",
+  "Data"
+ ],
+ [
+  "Change",
+  "Zmiana"
+ ],
+ [
+  "Older price",
+  "Starsza cena"
+ ],
+ [
+  "Newer price",
+  "Nowsza cena"
+ ],
+ [
+  "Difference (newer − older)",
+  "Różnica (nowsza − starsza)"
+ ],
+ [
+  "Older observations",
+  "Starsze obserwacje"
+ ],
+ [
+  "Older first date",
+  "Starszy plik: pierwsza data"
+ ],
+ [
+  "Older last date",
+  "Starszy plik: ostatnia data"
+ ],
+ [
+  "Newer observations",
+  "Nowsze obserwacje"
+ ],
+ [
+  "Newer first date",
+  "Nowszy plik: pierwsza data"
+ ],
+ [
+  "Newer last date",
+  "Nowszy plik: ostatnia data"
+ ],
+ [
+  "New observations",
+  "Nowe obserwacje"
+ ],
+ [
+  "Corrected prices",
+  "Skorygowane ceny"
+ ],
+ [
+  "Unchanged observations",
+  "Niezmienione obserwacje"
+ ],
+ [
+  "Older blanks skipped",
+  "Starszy plik: pominięte puste ceny"
+ ],
+ [
+  "Older future rows excluded",
+  "Starszy plik: wykluczone przyszłe wiersze"
+ ],
+ [
+  "Newer blanks skipped",
+  "Nowszy plik: pominięte puste ceny"
+ ],
+ [
+  "Newer future rows excluded",
+  "Nowszy plik: wykluczone przyszłe wiersze"
+ ],
+ [
+  "Reading and validating both workbooks locally…",
+  "Lokalny odczyt i sprawdzanie obu skoroszytów…"
+ ],
+ [
+  "Open the newer Excel workbook before comparing versions.",
+  "Przed porównaniem wersji otwórz nowszy skoroszyt Excela."
+ ],
+ [
+  "Select the older .xlsx workbook.",
+  "Wybierz starszy skoroszyt .xlsx."
+ ],
+ [
+  "The older workbook must be a macro-free .xlsx file.",
+  "Starszy skoroszyt musi być plikiem .xlsx bez makr."
+ ],
+ [
+  "Comparison requires matching validated instrument selections.",
+  "Porównanie wymaga zgodnych, sprawdzonych wyborów instrumentów."
+ ],
+ [
+  "Comparison requires nonempty validated observations.",
+  "Porównanie wymaga niepustych, sprawdzonych obserwacji."
+ ],
+ [
+  "Comparison requires unique dates and finite validated prices.",
+  "Porównanie wymaga unikalnych dat i sprawdzonych, skończonych wartości cen."
+ ],
+ [
+  "Comparison difference exceeds the supported numeric range.",
+  "Różnica w porównaniu przekracza obsługiwany zakres liczbowy."
+ ]
+]);
 // Exact source strings; no dictionary word substitutions inside arbitrary user text.
 entries([
 ['English','English'],['Polski','Polski'],['Language','Język'],['Choose language','Wybierz język'],
@@ -258,7 +420,8 @@ pattern(/^Matched reference (\d{4}-\d{2}-\d{2}): ([\d.,]+) EUR\/t × ([\d.,]+) P
 pattern(/^Source: (SYNTHETIC|USER_FILE) · (Invented demonstration data\.|Private import in this tab only\.)$/,(_,s,n)=>'Źródło: '+s+' · '+translate(n,'pl'));
 // Error details may contain a private column/sheet name. Translate only known
 // complete diagnostics after the application prefix; leave unknown tails intact.
-pattern(/^(Profile rejected|Profile download failed|Profile cannot be saved|Preview rejected|File rejected|Import rejected|Could not add validated instruments|Download could not start|This panel is unavailable): ([\s\S]+)$/,(_,p,d)=>({ 'Profile rejected':'Profil odrzucony','Profile download failed':'Nie udało się pobrać profilu','Profile cannot be saved':'Nie można zapisać profilu','Preview rejected':'Podgląd odrzucony','File rejected':'Plik odrzucony','Import rejected':'Import odrzucony','Could not add validated instruments':'Nie udało się dodać sprawdzonych instrumentów','Download could not start':'Nie udało się rozpocząć pobierania','This panel is unavailable':'Ten panel jest niedostępny'}[p])+': '+(catalog[d]||d));
+pattern(/^Comparison rejected: (Older|Newer) workbook validation failed: ([\s\S]+)$/,(_,file,detail)=>'Porównanie odrzucone: '+(file==='Older'?'Błąd sprawdzania starszego skoroszytu':'Błąd sprawdzania nowszego skoroszytu')+': '+(catalog[detail]||detail));
+pattern(/^(Comparison rejected|Profile rejected|Profile download failed|Profile cannot be saved|Preview rejected|File rejected|Import rejected|Could not add validated instruments|Download could not start|This panel is unavailable): ([\s\S]+)$/,(_,p,d)=>({ 'Comparison rejected':'Porównanie odrzucone','Profile rejected':'Profil odrzucony','Profile download failed':'Nie udało się pobrać profilu','Profile cannot be saved':'Nie można zapisać profilu','Preview rejected':'Podgląd odrzucony','File rejected':'Plik odrzucony','Import rejected':'Import odrzucony','Could not add validated instruments':'Nie udało się dodać sprawdzonych instrumentów','Download could not start':'Nie udało się rozpocząć pobierania','This panel is unavailable':'Ten panel jest niedostępny'}[p])+': '+(catalog[d]||d));
 pattern(/^Unavailable: ([\s\S]+)$/,(_,d)=>'Niedostępne: '+(catalog[d]||d));
 pattern(/^(\d+) valid changes from (\d+) observations(?: · (\d{4}-\d{2}-\d{2})–(\d{4}-\d{2}-\d{2}))? · (\d+) nonpositive-endpoint intervals excluded · tail mass ([\d.,]+)\. ([\s\S]+?)( Multi-interval changes overlap and are dependent\.)?$/,(_,n,o,a,b,e,t,r,overlap)=>n+' poprawnych zmian z '+o+' obserwacji'+(a?' · '+a+'–'+b:'')+' · '+e+' przedziałów z niedodatnimi punktami końcowymi wykluczono · masa ogona '+t+'. '+translate(r,'pl')+(overlap?' Zmiany wielookresowe nakładają się i są zależne.':''));
 pattern(/^(\d{4})–(\d{4}) declared completed years\. Current year excluded \((\d+) observations\)\. Fixed early\/late split: (\d{4})–(\d{4}) \/ (\d{4})–(\d{4})\. Missing current months: (\d+); missing previous months: (\d+); nonpositive month endpoints: (\d+)\. Dashed limits are approximate intervals of the historical mean, not future-price ranges\.$/,(_,a,b,c,d,e,f,g,h,i,j)=>a+'–'+b+' zadeklarowane zakończone lata. Rok bieżący wykluczony ('+c+' obserwacji). Stały podział wcześniejsze/późniejsze: '+d+'–'+e+' / '+f+'–'+g+'. Brakujące miesiące bieżące: '+h+'; brakujące miesiące poprzednie: '+i+'; niedodatnie końce miesiąca: '+j+'. Przerywane granice to przybliżone przedziały średniej historycznej, nie zakresy przyszłych cen.');
@@ -268,6 +431,8 @@ pattern(/^(SYNTHETIC|USER_FILE) · releases through the explicit cutoff only$/,(
 entries([['Invented demonstration data.','Wymyślone dane demonstracyjne.'],['Private import in this tab only.','Prywatny import tylko w tej karcie.'],['Quantity in tonnes','Ilość w tonach'],['Quantity in supplied quote units','Ilość w podanych jednostkach notowania'],['Daily benchmark price','Dzienna cena benchmarku'],['· Source:','· Źródło:']]);
 let current='en',initialized=false,observer=null,scheduled=false;
 const originalText=new WeakMap(),originalAttrs=new WeakMap(),pending=new Set();
+pattern(/^Page (\d+) of (\d+) · (\d+) changed observation\(s\)$/,(_,page,pages,total)=>'Strona '+page+' z '+pages+' · zmienione obserwacje: '+total);
+pattern(/^Comparison complete through (\d{4}-\d{2}-\d{2})\. Older file: (\d+) empty trailing row\(s\) ignored, (\d+) cached formula result\(s\) accepted\. Newer file: (\d+) empty trailing row\(s\) ignored, (\d+) cached formula result\(s\) accepted\. No observations have been added\.$/,(_,cutoff,oldEmpty,oldForm,newEmpty,newForm)=>'Porównanie zakończone do '+cutoff+'. Starszy plik: pominięte końcowe puste wiersze: '+oldEmpty+', zaakceptowane zapisane wyniki formuł: '+oldForm+'. Nowszy plik: pominięte końcowe puste wiersze: '+newEmpty+', zaakceptowane zapisane wyniki formuł: '+newForm+'. Nie dodano żadnych obserwacji.');
 const reverse=Object.create(null);for(const en of Object.keys(catalog)){const pl=catalog[en];if(!Object.hasOwn(reverse,pl))reverse[pl]=en;}
 function valid(lang){return lang==='en'||lang==='pl';}
 function translate(text,lang=current){

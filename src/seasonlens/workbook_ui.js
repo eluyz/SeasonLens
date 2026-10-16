@@ -11,11 +11,44 @@ function table(headers,rows){const t=element('table'),head=element('thead'),tr=e
 function omission(rows){return rows.length?rows.length+' (rows '+rows.slice(0,12).join(', ')+(rows.length>12?', …':'')+')':'0'}
 function initialize(){
  const form=byId('browser-upload');if(!form||form.dataset.wizardInitialized)return;form.dataset.wizardInitialized='true';
- let revision=0,loaded=null,staged=null,savedProfile=null,busy=false;
+ let revision=0,loaded=null,staged=null,savedProfile=null,busy=false,comparison=null,comparisonPage=0;
  const status=text=>{byId('browser-error').textContent=text};
- function invalidate(){revision++;staged=null;savedProfile=null;byId('browser-review').hidden=true;byId('browser-commit').disabled=true;byId('browser-profile-save').disabled=true;byId('browser-profile-note').textContent='Save becomes available after successful Excel validation.'}
+ function invalidate(keepComparison=false){revision++;if(!keepComparison){comparison=null;byId('browser-comparison-result').hidden=true;byId('browser-comparison-note').textContent='';byId('browser-comparison-summary').replaceChildren();byId('browser-comparison-details').replaceChildren();byId('browser-comparison-page').textContent='';}staged=null;savedProfile=null;byId('browser-review').hidden=true;byId('browser-commit').disabled=true;byId('browser-profile-save').disabled=true;byId('browser-profile-note').textContent='Save becomes available after successful Excel validation.'}
  function config(){return {headerRow:Number(byId('browser-header-row').value),startRow:Number(byId('browser-start-row').value)}}
  function mappings(){return [...byId('browser-mappings').querySelectorAll('tr[data-column]')].filter(row=>row.querySelector('[data-field="selected"]').checked).map(row=>({column:row.dataset.column,title:row.querySelector('[data-field="title"]').value.trim(),unit:row.querySelector('[data-field="unit"]').value.trim(),role:row.querySelector('[data-field="role"]').value}))}
+ function excelSettings(){return {...config(),dateColumn:byId('browser-excel-date-column').value,mappings:mappings(),decimal:byId('browser-decimal').value,dateFormat:byId('browser-date-format').value}}
+ function renderComparisonPage(){
+  if(!comparison)return;
+  const pageSize=100,total=comparison.changes.length,pages=Math.max(1,Math.ceil(total/pageSize));comparisonPage=Math.max(0,Math.min(comparisonPage,pages-1));
+  const labels={new:'New observation',corrected:'Corrected price',absent:'Absent in newer file'};
+  const rows=comparison.changes.slice(comparisonPage*pageSize,(comparisonPage+1)*pageSize).map(item=>[item.title+' · '+item.unit,item.date,labels[item.kind],item.older===null?'—':String(item.older),item.newer===null?'—':String(item.newer),item.difference===null?'—':String(item.difference)]);
+  const output=table(['Instrument / units','Date','Change','Older price','Newer price','Difference (newer − older)'],rows);
+  for(const row of output.querySelectorAll('tbody tr'))for(const [index,cell] of [...row.children].entries())if(index!==2)cell.setAttribute('data-no-translate','');
+  byId('browser-comparison-details').replaceChildren(output);byId('browser-comparison-page').textContent='Page '+(comparisonPage+1)+' of '+pages+' · '+total+' changed observation(s)';byId('browser-comparison-previous').disabled=comparisonPage===0;byId('browser-comparison-next').disabled=comparisonPage>=pages-1;
+ }
+ byId('browser-comparison-previous').addEventListener('click',()=>{comparisonPage--;renderComparisonPage()});
+ byId('browser-comparison-next').addEventListener('click',()=>{comparisonPage++;renderComparisonPage()});
+ byId('browser-comparison-run').addEventListener('click',async()=>{
+  if(busy)return;invalidate();const token=revision;busy=true;byId('browser-comparison-run').disabled=true;byId('browser-read').disabled=true;byId('browser-validate').disabled=true;byId('browser-profile-load').disabled=true;byId('browser-comparison-note').textContent='Reading and validating both workbooks locally…';
+  try{
+   if(loaded?.kind!=='XLSX')throw Error('Open the newer Excel workbook before comparing versions.');
+   const file=byId('browser-comparison-file').files[0];if(!file)throw Error('Select the older .xlsx workbook.');
+   if(file.size>SeasonLensWorkbook.MAX_BYTES)throw Error('File exceeds the 12 MiB browser import limit.');
+   if(file.name.split('.').at(-1).toLowerCase()!=='xlsx')throw Error('The older workbook must be a macro-free .xlsx file.');
+   const newerWorkbook=loaded.workbook,worksheet=byId('browser-sheet').value,settings=excelSettings(),asOf=SeasonLensBrowser.cutoffDate(byId('browser-asof').value),options={...settings,asOf,skipBlankRows:byId('browser-skip-blank').checked,allowCachedFormulas:byId('browser-allow-formulas').checked};
+   const profile=SeasonLensImportProfiles.capture(newerWorkbook,worksheet,settings),bytes=await file.arrayBuffer();if(token!==revision)return;
+   const olderWorkbook=await SeasonLensWorkbook.readWorkbook(bytes);if(token!==revision)return;
+   SeasonLensImportProfiles.checkCompatibility(olderWorkbook,profile);
+   let older,newer;
+   try{older=SeasonLensWorkbook.validateSheet(olderWorkbook,worksheet,options)}catch(error){throw Error('Older workbook validation failed: '+error.message)}
+   try{newer=SeasonLensWorkbook.validateSheet(newerWorkbook,worksheet,options)}catch(error){throw Error('Newer workbook validation failed: '+error.message)}
+   const result=SeasonLensImportComparison.compare(older,newer);if(token!==revision)return;
+   comparison={...result,changes:result.series.flatMap(series=>series.changes.map(change=>({...change,title:series.title,unit:series.unit})))};comparisonPage=0;
+   const summary=table(['Instrument / units','Older observations','Older first date','Older last date','Newer observations','Newer first date','Newer last date','New observations','Corrected prices','Absent in newer file','Unchanged observations','Older blanks skipped','Older future rows excluded','Newer blanks skipped','Newer future rows excluded'],result.series.map(item=>[item.title+' · '+item.unit,item.olderCount,item.olderFirstDate,item.olderLastDate,item.newerCount,item.newerFirstDate,item.newerLastDate,item.counts.new,item.counts.corrected,item.counts.absent,item.counts.unchanged,omission(item.olderBlankRows),omission(item.olderFutureRows),omission(item.newerBlankRows),omission(item.newerFutureRows)]));
+   for(const node of summary.querySelectorAll('tbody th'))node.setAttribute('data-no-translate','');byId('browser-comparison-summary').replaceChildren(summary);renderComparisonPage();byId('browser-comparison-result').hidden=false;
+   byId('browser-comparison-note').textContent='Comparison complete through '+asOf+'. Older file: '+result.olderSummary.ignoredTrailingRows+' empty trailing row(s) ignored, '+result.olderSummary.cachedFormulaCells+' cached formula result(s) accepted. Newer file: '+result.newerSummary.ignoredTrailingRows+' empty trailing row(s) ignored, '+result.newerSummary.cachedFormulaCells+' cached formula result(s) accepted. No observations have been added.';
+  }catch(error){if(token===revision)byId('browser-comparison-note').textContent='Comparison rejected: '+error.message}finally{busy=false;byId('browser-comparison-run').disabled=false;byId('browser-read').disabled=false;byId('browser-validate').disabled=false;byId('browser-profile-load').disabled=false}
+ });
  function fillMappings(columns){
   const previous=new Map([...byId('browser-mappings').querySelectorAll('tr[data-column]')].map(row=>[row.dataset.column,{selected:row.querySelector('[data-field="selected"]').checked,title:row.querySelector('[data-field="title"]').value,unit:row.querySelector('[data-field="unit"]').value,role:row.querySelector('[data-field="role"]').value}]));
   const t=table(['Import','Column','Instrument title','Units','Role'],[]),body=t.querySelector('tbody'),dateColumn=byId('browser-excel-date-column').value;
@@ -63,11 +96,11 @@ function initialize(){
   try{if(!file)throw Error('Select an .xlsx or .csv file.');if(file.size>SeasonLensBrowser.MAX_BYTES)throw Error('File exceeds the 12 MiB browser import limit.');const extension=file.name.split('.').at(-1).toLowerCase();if(!['xlsx','csv'].includes(extension))throw Error('Choose an .xlsx or .csv file. Old .xls and .xlsm files are unsupported.');const buffer=await file.arrayBuffer();if(token!==revision)return;
    if(extension==='xlsx'){const workbook=await SeasonLensWorkbook.readWorkbook(buffer);if(token!==revision)return;loaded={kind:'XLSX',workbook};byId('browser-sheet').replaceChildren();for(const name of workbook.SheetNames)appendOption(byId('browser-sheet'),name,name);if(!workbook.SheetNames.length)throw Error('Workbook has no worksheets.');byId('browser-mappings').replaceChildren();byId('browser-excel-date-column').replaceChildren();}
    else{loaded={kind:'CSV',text:new TextDecoder('utf-8',{fatal:true}).decode(buffer)};if(!byId('browser-title').value.trim())byId('browser-title').value=file.name.replace(/\.csv$/i,'')}
-   byId('browser-excel-settings').hidden=loaded.kind!=='XLSX';byId('browser-profile-panel').hidden=loaded.kind!=='XLSX';byId('browser-csv-settings').hidden=loaded.kind!=='CSV';byId('browser-formula-option').hidden=loaded.kind!=='XLSX';byId('browser-mapping-panel').hidden=loaded.kind!=='XLSX';byId('browser-settings').hidden=false;refreshPreview();status('Preview ready. Choose columns and rows, then validate. No observations have been added.');
+   byId('browser-excel-settings').hidden=loaded.kind!=='XLSX';byId('browser-profile-panel').hidden=loaded.kind!=='XLSX';byId('browser-comparison-panel').hidden=loaded.kind!=='XLSX';byId('browser-csv-settings').hidden=loaded.kind!=='CSV';byId('browser-formula-option').hidden=loaded.kind!=='XLSX';byId('browser-mapping-panel').hidden=loaded.kind!=='XLSX';byId('browser-settings').hidden=false;refreshPreview();status('Preview ready. Choose columns and rows, then validate. No observations have been added.');
   }catch(error){if(token===revision){loaded=null;byId('browser-settings').hidden=true;status('File rejected: '+error.message)}}finally{busy=false;byId('browser-read').disabled=false}
  });
  form.addEventListener('submit',async event=>{
-  event.preventDefault();if(busy)return;invalidate();const token=revision;busy=true;byId('browser-validate').disabled=true;status('Validating all selected rows and building analyses locally…');
+  event.preventDefault();if(busy)return;invalidate(true);const token=revision;busy=true;byId('browser-validate').disabled=true;status('Validating all selected rows and building analyses locally…');
   try{
    if(!loaded)throw Error('Open a file and inspect its preview first.');const asOf=SeasonLensBrowser.cutoffDate(byId('browser-asof').value),group='private_'+Date.now()+'_'+token+'_'+Math.random().toString(36).slice(2),skipBlankRows=byId('browser-skip-blank').checked;
    await new Promise(resolve=>setTimeout(resolve,0));if(token!==revision)return;

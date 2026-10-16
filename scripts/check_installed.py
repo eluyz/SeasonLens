@@ -27,7 +27,7 @@ def main():
     assert Path(seasonlens.__file__).resolve().is_relative_to(Path(sys.prefix).resolve()), 'Imported source instead of installed wheel.'
     assets = resources.files('seasonlens')
     for name in ('dashboard.html', 'locale.js', 'start_panel.html', 'start_ui.js', 'report_export.js',
-                 'scientific_panel.html', 'workbook_import.js', 'import_profiles.js', 'template_download.js',
+                 'scientific_panel.html', 'workbook_import.js', 'import_profiles.js', 'import_comparison.js', 'template_download.js',
                  'quick_controls.css', 'report.css', 'vendor/xlsx.mini.min.js', 'vendor/LICENSE'):
         assert assets.joinpath(name).read_bytes(), name
     assert base64.b64decode(assets.joinpath('import_template.xlsx.b64').read_text().strip(), validate=True).startswith(b'PK\x03\x04')
@@ -41,6 +41,7 @@ def main():
     assert 'id="language-en"' in html and 'id="language-pl"' in html
     assert 'SeasonLensLocale.init();' in html
     assert 'SeasonLensImportProfiles' in html and 'id="browser-profile-save"' in html
+    assert 'SeasonLensImportComparison' in html and 'id="browser-comparison-run"' in html
     script_dir = Path(sysconfig.get_path('scripts'))
     suffix = '.exe' if os.name == 'nt' else ''
     data_command = script_dir / ('seasonlens-data' + suffix)

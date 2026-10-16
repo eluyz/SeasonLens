@@ -27,9 +27,9 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(v['market']['indicators']['dates'],['2025-01-01','2025-01-02'])
         self.assertEqual(v['market']['distribution']['5']['months'][0]['mean'],105.)
         self.assertEqual(set(v['daily'][0]),{'date','value','sma20','sma100','sma200','bollinger_upper','bollinger_lower'})
-        for token in ('@@MARKET_JS@@','@@BROWSER_JS@@','@@IMPORT_PROFILES_JS@@'):
+        for token in ('@@MARKET_JS@@','@@BROWSER_JS@@','@@IMPORT_PROFILES_JS@@','@@IMPORT_COMPARISON_JS@@'):
             self.assertNotIn(token,html)
-        for identifier in ('market-overview','browser-import-panel','rsi-chart','scenario-output','correlation-matrix','browser-profile-save'):
+        for identifier in ('market-overview','browser-import-panel','rsi-chart','scenario-output','correlation-matrix','browser-profile-save','browser-comparison-run'):
             self.assertIn('id="'+identifier+'"',html)
         self.assertTrue('Invented sample FX is never substituted' in html)
         self.assertIn("new TextDecoder('utf-8',{fatal:true})",html)

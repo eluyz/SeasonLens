@@ -212,6 +212,7 @@ def _embedded_scripts(template):
     assets = {'@@IMPORT_PANEL@@': 'import_panel.html', '@@MARKET_JS@@': 'market_ui.js',
               '@@BROWSER_JS@@': 'browser_import.js', '@@WORKBOOK_JS@@': 'workbook_import.js',
               '@@IMPORT_PROFILES_JS@@': 'import_profiles.js',
+              '@@IMPORT_COMPARISON_JS@@': 'import_comparison.js',
               '@@WORKBOOK_UI_JS@@': 'workbook_ui.js', '@@UX_JS@@': 'ux_ui.js',
               '@@PRIVATE_JS@@': 'private_import.js', '@@UX_CSS@@': 'ux.css', '@@XLSX_VENDOR@@': 'vendor/xlsx.mini.min.js',
               '@@SCIENCE_PANEL@@': 'scientific_panel.html', '@@SCIENCE_CSS@@': 'scientific.css',

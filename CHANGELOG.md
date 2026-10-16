@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — 2026-10-16
+
+- Optional read-only comparison of the current newer XLSX with an explicitly selected older XLSX, using one mapping and strict validation policy for both files.
+- Exact selected worksheet/header compatibility; per-instrument counts/date ranges and new, corrected, absent-in-newer and unchanged observations. All changed-date details are accessible through pagination; equality uses unrounded parsed values and differences are newer minus older in declared units.
+- Separate blank/future omission counts and explicit absence caveat: absent validated observations do not establish deletion or market-calendar completeness.
+- English/Polish comparison controls and diagnostics. No merge, automatic Add, persistent storage, network transmission, comparison export or CSV comparison; existing profiles, analytical definitions and data sources are unchanged.
+
 ## 0.1.2 — 2026-10-16
 
 - Explicit local JSON download of successfully validated XLSX import settings and loading against a newly opened workbook.
