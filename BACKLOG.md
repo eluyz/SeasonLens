@@ -47,3 +47,4 @@ SL-001 is a reversible technical spike while SL-000 remains open; implementation
 
 | SL-023 | Private XLSX import profiles | Explicit settings-only JSON, strict layout compatibility, consent reset, revalidation and separate Add | Complete: v0.1.2 public app/release and real download/profile round trip verified in STATUS.md |
 | SL-024 | Local workbook revision comparison | Shared explicit mapping/cutoff, strict validation of both files, new/corrected/absent/unchanged counts, all changes accessible, no automatic merge or import | Complete: v0.1.3 public app/release and actual browser ZIP download verified in STATUS.md |
+| SL-025 | Short price-list demonstration and bilingual project entry | English/Polish guide, two invented XLSX versions with exact expected changes, clear audience/use case and browser/private-data boundaries | In progress: content and strict-import checks complete; public deployment verification pending |

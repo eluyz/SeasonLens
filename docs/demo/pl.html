@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<title>Co zmieniło się w cenniku? · SeasonLens</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#18283f;font:16px/1.6 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:28px}h1{font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.2}h2{font-size:1.3rem;line-height:1.35}section{background:white;border:1px solid #dbe4ef;border-radius:14px;padding:24px;margin:22px 0}a{color:#1d4ed8;text-underline-offset:3px}a:focus-visible,.table-frame:focus-visible{outline:3px solid #2563eb;outline-offset:4px}.languages,.actions{display:flex;flex-wrap:wrap;gap:12px}.languages a,.actions a{padding:12px 16px;border:1px solid #b9cbe3;border-radius:9px;text-decoration:none;background:white}.languages a{flex:1;text-align:center;font-weight:650}.languages [aria-current=page]{background:#eaf1ff;border:2px solid #1d4ed8}.actions .primary{background:#1d4ed8;color:white}.muted{color:#52647c}.notice{background:#fff7e5;padding:14px 16px;border-left:4px solid #a86e00}.result{background:#edf8f0;padding:16px;border-left:4px solid #277043}.table-frame{overflow-x:auto;max-width:100%}table{width:100%;border-collapse:collapse}th,td{padding:9px 12px;text-align:left;border-bottom:1px solid #dbe4ef;vertical-align:top}thead{background:#eef3fa}caption{text-align:left;font-weight:650;margin-bottom:8px}li{margin:8px 0}code{font-size:.93em}p,li{overflow-wrap:anywhere}.script{font-style:italic;color:#405471}footer{color:#52647c;font-size:.92rem;padding:12px 0}.skip{position:absolute;top:-80px;left:12px;background:white;padding:12px}.skip:focus{top:8px}@media(max-width:600px){main{padding:16px}section{padding:18px}.actions a{width:100%;text-align:center}th,td{padding:8px}}@media print{body{background:white;font-size:11pt}main{max-width:none;padding:0}section{border:0;padding:0}.languages,.actions,.skip{display:none}tr{break-inside:avoid}h2{break-after:avoid}}
+</style>
+</head>
+<body>
+<a class="skip" href="#setup">Przejdź do instrukcji</a>
+<main>
+<nav class="languages" aria-label="Język przewodnika"><a href="index.html" lang="en" hreflang="en">English</a><a href="pl.html" lang="pl" hreflang="pl" aria-current="page">Polski</a></nav>
+<header>
+<p class="muted">SeasonLens 0.1.3 · demonstracja praktyczna</p>
+<h1>Co zmieniło się w nowym cenniku?</h1>
+<p>Dostajesz nowy skoroszyt. Zanim użyjesz go w raporcie zakupowym, sprawdzasz nowe notowanie, korektę historii i nieobecną datę. Ten przykład pokazuje każdą z tych różnic.</p>
+<p class="notice"><strong>Oba pliki zawierają wymyślone ceny pszenicy.</strong> Nie są notowaniami giełdowymi, prognozą ani kalendarzem sesji. Nie potrzebujesz konta ani instalacji.</p>
+<div class="actions"><a class="primary" href="../index.html?lang=pl" target="_blank" rel="noopener">Otwórz aplikację w drugiej karcie</a><a href="seasonlens-newer.xlsx" download>Pobierz nowszy XLSX</a><a href="seasonlens-older.xlsx" download>Pobierz starszy XLSX</a></div>
+<p class="muted">Zaplanuj około trzech minut na prezentację przygotowanego przykładu po pobraniu plików. Pierwsza samodzielna próba lub import na telefonie mogą potrwać dłużej. Trzymaj instrukcję obok aplikacji. To plan prezentacji, a nie zmierzony czas wykonania.</p>
+</header>
+<section id="setup">
+<h2>1. Otwórz nowszy plik · 0:00–1:00</h2>
+<ol>
+<li>Zacznij od nowej karty aplikacji z sześcioma przykładami. Rozwiń <strong>Zacznij tutaj</strong> i wybierz <strong>Otwórz import prywatny</strong>.</li>
+<li>Wskaż <code>seasonlens-newer.xlsx</code> w zwykłym polu <strong>Skoroszyt Excel lub plik CSV</strong>. Ustaw <strong>Datę graniczną analizy</strong> na <code>2026-10-07</code> i wybierz <strong>Otwórz i podejrzyj plik</strong>.</li>
+<li>Sprawdź ustawienia poniżej. Zaznacz <strong>tylko kolumnę B</strong>, nazwę <code>Wheat sample</code>, jednostki <strong>EUR/t</strong> i rolę <strong>Pszenica</strong>. Pozostaw wyłączone pomijanie pustych cen i zgodę na zapisane wyniki formuł.</li>
+</ol>
+<div class="table-frame" tabindex="0" role="region" aria-label="Ustawienia importu"><table><caption>Wskaż te ustawienia jawnie</caption><thead><tr><th scope="col">Ustawienie</th><th scope="col">Wartość</th></tr></thead><tbody>
+<tr><th scope="row">Arkusz / wiersz nagłówków / pierwszy wiersz danych</th><td>Prices / 1 / 4</td></tr>
+<tr><th scope="row">Kolumna daty / kolumna ceny</th><td>A · Date / B · Wheat sample</td></tr>
+<tr><th scope="row">Format dat tekstowych / separator dziesiętny</th><td>YYYY-MM-DD / .</td></tr>
+<tr><th scope="row">Data graniczna analizy</th><td>2026-10-07</td></tr>
+</tbody></table></div>
+<p>Wiersz 2 opisuje jednostki danych syntetycznych. Żółty wiersz 3 to celowo wymyślona cena bieżąca 999 z 8 października. Rozpoczęcie od wiersza 4 wyłącza ją przez wybór zakresu; nie jest liczona jako pominięty wiersz przyszły. Każdy skoroszyt ma 210 obserwacji historycznych i nie zawiera formuł.</p>
+</section>
+<section>
+<h2>2. Porównaj przed importem · 1:00–2:00</h2>
+<p>W sekcji <strong>Porównaj dwie wersje Excela</strong> wskaż <code>seasonlens-older.xlsx</code> jako <strong>Starszy skoroszyt Excela</strong> i wybierz <strong>Porównaj ze starszym skoroszytem</strong>. Zachowaj tę kolejność plików.</p>
+<p class="result"><strong>Oczekiwany wynik: 1 nowa · 1 skorygowana · 1 nieobecna w nowszym · 208 bez zmian.</strong><br>Starszy: 210 obserwacji, 2025-12-17–2026-10-06.<br>Nowszy: 210 obserwacji, 2025-12-18–2026-10-07.<br>Brak pominiętych pustych i przyszłych wierszy.</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Oczekiwane zmiany"><table><caption>Sprawdź te trzy zmiany (EUR/t)</caption><thead><tr><th scope="col">Data</th><th scope="col">Zmiana</th><th scope="col">Starsza</th><th scope="col">Nowsza</th><th scope="col">Różnica</th></tr></thead><tbody>
+<tr><th scope="row">2025-12-17</th><td>Nieobecna w nowszym</td><td>210</td><td>—</td><td>—</td></tr>
+<tr><th scope="row">2026-10-06</th><td>Skorygowana</td><td>213,29</td><td>218,29</td><td>+5</td></tr>
+<tr><th scope="row">2026-10-07</th><td>Nowa</td><td>—</td><td>215</td><td>—</td></tr>
+</tbody></table></div>
+<p>Różnica oznacza nowszą cenę minus starszą w EUR/t, a nie procent. „Nieobecna” opisuje tylko porównywane poprawne rekordy, nie dowodzi usunięcia notowania. Samo porównanie niczego nie dodaje: nadal powinno być sześć wbudowanych instrumentów.</p>
+<p class="script">Proponowany komentarz: „Nowy plik zawiera kolejny dzień, ale też zmienia wczorajszą cenę i nie obejmuje już pierwszej daty. Mogę sprawdzić te zmiany, zanim użyję danych”.</p>
+</section>
+<section>
+<h2>3. Przeanalizuj nowszą historię · 2:00–3:00</h2>
+<ol>
+<li>Wybierz <strong>Sprawdź wybrane instrumenty</strong>. Potwierdź jeden instrument i 210 obserwacji. Następnie wybierz <strong>Dodaj sprawdzone instrumenty do tej karty</strong>. Powinno być siedem instrumentów: sześć przykładów i Twój import.</li>
+<li>W <strong>Opcjach analizy</strong> wybierz <strong>Wheat sample · prywatny Excel</strong> i <strong>EUR/t</strong>. Ostatnia obserwacja powinna wynosić <strong>215 EUR/t z 2026-10-07</strong>.</li>
+<li>Wybierz <strong>Pokaż średnie miesięczne</strong>. Sprawdź datę odniesienia, jednostki i pokrycie. Tabela <strong>Średnie ceny miesięczne</strong> zaokrągla ceny surowców do całości; powyższe porównanie zachowuje precyzję korekty.</li>
+</ol>
+<p class="script">Proponowany komentarz: „Teraz świadomie analizuję nowszy plik. Brakujące miesiące pozostają lukami. Wybór widoku pięcioletniego nie tworzy pięciu lat historii z tego krótkiego przykładu”.</p>
+<p>Przykład obejmuje tylko grudzień 2025–październik 2026. Nie wystarcza do ustalenia wiarygodnej sezonowości ani przewagi prognostycznej. Jeśli wynik jest inny, sprawdź kolejność plików, datę graniczną, kolumnę, wiersze i wcześniejsze importy w karcie.</p>
+</section>
+<section>
+<h2>Opcjonalnie: zachowaj raport</h2>
+<p>Wybierz <strong>Otwórz kreator raportu</strong>, zaznacz sekcję cen miesięcznych, wybierz <strong>Utwórz podgląd raportu</strong> i <strong>Pobierz HTML</strong>. Sprawdź Wheat sample, EUR/t i 2026-10-07 w raporcie. Zapisujesz wybrane wyniki analizy; <strong>nie</strong> eksportujesz porównania skoroszytów. Wydruk PDF przez przeglądarkę jest opcjonalny.</p>
+<p>Pliki wejściowe i porównanie pozostają w pamięci karty, bez wysyłania danych i automatycznego zapisu do bazy. Odświeżenie usuwa importy i porównania. Pobrane raporty z własnych plików mogą zawierać prywatne wyniki. Samo wejście na stronę korzysta z hostingu GitHub Pages.</p>
+<p><a href="../walkthrough-pl.html">Dłuższy przewodnik: pszenica i EUR/PLN</a> · <a href="https://github.com/eluyz/SeasonLens/blob/main/README_PL.md">Projekt i dokumentacja</a> · <a href="../pilot/index.html">Pilotaż i opinie</a></p>
+</section>
+<footer>Kod i wymyślone przykłady: MIT. Pliki demonstracyjne powstały według jawnego wzoru syntetycznego, bez zewnętrznego źródła notowań. Archiwum wydania 0.1.3 pozostaje bez zmian; tę nową parę przykładów pobierzesz z tej strony.</footer>
+</main>
+</body>
+</html>

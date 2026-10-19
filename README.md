@@ -1,12 +1,30 @@
 # SeasonLens
 
-An open-source project for auditable seasonality and market analysis of CSV time series and Excel master files.
+Compare two price lists, inspect historical commodity and currency prices, and save a report — in your browser.
 
 **Version 0.1.3 — experimental workbook-comparison build.** Explore CSV/XLSX histories privately, inspect seasonal and statistical context, and export selected results. The optional local app adds private SQLite history and direct ECB reference-rate updates. There is no automatic futures-close feed or hosted data collector.
 
-[Open the demo](https://eluyz.github.io/SeasonLens/) · [Polski](https://eluyz.github.io/SeasonLens/?lang=pl) · [Wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html) · [Release notes](docs/releases/v0.1.3.md) · [Installation and limits](docs/INSTALLATION.md)
+[Open the app](https://eluyz.github.io/SeasonLens/?lang=en) · [3-minute demonstration](https://eluyz.github.io/SeasonLens/demo/) · [Czytaj po polsku](README_PL.md) · [Download v0.1.3](https://github.com/eluyz/SeasonLens/releases/tag/v0.1.3)
+
+## Who is it for?
+
+SeasonLens is for analysts and people working with commodity price lists, purchasing reports or currency histories in Excel. It addresses a recurring task: an updated workbook arrives, and you need to check what changed before using it in analysis.
+
+| Your question | What SeasonLens shows |
+| --- | --- |
+| What changed in the new XLSX? | New dates, corrected values, dates absent from the newer file and unchanged observations, with the actual differences. |
+| How does this price compare with history? | Monthly averages, seasonal context and historical risk statistics, with dates and observation counts. |
+| What can I keep or share? | A selected-section HTML report or browser print/PDF output. Check private results before sharing. |
+
+## Try one concrete example
+
+Follow the [English demonstration](https://eluyz.github.io/SeasonLens/demo/) or [Polish demonstration](https://eluyz.github.io/SeasonLens/demo/pl.html). Two small invented XLSX files produce **1 new date, 1 corrected price, 1 absent date and 208 unchanged observations**. Inspect the correction **213.29 → 218.29 EUR/t (+5)**, then explicitly import the newer file and view its history. The script targets a three-minute presentation after downloading the files; a first attempt may take longer.
+
+No account, Python installation, API key or market-data subscription is needed. **All six built-in instruments and all demonstration files contain invented observations.** They are not live market quotes. Your XLSX/CSV is processed in current-tab memory without a data upload; reload clears it. Downloaded reports can still contain private prices. Website visits use GitHub Pages hosting. The optional Python app provides separate persistent SQLite history; browser imports do not update it.
 
 The current app supports **English and Polish** through two language tiles. Imported names and data keep their supplied form; reports retain the language in which they were built. See [language behavior](docs/LANGUAGES.md).
+
+For a longer import, currency-conversion and report exercise, use the [wheat + EUR/PLN walkthrough](https://eluyz.github.io/SeasonLens/walkthrough.html). See [release notes](docs/releases/v0.1.3.md) and [installation and limits](docs/INSTALLATION.md) for technical details.
 
 The CSV reader prepares one explicitly selected series; the core computes monthly means and observation counts in a year-by-month grid. Missing months stay NaN with count zero. Entire intervening years are retained. Counts show data availability; they do not prove that all trading sessions are present.
 

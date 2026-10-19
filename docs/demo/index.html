@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<title>What changed in the price list? · SeasonLens</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#18283f;font:16px/1.6 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:28px}h1{font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.2}h2{font-size:1.3rem;line-height:1.35}section{background:white;border:1px solid #dbe4ef;border-radius:14px;padding:24px;margin:22px 0}a{color:#1d4ed8;text-underline-offset:3px}a:focus-visible,.table-frame:focus-visible{outline:3px solid #2563eb;outline-offset:4px}.languages,.actions{display:flex;flex-wrap:wrap;gap:12px}.languages a,.actions a{padding:12px 16px;border:1px solid #b9cbe3;border-radius:9px;text-decoration:none;background:white}.languages a{flex:1;text-align:center;font-weight:650}.languages [aria-current=page]{background:#eaf1ff;border:2px solid #1d4ed8}.actions .primary{background:#1d4ed8;color:white}.muted{color:#52647c}.notice{background:#fff7e5;padding:14px 16px;border-left:4px solid #a86e00}.result{background:#edf8f0;padding:16px;border-left:4px solid #277043}.table-frame{overflow-x:auto;max-width:100%}table{width:100%;border-collapse:collapse}th,td{padding:9px 12px;text-align:left;border-bottom:1px solid #dbe4ef;vertical-align:top}thead{background:#eef3fa}caption{text-align:left;font-weight:650;margin-bottom:8px}li{margin:8px 0}code{font-size:.93em}p,li{overflow-wrap:anywhere}.script{font-style:italic;color:#405471}footer{color:#52647c;font-size:.92rem;padding:12px 0}.skip{position:absolute;top:-80px;left:12px;background:white;padding:12px}.skip:focus{top:8px}@media(max-width:600px){main{padding:16px}section{padding:18px}.actions a{width:100%;text-align:center}th,td{padding:8px}}@media print{body{background:white;font-size:11pt}main{max-width:none;padding:0}section{border:0;padding:0}.languages,.actions,.skip{display:none}tr{break-inside:avoid}h2{break-after:avoid}}
+</style>
+</head>
+<body>
+<a class="skip" href="#setup">Skip to instructions</a>
+<main>
+<nav class="languages" aria-label="Guide language"><a href="index.html" lang="en" hreflang="en" aria-current="page">English</a><a href="pl.html" lang="pl" hreflang="pl">Polski</a></nav>
+<header>
+<p class="muted">SeasonLens 0.1.3 · practical demonstration</p>
+<h1>What changed in the new price list?</h1>
+<p>A new spreadsheet arrives. Before using it in a purchasing report, check whether it adds a quote, corrects history or omits a date. This example makes each difference visible.</p>
+<p class="notice"><strong>Both files contain invented wheat prices.</strong> They are not exchange quotes, forecasts or a trading calendar. No account or installation is needed.</p>
+<div class="actions"><a class="primary" href="../index.html?lang=en" target="_blank" rel="noopener">Open app in another tab</a><a href="seasonlens-newer.xlsx" download>Download newer XLSX</a><a href="seasonlens-older.xlsx" download>Download older XLSX</a></div>
+<p class="muted">Allow about three minutes to present the prepared example after downloading the files. A first independent attempt or phone import may take longer. Keep this guide beside the app. This is a presentation plan, not a measured completion-time claim.</p>
+</header>
+<section id="setup">
+<h2>1. Open the newer file · 0:00–1:00</h2>
+<ol>
+<li>Start with a fresh app tab containing six sample instruments. Expand <strong>Start here</strong> and choose <strong>Open private import</strong>.</li>
+<li>Select <code>seasonlens-newer.xlsx</code> as the normal <strong>Excel workbook or CSV file</strong>. Set <strong>Analysis cutoff</strong> to <code>2026-10-07</code>, then choose <strong>Open and preview file</strong>.</li>
+<li>Check the settings below. Select <strong>only column B</strong>, title <code>Wheat sample</code>, units <strong>EUR/t</strong>, role <strong>Wheat</strong>. Leave blank-skipping and cached-formula permissions unchecked.</li>
+</ol>
+<div class="table-frame" tabindex="0" role="region" aria-label="Import settings"><table><caption>Use these explicit settings</caption><thead><tr><th scope="col">Setting</th><th scope="col">Value</th></tr></thead><tbody>
+<tr><th scope="row">Worksheet / header row / first data row</th><td>Prices / 1 / 4</td></tr>
+<tr><th scope="row">Date column / price column</th><td>A · Date / B · Wheat sample</td></tr>
+<tr><th scope="row">Text-date format / decimal separator</th><td>YYYY-MM-DD / .</td></tr>
+<tr><th scope="row">Analysis cutoff</th><td>2026-10-07</td></tr>
+</tbody></table></div>
+<p>Row 2 declares synthetic units. Amber row 3 is a deliberately invented live quote of 999 on October 8. Starting at row 4 excludes it by row selection; it is not counted as a future-row omission. Both workbooks have 210 historical observations and no formulas.</p>
+</section>
+<section>
+<h2>2. Compare before importing · 1:00–2:00</h2>
+<p>Under <strong>Compare two Excel versions</strong>, select <code>seasonlens-older.xlsx</code> as the <strong>Older Excel workbook</strong>, then choose <strong>Compare with older workbook</strong>. Do not reverse the files.</p>
+<p class="result"><strong>Expected result: 1 new · 1 corrected · 1 absent in newer · 208 unchanged.</strong><br>Older: 210 observations, 2025-12-17–2026-10-06.<br>Newer: 210 observations, 2025-12-18–2026-10-07.<br>No skipped blank or future rows.</p>
+<div class="table-frame" tabindex="0" role="region" aria-label="Expected changes"><table><caption>Inspect these three changes (EUR/t)</caption><thead><tr><th scope="col">Date</th><th scope="col">Change</th><th scope="col">Older</th><th scope="col">Newer</th><th scope="col">Difference</th></tr></thead><tbody>
+<tr><th scope="row">2025-12-17</th><td>Absent in newer</td><td>210</td><td>—</td><td>—</td></tr>
+<tr><th scope="row">2026-10-06</th><td>Corrected</td><td>213.29</td><td>218.29</td><td>+5</td></tr>
+<tr><th scope="row">2026-10-07</th><td>New</td><td>—</td><td>215</td><td>—</td></tr>
+</tbody></table></div>
+<p>Difference means newer minus older in EUR/t, not percent. “Absent” describes these validated files only; it does not prove a quote was deleted. The comparison adds nothing: six built-in instruments should remain.</p>
+<p class="script">Suggested narration: “The latest file has a new day, but it also changes yesterday's price and no longer includes the first date. I can check those changes before using the file.”</p>
+</section>
+<section>
+<h2>3. Analyze the newer history · 2:00–3:00</h2>
+<ol>
+<li>Choose <strong>Validate selected instruments</strong>. Confirm one instrument and 210 observations. Then choose <strong>Add validated instruments to this tab</strong>. There should now be seven instruments: six samples plus your import.</li>
+<li>In <strong>Analysis options</strong>, choose <strong>Wheat sample · private Excel</strong> in <strong>EUR/t</strong>. The last observation should be <strong>215 EUR/t on 2026-10-07</strong>.</li>
+<li>Use <strong>View monthly averages</strong>. Read the reference date, units and coverage. The <strong>Monthly average prices</strong> table rounds commodity prices to whole units; the comparison above preserves the correction's precision.</li>
+</ol>
+<p class="script">Suggested narration: “Now I analyze the newer file explicitly. Missing months remain gaps. The selected five-year view does not turn this short example into five years of history.”</p>
+<p>The example covers only December 2025–October 2026. It cannot establish reliable seasonality or a predictive advantage. If a result differs, check the file order, cutoff, selected column, row settings and whether a prior import is still in the tab.</p>
+</section>
+<section>
+<h2>Optional: keep a report</h2>
+<p>Choose <strong>Open report builder</strong>, select the monthly-price section, choose <strong>Build report preview</strong> and <strong>Download HTML</strong>. Check Wheat sample, EUR/t and 2026-10-07 in the report. This saves selected analysis results; it does <strong>not</strong> export the workbook comparison. Browser PDF printing is optional.</p>
+<p>Both input files and comparison results stay in current-tab memory, without a data upload or automatic database write. Reload clears imports and comparisons. Downloads may contain private results when you use your own files. Visiting the app still uses GitHub Pages hosting.</p>
+<p><a href="../walkthrough.html">Longer wheat + EUR/PLN walkthrough</a> · <a href="https://github.com/eluyz/SeasonLens#who-is-it-for">Project and methods</a> · <a href="../pilot/index.html">Pilot and feedback</a></p>
+</section>
+<footer>Code and invented examples: MIT. Demonstration files were generated from an explicit synthetic construction, with no external market-data source. The existing v0.1.3 release ZIP is unchanged; download this new example pair from this page.</footer>
+</main>
+</body>
+</html>

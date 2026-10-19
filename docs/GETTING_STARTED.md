@@ -2,6 +2,8 @@
 
 Open the [public demo](https://eluyz.github.io/SeasonLens/). No installation or account is needed. Expand **Start here** near the top of the page to choose a path.
 
+For a short introduction to checking a revised price list, try the [three-minute comparison demonstration](https://eluyz.github.io/SeasonLens/demo/) ([Polski](https://eluyz.github.io/SeasonLens/demo/pl.html)). It provides two invented XLSX files, exact expected changes and a separate explicit import of the newer history.
+
 For one complete workflow, follow the [wheat + EUR/PLN walkthrough](WHEAT_FX_WALKTHROUGH.md): import only two columns, verify the PLN conversion and export a report. The [web version](https://eluyz.github.io/SeasonLens/walkthrough.html) stays open beside the demo.
 
 ## Explore an example
